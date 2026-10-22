@@ -1,13 +1,20 @@
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
+  --foreground: #101a3a;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --brand-accent: #3d3bf3;
+  --brand-accent-hover: #3331df;
+  --brand-accent-soft: #e6e6fe;
+  --brand-ink: #101a3a;
+  --brand-muted: #5b6482;
+  --brand-line: #dde2ee;
+  --brand-surface: #ffffff;
+  --brand-bg: #edf0f7;
+  --brand-mint: #0b7a62;
+  --brand-mint-soft: #ddf4ec;
+  --brand-gold: #e0a100;
+  --brand-gold-soft: #fff1cc;
+  --brand-gold-text: #7a5300;
 }
 
 html {
@@ -26,9 +33,18 @@ body {
   flex-direction: column;
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-jakarta), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-bricolage), Arial, Helvetica, sans-serif;
 }
 
 * {
@@ -42,8 +58,13 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
 }

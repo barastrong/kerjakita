@@ -1,0 +1,450 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--brand-bg);
+}
+
+.hero {
+  padding: 40px 40px 36px;
+  border-bottom: 1px solid var(--brand-line);
+  background: var(--brand-surface);
+}
+
+.heroTitle {
+  max-width: 820px;
+  font-size: 46px;
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+.heroText {
+  max-width: 680px;
+  margin-top: 14px;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--brand-muted);
+}
+
+.searchBox {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  max-width: 880px;
+  margin-top: 28px;
+}
+
+.searchField {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  height: 62px;
+  padding: 0 18px;
+  border: 1px solid var(--brand-line);
+  border-radius: 12px;
+  background: var(--brand-bg);
+}
+
+.fieldWide {
+  flex: 1 1 280px;
+}
+
+.fieldMedium {
+  flex: 0 1 190px;
+}
+
+.fieldShort {
+  flex: 0 1 165px;
+}
+
+.fieldLabel {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brand-muted);
+}
+
+.fieldValue {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--brand-ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.searchButton {
+  flex-shrink: 0;
+  height: 62px;
+  padding: 0 30px;
+}
+
+.content {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  padding: 24px 40px 56px;
+  scroll-margin-top: 24px;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.medianCard {
+  padding: 30px 30px 24px;
+}
+
+.medianMeta {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--brand-muted);
+}
+
+.medianRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  margin-top: 6px;
+}
+
+.medianValue {
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.medianNote {
+  padding-bottom: 5px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--brand-muted);
+}
+
+.factGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--brand-bg);
+}
+
+.factLabel {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--brand-muted);
+}
+
+.factValue {
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.chartTitle,
+.cardTitle {
+  font-family: var(--font-jakarta), Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.chartTitle {
+  margin-top: 30px;
+}
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  height: 154px;
+  margin-top: 18px;
+  padding-bottom: 1px;
+  border-bottom: 1px solid var(--brand-line);
+}
+
+.bar {
+  flex: 1;
+  min-width: 0;
+  border-radius: 5px 5px 0 0;
+  background: #dce9e4;
+}
+
+.barActive {
+  background: var(--brand-mint);
+}
+
+.axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--brand-muted);
+}
+
+.cityCard,
+.sideCard,
+.shareCard {
+  padding: 24px;
+}
+
+.cityList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.cityRow {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr) 84px;
+  align-items: center;
+  gap: 14px;
+}
+
+.cityLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-ink);
+}
+
+.cityTrack {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--brand-bg);
+}
+
+.cityFill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--brand-mint);
+}
+
+.cityValue {
+  font-size: 13px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.sidebar {
+  flex: 0 0 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.expList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 14px;
+}
+
+.expRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 9px;
+}
+
+.expRowActive {
+  background: var(--brand-mint);
+}
+
+.expLabel {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.expValue {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.expRowActive .expLabel,
+.expRowActive .expValue {
+  color: #06372e;
+}
+
+.companyList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.companyRow {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.companyMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--brand-surface);
+}
+
+.companyName {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.companySalary {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.shareCard {
+  border-color: transparent;
+  background: var(--brand-ink);
+}
+
+.shareTitle {
+  font-family: var(--font-jakarta), Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--brand-surface);
+}
+
+.shareCard a {
+  margin-top: 16px;
+  background: var(--brand-mint);
+  color: #06372e;
+}
+
+.shareCard a:hover {
+  background: #a7f3d0;
+}
+
+@media (max-width: 1120px) {
+  .content {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    flex: none;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .shareCard {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding: 30px 20px 28px;
+  }
+
+  .heroTitle {
+    font-size: 36px;
+  }
+
+  .heroText {
+    font-size: 15px;
+  }
+
+  .searchBox {
+    flex-wrap: wrap;
+  }
+
+  .searchField {
+    flex: 1 1 200px;
+  }
+
+  .searchButton {
+    flex: 1 1 140px;
+  }
+
+  .content {
+    padding: 18px 20px 44px;
+  }
+
+  .medianValue {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 680px) {
+  .heroTitle {
+    font-size: 31px;
+  }
+
+  .searchBox {
+    align-items: stretch;
+  }
+
+  .searchField,
+  .searchButton {
+    flex-basis: 100%;
+  }
+
+  .medianRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .medianNote br {
+    display: none;
+  }
+
+  .factGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .cityRow {
+    grid-template-columns: 90px minmax(0, 1fr) 72px;
+    gap: 10px;
+  }
+
+  .sidebar {
+    display: flex;
+  }
+
+  .shareTitle {
+    font-size: 17px;
+  }
+}
