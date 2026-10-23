@@ -14,39 +14,32 @@ export function CoursePath() {
     <div className={styles.page}>
       <div className={styles.breadcrumbWrap}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <Link href="/" className={styles.breadcrumbLink}>
-            Beranda
-          </Link>
-          <span className={styles.breadcrumbSep} aria-hidden="true">
-            /
-          </span>
           <Link href="/kursus" className={styles.breadcrumbLink}>
             Kursus
           </Link>
           <span className={styles.breadcrumbSep} aria-hidden="true">
             /
           </span>
-          <span className={styles.breadcrumbCurrent}>Jalur belajar</span>
+          <span className={styles.breadcrumbLink}>Jalur belajar</span>
+          <span className={styles.breadcrumbSep} aria-hidden="true">
+            /
+          </span>
+          <span className={styles.breadcrumbCurrent}>Product Designer</span>
         </nav>
       </div>
 
       <section className={`${styles.hero} ${styles.pathHero}`}>
         <div className={styles.heroLeft}>
-          <div className={styles.tagRow}>
-            <span className={styles.tagAccent}>Jalur belajar</span>
-            <span className={styles.tagMint}>{path.category}</span>
+          <div className={styles.pathTags}>
+            <span>{path.stepsCount}</span>
+            <span>{path.duration}</span>
+            <span>{path.certificate}</span>
           </div>
 
           <h1 className={`${styles.heroTitle} ${styles.pathTitle}`}>
             {path.title}
           </h1>
           <p className={styles.heroText}>{path.description}</p>
-
-          <div className={styles.pathTags}>
-            <span>{path.stepsCount}</span>
-            <span>{path.duration}</span>
-            <span>{path.certificate}</span>
-          </div>
 
           <div className={styles.heroActions}>
             <ButtonLink
@@ -62,7 +55,7 @@ export function CoursePath() {
         </div>
 
         <Card className={styles.progressCard}>
-          <p className={styles.progressLabel}>Progres kamu</p>
+          <p className={styles.progressLabel}>Progres jalur ini</p>
           <p className={styles.progressValue}>{path.progress}%</p>
           <div
             className={styles.progressTrack}
@@ -83,13 +76,6 @@ export function CoursePath() {
 
       <div className={styles.content}>
         <main className={styles.main}>
-          <div className={styles.stepsHeader}>
-            <h2 className={styles.stepsTitle}>Langkah jalur belajar</h2>
-            <p className={styles.stepsMeta}>
-              {path.stepsCount} · {path.duration}
-            </p>
-          </div>
-
           <div className={styles.steps}>
             {path.steps.map((step, index) => {
               const isDone = step.state === "done";
@@ -122,7 +108,6 @@ export function CoursePath() {
                     } ${isDone ? styles.stepCardDone : ""}`}
                   >
                     <div className={styles.stepHead}>
-                      <p className={styles.stepKicker}>Langkah {index + 1}</p>
                       <span
                         className={`${styles.stepStatus} ${
                           isActive ? styles.stepStatusActive : ""
@@ -131,7 +116,7 @@ export function CoursePath() {
                         {step.status}
                       </span>
                     </div>
-                    <h3 className={styles.stepTitle}>{step.title}</h3>
+                    <h2 className={styles.stepTitle}>{step.title}</h2>
                     <p className={styles.stepDescription}>{step.description}</p>
 
                     <Link
@@ -154,10 +139,9 @@ export function CoursePath() {
                           {step.course.modules}
                         </span>
                       </span>
-                      <ChevronRightIcon
-                        size={16}
-                        className={styles.stepCourseChevron}
-                      />
+                      <span className={styles.stepCourseAction}>
+                        Lihat kursus
+                      </span>
                     </Link>
 
                     {isActive ? (
@@ -170,7 +154,7 @@ export function CoursePath() {
                     ) : null}
 
                     <div className={styles.stepSkills}>
-                      <span className={styles.skillLabel}>Keahlian</span>
+                      <span className={styles.skillLabel}>Skill:</span>
                       {step.skills.map((skill) => (
                         <span key={skill} className={styles.skillTag}>
                           {skill}
@@ -198,9 +182,12 @@ export function CoursePath() {
           </Card>
 
           <Card className={styles.pathJobsCard}>
-            <h2 className={styles.cardTitle}>Lowongan untuk jalur ini</h2>
+            <h2 className={styles.cardTitle}>Lowongan yang bisa kamu lamar</h2>
+            <p className={styles.pathJobsText}>
+              Setelah menyelesaikan jalur ini, kamu cocok untuk peran berikut.
+            </p>
             <div className={styles.pathJobs}>
-              {path.jobs.slice(0, 2).map((job) => (
+              {path.jobs.map((job) => (
                 <Link key={job.title} href={job.href} className={styles.pathJob}>
                   <span
                     className={styles.pathJobLogo}
@@ -212,7 +199,10 @@ export function CoursePath() {
                   <span className={styles.pathJobInfo}>
                     <span className={styles.pathJobTitle}>{job.title}</span>
                     <span className={styles.pathJobMeta}>
-                      {job.company} · {job.meta}
+                      {job.company} ·{" "}
+                      <strong className={styles.pathJobSalary}>
+                        {job.meta}
+                      </strong>
                     </span>
                   </span>
                   <ChevronRightIcon
@@ -222,26 +212,19 @@ export function CoursePath() {
                 </Link>
               ))}
             </div>
-            <Link
-              href="/lowongan?q=Product+Designer"
-              className={styles.relatedAll}
-            >
-              Lihat semua lowongan
-            </Link>
           </Card>
 
           <div className={styles.startCard}>
             <h2 className={styles.startTitle}>Siap mulai belajar?</h2>
             <p className={styles.startText}>
-              Ikuti jalur ini dari awal dan dapatkan sertifikat setelah semua
-              langkah selesai.
+              Masuk atau daftar untuk menyimpan progresmu.
             </p>
             <ButtonLink
               href={`/masuk?next=/kursus/jalur-belajar/product-designer`}
               variant="outline"
               size="sm"
             >
-              Mulai sekarang
+              Mulai belajar sekarang
             </ButtonLink>
           </div>
         </aside>

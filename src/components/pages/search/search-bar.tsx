@@ -9,6 +9,7 @@ type Filters = {
   pengalaman: string[];
   kecamatan: string[];
   diperbarui: string;
+  perusahaan: string;
 };
 
 export function SearchBar({
@@ -19,6 +20,7 @@ export function SearchBar({
   pengalaman,
   kecamatan,
   diperbarui,
+  perusahaan,
 }: { q: string; location: string } & Filters) {
   function href({
     tipe: nextTipe = tipe,
@@ -26,6 +28,7 @@ export function SearchBar({
     pengalaman: nextPengalaman = pengalaman,
     kecamatan: nextKecamatan = kecamatan,
     diperbarui: nextDiperbarui = diperbarui,
+    perusahaan: nextPerusahaan = perusahaan,
   }: Partial<Filters> = {}) {
     const params = new URLSearchParams();
     if (q) params.set("q", q);
@@ -39,6 +42,7 @@ export function SearchBar({
       params.set("kecamatan", nextKecamatan.join(","));
     }
     if (nextDiperbarui) params.set("diperbarui", nextDiperbarui);
+    if (nextPerusahaan) params.set("perusahaan", nextPerusahaan);
 
     return `/lowongan${params.toString() ? `?${params.toString()}` : ""}`;
   }
@@ -107,6 +111,9 @@ export function SearchBar({
         )}
         {diperbarui && (
           <input type="hidden" name="diperbarui" value={diperbarui} />
+        )}
+        {perusahaan && (
+          <input type="hidden" name="perusahaan" value={perusahaan} />
         )}
         <Button type="submit" className={styles.searchButton}>
           Cari

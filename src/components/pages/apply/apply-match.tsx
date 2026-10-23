@@ -18,7 +18,11 @@ export function ApplyMatch({ job }: ApplyMatchProps) {
         {job.skills.map((skill) => (
           <div key={skill.label} className={styles.matchRow}>
             <span className={styles.matchLabel}>{skill.label}</span>
-            <Progress value={skill.value} tone={skill.tone} />
+            <Progress
+              value={skill.value}
+              tone={skill.tone}
+              label={skill.label}
+            />
             <span className={styles.matchLevel}>{skill.level}</span>
           </div>
         ))}

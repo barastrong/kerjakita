@@ -83,6 +83,7 @@ export function Hero({ data }: HeroProps) {
             <Progress
               value={skill.value}
               tone={skill.tone}
+              label={skill.label}
               className={styles.matchTrack}
             />
             <span className={styles.level}>{skill.level}</span>

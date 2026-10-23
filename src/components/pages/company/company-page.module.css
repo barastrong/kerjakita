@@ -1,4 +1,6 @@
 .page {
+  width: 100%;
+  min-width: 0;
   min-height: 100vh;
   background: var(--brand-bg);
 }
@@ -78,6 +80,7 @@
   font-size: 14px;
   font-weight: 600;
   line-height: normal;
+  text-decoration: none;
   white-space: nowrap;
   color: var(--brand-muted);
   transition: color 0.15s ease;
@@ -472,5 +475,414 @@
 
   .breakdownScore {
     width: 40px;
+  }
+}
+
+.sectionContent {
+  padding: 28px 40px 56px;
+}
+
+.sectionColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.sectionColumn .breakdown {
+  max-width: none;
+}
+
+.sectionColumn .cardAction {
+  width: auto;
+  align-self: flex-start;
+}
+
+.sectionColumn .cardTitle {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 31px;
+}
+
+.sectionColumn .reviewList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 20px;
+}
+
+.sectionColumn .salaryList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px 24px;
+}
+
+.sectionColumn .salaryRow {
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--brand-bg);
+}
+
+.sectionColumn .salaryRange {
+  text-align: left;
+}
+
+.sectionColumn .jobList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 24px;
+}
+
+.sectionColumn .jobRow {
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--brand-bg);
+}
+
+.sectionColumn .jobRow:first-child {
+  padding-top: 14px;
+}
+
+.sectionColumn .jobRow + .jobRow {
+  border-top: 0;
+}
+
+.mediaContent {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 28px 40px 56px;
+}
+
+.mediaSection {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mediaHeading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mediaTitle {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 31px;
+  color: var(--brand-ink);
+}
+
+.mediaSubtitle {
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--brand-muted);
+}
+
+.videoRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  align-items: start;
+  gap: 20px;
+}
+
+.videoSide {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.videoCard {
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  border: 1px solid var(--brand-line);
+  border-radius: 18px;
+  background: var(--brand-surface);
+}
+
+.videoThumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.videoLarge .videoThumb {
+  aspect-ratio: 910 / 340;
+}
+
+.videoSmall .videoThumb {
+  aspect-ratio: 370 / 130;
+}
+
+.videoText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 4px 2px;
+}
+
+.videoTitle {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 26px;
+  color: var(--brand-ink);
+}
+
+.videoMeta {
+  font-size: 13px;
+  line-height: 16px;
+  color: var(--brand-muted);
+}
+
+.videoSmall .videoTitle {
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.playButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--brand-surface);
+  color: var(--brand-ink);
+}
+
+.playButton svg {
+  width: 29px;
+  height: 29px;
+  margin-left: 4px;
+}
+
+.videoSmall .playButton {
+  width: 48px;
+  height: 48px;
+}
+
+.videoSmall .playButton svg {
+  width: 19px;
+  height: 19px;
+  margin-left: 3px;
+}
+
+.photoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px 16px;
+}
+
+.photo {
+  position: relative;
+  aspect-ratio: 443 / 220;
+  border-radius: 16px;
+}
+
+.photoTag {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: var(--brand-surface);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 16px;
+  color: var(--brand-ink);
+}
+
+.identityCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 28px;
+  border: 1px solid var(--brand-line);
+  border-radius: 18px;
+  background: var(--brand-surface);
+}
+
+.identityLogo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+  width: 104px;
+}
+
+.identityLogoMark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 104px;
+  height: 104px;
+  border-radius: 24px;
+  color: var(--brand-surface);
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.identityCaption,
+.identityLabel {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--brand-muted);
+}
+
+.identityPalette {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+  width: 356px;
+}
+
+.swatches {
+  display: flex;
+  gap: 12px;
+}
+
+.swatch {
+  width: 80px;
+}
+
+.swatchColor {
+  height: 56px;
+  border: 1px solid rgba(16, 26, 58, 0.08);
+  border-radius: 12px;
+}
+
+.swatchHex {
+  margin-top: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 15px;
+  color: var(--brand-ink);
+}
+
+.swatchName {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 15px;
+  color: var(--brand-muted);
+}
+
+.identityType {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.typeSample {
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: 64px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 77px;
+  color: var(--brand-ink);
+}
+
+.typeName {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: var(--brand-ink);
+  white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+  .videoRow {
+    grid-template-columns: minmax(0, 1fr) 360px;
+  }
+}
+
+@media (max-width: 900px) {
+  .sectionContent {
+    padding: 20px 20px 40px;
+  }
+
+  .sectionColumn .reviewList {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionColumn .salaryList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mediaContent {
+    gap: 32px;
+    padding: 20px 20px 40px;
+  }
+
+  .videoRow {
+    grid-template-columns: 1fr;
+  }
+
+  .videoSide {
+    flex-direction: row;
+  }
+
+  .videoSmall {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .photoGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .identityCard {
+    flex-wrap: wrap;
+  }
+
+  .identityType {
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 620px) {
+  .sectionColumn .cardTitle {
+    font-size: 24px;
+    line-height: 29px;
+  }
+
+  .sectionColumn .salaryList,
+  .sectionColumn .jobList {
+    grid-template-columns: 1fr;
+  }
+
+  .mediaTitle {
+    font-size: 24px;
+    line-height: 29px;
+  }
+
+  .videoSide {
+    flex-direction: column;
+  }
+
+  .photoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .identityCard {
+    flex-direction: column;
+    gap: 24px;
+    padding: 20px;
+  }
+
+  .identityPalette {
+    width: 100%;
+  }
+
+  .swatches {
+    flex-wrap: wrap;
   }
 }

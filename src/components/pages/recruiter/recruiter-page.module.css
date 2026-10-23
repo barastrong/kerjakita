@@ -1,0 +1,389 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--brand-bg);
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 56px 40px;
+  background: var(--brand-ink);
+}
+
+.heroContent {
+  display: flex;
+  flex: 0 1 640px;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.heroTitle {
+  max-width: 640px;
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 56px;
+  color: var(--brand-surface);
+}
+
+.heroSubtitle {
+  max-width: 580px;
+  font-size: 17px;
+  line-height: 26px;
+  color: var(--brand-line);
+}
+
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.candidateCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 0;
+  width: 420px;
+  padding: 22px;
+  border-radius: 22px;
+  background: var(--brand-surface);
+}
+
+.candidateTitle {
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--brand-ink);
+}
+
+.candidateList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+}
+
+.candidate {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--brand-bg);
+}
+
+.candidateAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--brand-surface);
+}
+
+.avatarAccent {
+  background: var(--brand-accent);
+}
+
+.avatarMint {
+  background: var(--brand-mint);
+}
+
+.avatarPurple {
+  background: #7c3aed;
+}
+
+.candidateInfo {
+  display: flex;
+  flex-direction: column;
+  line-height: normal;
+}
+
+.candidateName {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand-ink);
+}
+
+.candidateMeta {
+  font-size: 12.5px;
+  color: var(--brand-muted);
+}
+
+.candidateScore {
+  margin-left: auto;
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--brand-mint);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  padding: 48px 40px 64px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  list-style: none;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 24px;
+  border: 1px solid var(--brand-line);
+  border-radius: 18px;
+  background: var(--brand-surface);
+}
+
+.statValue {
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: normal;
+  color: var(--brand-accent);
+}
+
+.statLabel {
+  font-size: 14px;
+  line-height: normal;
+  color: var(--brand-muted);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionHeading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sectionTitle {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: normal;
+  color: var(--brand-ink);
+}
+
+.sectionSubtitle {
+  font-size: 14px;
+  line-height: normal;
+  color: var(--brand-muted);
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  list-style: none;
+}
+
+.featureCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 24px;
+  border: 1px solid var(--brand-line);
+  border-radius: 18px;
+  background: var(--brand-surface);
+}
+
+.featureIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent);
+}
+
+.featureTitle {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--brand-ink);
+}
+
+.featureText {
+  max-width: 340px;
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--brand-muted);
+}
+
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  list-style: none;
+}
+
+.plan {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 24px;
+  border: 1px solid var(--brand-line);
+  border-radius: 20px;
+  background: var(--brand-surface);
+}
+
+.planHighlighted {
+  border: 2px solid var(--brand-accent);
+}
+
+.planHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.planName {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--brand-ink);
+}
+
+.planBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 8px;
+  background: var(--brand-accent);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: normal;
+  white-space: nowrap;
+  color: var(--brand-surface);
+}
+
+.planPrice {
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: normal;
+  color: var(--brand-ink);
+}
+
+.planNote {
+  font-size: 13px;
+  line-height: normal;
+  color: var(--brand-muted);
+}
+
+.planFeatures {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  list-style: none;
+}
+
+.planFeature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  line-height: normal;
+  color: var(--brand-ink);
+}
+
+.planCheck {
+  flex-shrink: 0;
+  color: var(--brand-ink);
+}
+
+.plan .planButton {
+  width: 100%;
+  margin-top: auto;
+  padding: 12px 24px;
+  border-radius: 12px;
+}
+
+@media (max-width: 1100px) {
+  .hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .heroContent {
+    flex: 1 1 auto;
+  }
+
+  .candidateCard {
+    width: 100%;
+  }
+}
+
+@media (max-width: 860px) {
+  .featureGrid,
+  .pricingGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .featureText {
+    max-width: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero {
+    padding: 32px 20px;
+  }
+
+  .heroTitle {
+    font-size: 32px;
+    line-height: 38px;
+  }
+
+  .heroSubtitle {
+    font-size: 15px;
+    line-height: 23px;
+  }
+
+  .content {
+    gap: 40px;
+    padding: 32px 20px 48px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionTitle {
+    font-size: 24px;
+    line-height: 29px;
+  }
+}

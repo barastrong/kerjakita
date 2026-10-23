@@ -40,6 +40,87 @@ export type PathStep = {
   status: string;
 };
 
+export type CatalogCourse = {
+  slug: string;
+  title: string;
+  provider: string;
+  duration: string;
+  level: string;
+  rating: string;
+  price: string;
+  initials: string;
+  color: string;
+};
+
+export const courseCatalog: CatalogCourse[] = [
+  {
+    slug: "dasar-ux-research",
+    title: "Dasar UX Research",
+    provider: "Belajarin",
+    duration: "6 jam",
+    level: "Pemula",
+    rating: "4,6",
+    price: "Gratis",
+    initials: "UX",
+    color: "#3d3bf3",
+  },
+  {
+    slug: "design-system-dari-nol",
+    title: "Design System dari Nol",
+    provider: "Studio Lokal",
+    duration: "9 jam",
+    level: "Menengah",
+    rating: "4,7",
+    price: "Rp 249.000",
+    initials: "DS",
+    color: "#0b7a62",
+  },
+  {
+    slug: "analitik-produk-untuk-desainer",
+    title: "Analitik Produk untuk Desainer",
+    provider: "Pintarta",
+    duration: "8 jam",
+    level: "Menengah",
+    rating: "4,4",
+    price: "Rp 199.000",
+    initials: "AN",
+    color: "#c2410c",
+  },
+  {
+    slug: "menulis-studi-kasus-portofolio",
+    title: "Menulis Studi Kasus Portofolio",
+    provider: "Lokalkarya",
+    duration: "4 jam",
+    level: "Pemula",
+    rating: "4,5",
+    price: "Gratis",
+    initials: "PF",
+    color: "#7c3aed",
+  },
+  {
+    slug: "figma-auto-layout-mahir",
+    title: "Figma Auto Layout Mahir",
+    provider: "Belajarin",
+    duration: "5 jam",
+    level: "Menengah",
+    rating: "4,8",
+    price: "Rp 149.000",
+    initials: "FG",
+    color: "#0f766e",
+  },
+  {
+    slug: "persiapan-wawancara-desainer",
+    title: "Persiapan Wawancara Desainer",
+    provider: "Nawasehat",
+    duration: "3 jam",
+    level: "Pemula",
+    rating: "4,3",
+    price: "Gratis",
+    initials: "WW",
+    color: "#b45309",
+  },
+];
+
 export const designSystemCourse = {
   slug: "design-system-dari-nol",
   title: "Design System dari Nol",

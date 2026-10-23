@@ -14,7 +14,15 @@ import styles from "./search-page.module.css";
 
 const PAGES = ["1", "2", "3", "…", "42"];
 
-export function SearchResults({ jobs, query }: { jobs: Job[]; query: string }) {
+export function SearchResults({
+  jobs,
+  query,
+  companyName,
+}: {
+  jobs: Job[];
+  query: string;
+  companyName?: string;
+}) {
   const [selectedSlug, setSelectedSlug] = useState(jobs[0]?.slug);
   const selectedJob =
     jobs.find((job) => job.slug === selectedSlug) ?? jobs[0];
@@ -29,7 +37,8 @@ export function SearchResults({ jobs, query }: { jobs: Job[]; query: string }) {
         <div className={styles.resultsHead}>
           <div>
             <h1 className={styles.resultsTitle}>
-              {jobs.length} lowongan{query ? ` ${query}` : ""}
+              {jobs.length} lowongan{companyName ? ` di ${companyName}` : ""}
+              {query ? ` ${query}` : ""}
             </h1>
             <p className={styles.resultsSubtitle}>
               Diurutkan dari yang paling relevan

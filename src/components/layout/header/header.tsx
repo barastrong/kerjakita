@@ -93,7 +93,15 @@ export function Header({ user }: HeaderProps) {
       <div className={styles.spacer} />
 
       <div className={styles.actions}>
-        <Link href="/perekrut" className={styles.navLink}>
+        <Link
+          href="/perekrut"
+          className={`${styles.navLink} ${
+            pathname.startsWith("/perekrut") ? styles.navLinkActive : ""
+          }`}
+          aria-current={
+            pathname.startsWith("/perekrut") ? "page" : undefined
+          }
+        >
           Untuk perekrut
         </Link>
 
@@ -148,7 +156,7 @@ export function Header({ user }: HeaderProps) {
             className={`${styles.language} ${
               menuOpen ? styles.languageOpen : ""
             }`}
-            aria-label={`Ubah bahasa, ${currentLanguage.label}`}
+            aria-label={`Ubah bahasa, ${currentLanguage.label} (${currentLanguage.short})`}
             aria-haspopup="listbox"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((open) => !open)}

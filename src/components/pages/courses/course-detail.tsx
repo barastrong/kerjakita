@@ -15,15 +15,13 @@ export function CourseDetail() {
     <div className={styles.page}>
       <div className={styles.breadcrumbWrap}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <Link href="/" className={styles.breadcrumbLink}>
-            Beranda
+          <Link href="/kursus" className={styles.breadcrumbLink}>
+            Kursus
           </Link>
           <span className={styles.breadcrumbSep} aria-hidden="true">
             /
           </span>
-          <Link href="/kursus" className={styles.breadcrumbLink}>
-            Kursus
-          </Link>
+          <span className={styles.breadcrumbLink}>{course.category}</span>
           <span className={styles.breadcrumbSep} aria-hidden="true">
             /
           </span>
@@ -34,9 +32,9 @@ export function CourseDetail() {
       <section className={styles.hero}>
         <div className={styles.heroLeft}>
           <div className={styles.tagRow}>
-            <span className={styles.tagAccent}>{course.category}</span>
-            <span className={styles.tagMint}>{course.level}</span>
-            <span className={styles.tagNeutral}>Sertifikat</span>
+            <span className={styles.tagLight}>{course.level}</span>
+            <span className={styles.tagMint}>Bersertifikat</span>
+            <span className={styles.tagLight}>{course.category}</span>
           </div>
 
           <h1 className={styles.heroTitle}>{course.title}</h1>
@@ -48,6 +46,14 @@ export function CourseDetail() {
             </span>
             <strong>{course.rating}</strong>
             <span>({course.reviewCount} ulasan)</span>
+            <span className={styles.metaDot} aria-hidden="true">
+              ·
+            </span>
+            <span>{course.duration}</span>
+            <span className={styles.metaDot} aria-hidden="true">
+              ·
+            </span>
+            <span>{course.modules}</span>
             <span className={styles.metaDot} aria-hidden="true">
               ·
             </span>
@@ -81,7 +87,7 @@ export function CourseDetail() {
         >
           <span className={styles.previewPlay} aria-hidden="true" />
           <span className={styles.previewCaption}>
-            Pratinjau kursus · 2 mnt
+            Pratinjau gratis · 2:30
           </span>
         </div>
       </section>
@@ -233,8 +239,8 @@ export function CourseDetail() {
             <div className={styles.priceRow}>
               <span className={styles.price}>{course.price}</span>
               <span className={styles.oldPrice}>{course.oldPrice}</span>
+              <span className={styles.discount}>{course.discount}</span>
             </div>
-            <span className={styles.discount}>{course.discount}</span>
 
             <div className={styles.ctaStack}>
               <ButtonLink
@@ -264,7 +270,10 @@ export function CourseDetail() {
               ))}
             </ul>
 
-            <p className={styles.includeTitle}>Keahlian yang dilatih</p>
+          </Card>
+
+          <Card className={styles.skillsCard}>
+            <h2 className={styles.cardTitle}>Skill dan lowongan</h2>
             <div className={styles.skillTags}>
               {course.skills.map((skill) => (
                 <span key={skill} className={styles.skillTag}>
@@ -272,10 +281,6 @@ export function CourseDetail() {
                 </span>
               ))}
             </div>
-          </Card>
-
-          <div className={styles.jobsCard}>
-            <p className={styles.jobsTitle}>Butuh keahlian ini di pekerjaan?</p>
             <p className={styles.jobsText}>{course.jobsNote}</p>
             <Link
               href="/lowongan?q=Product+Designer"
@@ -283,17 +288,13 @@ export function CourseDetail() {
             >
               Lihat lowongannya <ChevronRightIcon size={15} />
             </Link>
-          </div>
+          </Card>
 
           <Card className={styles.relatedCard}>
             <h2 className={styles.cardTitle}>Kursus terkait</h2>
             <div className={styles.relatedList}>
               {course.related.map((item) => (
-                <Link
-                  key={item.slug}
-                  href={`/kursus/${item.slug}`}
-                  className={styles.related}
-                >
+                <div key={item.slug} className={styles.related}>
                   <span
                     className={styles.relatedLogo}
                     style={{ backgroundColor: item.color }}
@@ -307,16 +308,9 @@ export function CourseDetail() {
                       {item.provider} · {item.duration} · {item.price}
                     </span>
                   </span>
-                  <ChevronRightIcon
-                    size={16}
-                    className={styles.relatedChevron}
-                  />
-                </Link>
+                </div>
               ))}
             </div>
-            <Link href="/kursus" className={styles.relatedAll}>
-              Lihat semua kursus
-            </Link>
           </Card>
         </aside>
       </div>

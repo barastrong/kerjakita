@@ -18,6 +18,7 @@ type Props = {
     pengalaman?: string;
     kecamatan?: string;
     diperbarui?: string;
+    perusahaan?: string;
   }>;
 };
 
@@ -33,6 +34,7 @@ export default async function Page({ searchParams }: Props) {
       pengalaman={params.pengalaman}
       kecamatan={params.kecamatan}
       diperbarui={params.diperbarui}
+      perusahaan={params.perusahaan}
     />
   );
 }

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,11 @@ export function CompanyGrid() {
 
       <div className={styles.grid}>
         {companyDirectory.map((company) => (
-          <article key={company.slug} className={styles.companyCard}>
+          <Link
+            key={company.slug}
+            href={`/perusahaan/${company.slug}`}
+            className={styles.companyCard}
+          >
             <div className={styles.companyTop}>
               <Avatar
                 initials={company.initials}
@@ -38,7 +43,7 @@ export function CompanyGrid() {
             <p className={styles.companyJobs}>
               {company.openJobs} lowongan dibuka
             </p>
-          </article>
+          </Link>
         ))}
       </div>
 

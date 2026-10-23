@@ -1,4 +1,5 @@
 import { jobs as allJobs } from "@/lib/data/jobs";
+import { getCompany } from "@/lib/data/companies";
 import { SearchBar } from "./search-bar";
 import { SearchFilters } from "./search-filters";
 import { SearchResults } from "./search-results";
@@ -12,6 +13,7 @@ type SearchPageProps = {
   pengalaman?: string;
   kecamatan?: string;
   diperbarui?: string;
+  perusahaan?: string;
 };
 
 function parseFilter(value: string) {
@@ -32,6 +34,7 @@ export function filterJobs(
   pengalaman: string[] = [],
   kecamatan: string[] = [],
   diperbarui = "",
+  company = "",
 ) {
   const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
   const places = location
@@ -73,8 +76,10 @@ export function filterJobs(
       (job.district !== undefined && kecamatan.includes(job.district));
     const maxHours = UPDATED_HOURS[diperbarui];
     const matchesUpdated = !maxHours || job.postedHours <= maxHours;
+    const matchesCompany = !company || job.companySlug === company;
 
     return (
+      matchesCompany &&
       matchesQuery &&
       matchesLocation &&
       matchesType &&
@@ -94,11 +99,13 @@ export function SearchPage({
   pengalaman = "",
   kecamatan = "",
   diperbarui = "",
+  perusahaan = "",
 }: SearchPageProps) {
   const types = parseFilter(tipe);
   const workStyles = parseFilter(lokasi);
   const experiences = parseFilter(pengalaman);
   const districts = parseFilter(kecamatan);
+  const company = getCompany(perusahaan);
   const jobs = filterJobs(
     q,
     location,
@@ -107,6 +114,7 @@ export function SearchPage({
     experiences,
     districts,
     diperbarui,
+    perusahaan,
   );
 
   return (
@@ -119,6 +127,7 @@ export function SearchPage({
         pengalaman={experiences}
         kecamatan={districts}
         diperbarui={diperbarui}
+        perusahaan={perusahaan}
       />
       <main className={styles.content}>
         <SearchFilters
@@ -128,7 +137,11 @@ export function SearchPage({
           kecamatan={districts}
           diperbarui={diperbarui}
         />
-        <SearchResults jobs={jobs} query={q} />
+        <SearchResults
+          jobs={jobs}
+          query={q}
+          companyName={company?.name}
+        />
       </main>
     </div>
   );

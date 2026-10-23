@@ -6,9 +6,9 @@
 }
 
 .hero {
-  padding: 40px 40px 36px;
-  border-bottom: 1px solid var(--brand-line);
-  background: var(--brand-surface);
+  padding: 36px 40px 34px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--brand-ink);
 }
 
 .heroTitle {
@@ -17,6 +17,7 @@
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.035em;
+  color: var(--brand-surface);
 }
 
 .heroText {
@@ -24,15 +25,18 @@
   margin-top: 14px;
   font-size: 17px;
   line-height: 1.55;
-  color: var(--brand-muted);
+  color: rgba(255, 255, 255, 0.68);
 }
 
 .searchBox {
   display: flex;
-  align-items: flex-end;
-  gap: 12px;
-  max-width: 880px;
-  margin-top: 28px;
+  align-items: stretch;
+  gap: 0;
+  max-width: 860px;
+  margin-top: 26px;
+  padding: 6px;
+  border-radius: 14px;
+  background: var(--brand-surface);
 }
 
 .searchField {
@@ -40,11 +44,15 @@
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  height: 62px;
+  height: 58px;
   padding: 0 18px;
-  border: 1px solid var(--brand-line);
-  border-radius: 12px;
-  background: var(--brand-bg);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.searchField + .searchField {
+  border-left: 1px solid var(--brand-line);
 }
 
 .fieldWide {
@@ -80,7 +88,8 @@
 
 .searchButton {
   flex-shrink: 0;
-  height: 62px;
+  height: 58px;
+  margin-left: 6px;
   padding: 0 30px;
 }
 
@@ -102,6 +111,8 @@
 
 .medianCard {
   padding: 30px 30px 24px;
+  border-color: transparent;
+  background: #f7f8fb;
 }
 
 .medianMeta {
@@ -124,6 +135,7 @@
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.035em;
+  color: #0b7a62;
 }
 
 .medianNote {
@@ -146,7 +158,7 @@
   gap: 5px;
   padding: 14px 16px;
   border-radius: 12px;
-  background: var(--brand-bg);
+  background: #eceef4;
 }
 
 .factLabel {
@@ -189,11 +201,11 @@
   flex: 1;
   min-width: 0;
   border-radius: 5px 5px 0 0;
-  background: #dce9e4;
+  background: #e5e4fb;
 }
 
 .barActive {
-  background: var(--brand-mint);
+  background: var(--brand-accent);
 }
 
 .axis {
@@ -209,6 +221,12 @@
 .sideCard,
 .shareCard {
   padding: 24px;
+}
+
+.cityCard,
+.sideCard {
+  border-color: transparent;
+  background: #f7f8fb;
 }
 
 .cityList {
@@ -242,7 +260,7 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: var(--brand-mint);
+  background: var(--brand-accent);
 }
 
 .cityValue {
@@ -275,7 +293,7 @@
 }
 
 .expRowActive {
-  background: var(--brand-mint);
+  background: #e9e8ff;
 }
 
 .expLabel {
@@ -291,7 +309,7 @@
 
 .expRowActive .expLabel,
 .expRowActive .expValue {
-  color: #06372e;
+  color: var(--brand-accent);
 }
 
 .companyList {
@@ -330,6 +348,7 @@
 .companySalary {
   font-size: 13px;
   font-weight: 700;
+  color: #0b7a62;
 }
 
 .shareCard {
@@ -348,12 +367,12 @@
 
 .shareCard a {
   margin-top: 16px;
-  background: var(--brand-mint);
-  color: #06372e;
+  background: var(--brand-accent);
+  color: var(--brand-surface);
 }
 
 .shareCard a:hover {
-  background: #a7f3d0;
+  background: var(--brand-accent-hover);
 }
 
 @media (max-width: 1120px) {
@@ -388,14 +407,20 @@
 
   .searchBox {
     flex-wrap: wrap;
+    padding: 6px;
   }
 
   .searchField {
     flex: 1 1 200px;
   }
 
+  .searchField + .searchField {
+    border-left: 0;
+  }
+
   .searchButton {
     flex: 1 1 140px;
+    margin-left: 0;
   }
 
   .content {

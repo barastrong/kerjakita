@@ -191,11 +191,18 @@
   border: 1px solid var(--brand-line);
   border-radius: 14px;
   background: var(--brand-surface);
+  color: inherit;
+  text-decoration: none;
   transition: border-color 0.15s ease;
 }
 
 .companyCard:hover {
   border-color: var(--brand-accent);
+}
+
+.companyCard:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
 }
 
 .companyTop {

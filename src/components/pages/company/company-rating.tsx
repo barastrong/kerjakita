@@ -26,7 +26,11 @@ export function CompanyRating({ company }: CompanyRatingProps) {
           {company.ratings.map((rating) => (
             <div key={rating.label} className={styles.breakdownRow}>
               <span className={styles.breakdownLabel}>{rating.label}</span>
-              <Progress value={rating.value} className={styles.breakdownTrack} />
+              <Progress
+                value={rating.value}
+                label={rating.label}
+                className={styles.breakdownTrack}
+              />
               <span className={styles.breakdownScore}>{rating.score}</span>
             </div>
           ))}
