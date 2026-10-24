@@ -11,6 +11,7 @@ import {
   EyeOffIcon,
   MailIcon,
 } from "@/components/ui/icons/icons";
+import { SESSION_COOKIE } from "@/lib/data/session";
 import styles from "./auth-page.module.css";
 
 function FormIntro({
@@ -411,7 +412,9 @@ export function OtpForm() {
       className={styles.form}
       onSubmit={(event) => {
         event.preventDefault();
+        document.cookie = `${SESSION_COOKIE}=1; path=/; max-age=86400; samesite=lax`;
         router.push("/");
+        router.refresh();
       }}
     >
       <FormIntro

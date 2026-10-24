@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { SESSION_COOKIE } from "@/lib/data/session";
 import styles from "./header.module.css";
 
 const NAV_ITEMS = [
@@ -35,21 +36,33 @@ function isActive(href: string, pathname: string) {
 
 export function Header({ user }: HeaderProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [language, setLanguage] = useState<LanguageCode>("id");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const accountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!menuOpen) return;
+    if (!menuOpen && !accountOpen) return;
 
     function handlePointerDown(event: MouseEvent) {
-      if (!menuRef.current?.contains(event.target as Node)) {
+      const target = event.target as Node;
+
+      if (menuOpen && !menuRef.current?.contains(target)) {
         setMenuOpen(false);
+      }
+
+      if (accountOpen && !accountRef.current?.contains(target)) {
+        setAccountOpen(false);
       }
     }
 
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setMenuOpen(false);
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        setAccountOpen(false);
+      }
     }
 
     document.addEventListener("mousedown", handlePointerDown);
@@ -59,7 +72,13 @@ export function Header({ user }: HeaderProps) {
       document.removeEventListener("mousedown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [menuOpen]);
+  }, [menuOpen, accountOpen]);
+
+  function handleLogout() {
+    document.cookie = `${SESSION_COOKIE}=; path=/; max-age=0; samesite=lax`;
+    setAccountOpen(false);
+    router.refresh();
+  }
 
   const currentLanguage =
     LANGUAGES.find((item) => item.code === language) ?? LANGUAGES[0];
@@ -93,17 +112,26 @@ export function Header({ user }: HeaderProps) {
       <div className={styles.spacer} />
 
       <div className={styles.actions}>
-        <Link
-          href="/perekrut"
-          className={`${styles.navLink} ${
-            pathname.startsWith("/perekrut") ? styles.navLinkActive : ""
-          }`}
-          aria-current={
-            pathname.startsWith("/perekrut") ? "page" : undefined
-          }
-        >
-          Untuk perekrut
-        </Link>
+        {user ? (
+          <Link
+            href="/perekrut/ringkasan"
+            className={styles.dashboardLink}
+          >
+            Dashboard
+          </Link>
+        ) : (
+          <Link
+            href="/perekrut"
+            className={`${styles.navLink} ${
+              pathname.startsWith("/perekrut") ? styles.navLinkActive : ""
+            }`}
+            aria-current={
+              pathname.startsWith("/perekrut") ? "page" : undefined
+            }
+          >
+            Untuk perekrut
+          </Link>
+        )}
 
         {user ? (
           <>
@@ -120,23 +148,57 @@ export function Header({ user }: HeaderProps) {
                 aria-hidden="true"
               />
             </button>
-            <button
-              type="button"
-              className={styles.account}
-              aria-label={`Menu akun ${user.name}`}
-            >
-              <span className={styles.accountAvatar} aria-hidden="true">
-                {user.name.charAt(0)}
-              </span>
-              <span className={styles.accountName}>{user.name}</span>
-              <Image
-                src="/icons/chevron-down-dark.svg"
-                alt=""
-                width={14}
-                height={14}
-                aria-hidden="true"
-              />
-            </button>
+            <div className={styles.accountWrap} ref={accountRef}>
+              <button
+                type="button"
+                className={styles.account}
+                aria-label={`Menu akun ${user.name}`}
+                aria-haspopup="menu"
+                aria-expanded={accountOpen}
+                onClick={() => {
+                  setMenuOpen(false);
+                  setAccountOpen((open) => !open);
+                }}
+              >
+                <span className={styles.accountAvatar} aria-hidden="true">
+                  {user.name.charAt(0)}
+                </span>
+                <span className={styles.accountName}>{user.name}</span>
+                <Image
+                  src="/icons/chevron-down-dark.svg"
+                  alt=""
+                  width={14}
+                  height={14}
+                  aria-hidden="true"
+                />
+              </button>
+
+              {accountOpen && (
+                <div
+                  id="account-menu"
+                  className={`${styles.languageMenu} ${styles.accountMenu}`}
+                  role="menu"
+                  aria-label="Menu akun"
+                >
+                  <Link
+                    href="/perekrut/ringkasan"
+                    role="menuitem"
+                    className={`${styles.accountMenuItem} ${styles.accountMenuDashboard}`}
+                    onClick={() => setAccountOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className={styles.accountMenuItem}
+                    onClick={handleLogout}
+                  >
+                    Keluar
+                  </button>
+                </div>
+              )}
+            </div>
           </>
         ) : (
           <>
@@ -159,7 +221,10 @@ export function Header({ user }: HeaderProps) {
             aria-label={`Ubah bahasa, ${currentLanguage.label} (${currentLanguage.short})`}
             aria-haspopup="listbox"
             aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
+            onClick={() => {
+              setAccountOpen(false);
+              setMenuOpen((open) => !open);
+            }}
           >
             <Image
               src="/icons/globe.svg"
