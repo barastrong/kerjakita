@@ -9,7 +9,7 @@ import styles from "./dashboard.module.css";
 
 type NavItem = {
   label: string;
-  href?: string;
+  href: string;
   icon: string;
   count?: number;
 };
@@ -18,15 +18,15 @@ const RECRUITMENT_NAV: NavItem[] = [
   { label: "Ringkasan", href: "/perekrut/ringkasan", icon: "ringkasan-muted.svg" },
   { label: "Lowongan", href: "/perekrut/lowongan", icon: "lowongan.svg", count: 6 },
   { label: "Pelamar", href: "/perekrut/pelamar", icon: "pelamar.svg", count: 12 },
-  { label: "Wawancara", icon: "wawancara.svg", count: 5 },
+  { label: "Wawancara", href: "/perekrut/wawancara", icon: "wawancara.svg", count: 5 },
 ];
 
 const COMPANY_NAV: NavItem[] = [
-  { label: "Profil perusahaan", icon: "profil.svg" },
-  { label: "Tim", icon: "tim.svg" },
+  { label: "Profil perusahaan", href: "/perekrut/profil-perusahaan", icon: "profil.svg" },
+  { label: "Tim", href: "/perekrut/tim", icon: "tim.svg" },
 ];
 
-function isActive(pathname: string, href?: string) {
+function isActive(pathname: string, href: string) {
   return Boolean(href && (pathname === href || pathname.startsWith(`${href}/`)));
 }
 
@@ -80,20 +80,14 @@ export function RecruiterShell({ children }: { children: ReactNode }) {
 
       return (
         <li key={item.label}>
-          {item.href ? (
-            <Link
-              href={item.href}
-              className={`${styles.navItem} ${active ? styles.navItemActive : ""}`}
-              aria-current={active ? "page" : undefined}
-              onClick={() => setMenuOpen(false)}
-            >
-              {content}
-            </Link>
-          ) : (
-            <span className={`${styles.navItem} ${styles.navDisabled}`} aria-disabled="true">
-              {content}
-            </span>
-          )}
+          <Link
+            href={item.href}
+            className={`${styles.navItem} ${active ? styles.navItemActive : ""}`}
+            aria-current={active ? "page" : undefined}
+            onClick={() => setMenuOpen(false)}
+          >
+            {content}
+          </Link>
         </li>
       );
     });

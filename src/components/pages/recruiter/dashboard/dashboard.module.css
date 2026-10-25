@@ -147,11 +147,6 @@ a.navItemActive:hover {
   color: var(--brand-surface);
 }
 
-.navDisabled {
-  cursor: default;
-  opacity: 0.72;
-}
-
 .navIcon {
   flex-shrink: 0;
   width: 18px;
@@ -884,6 +879,14 @@ a.navItemActive:hover {
   color: var(--brand-muted);
 }
 
+.interviewMeta,
+.memberMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 .columnEmpty {
   padding: 8px 0 4px;
   font-size: 12.5px;
@@ -1034,6 +1037,13 @@ a.navItemActive:hover {
   align-items: center;
   gap: 10px;
   margin-top: 2px;
+}
+
+.savedNote {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: normal;
+  color: var(--brand-mint);
 }
 
 .actionsSpacer {
@@ -1284,6 +1294,16 @@ a.navItemActive:hover {
   .queueActions {
     width: 100%;
     justify-content: flex-end;
+  }
+
+  .interviewMeta,
+  .memberMeta {
+    flex-basis: 100%;
+    justify-content: flex-end;
+  }
+
+  .interviewDetail {
+    white-space: normal;
   }
 
   .match {
