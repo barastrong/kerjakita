@@ -1,7 +1,5 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { ApplyPage } from "@/components/pages/apply/apply-page";
-import { SESSION_COOKIE } from "@/lib/data/session";
+import { DataStep } from "@/components/pages/apply/apply-flow";
+import { requireApplySession } from "@/components/pages/apply/apply-auth";
 
 export const instant = false;
 
@@ -11,11 +9,7 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const session = (await cookies()).get(SESSION_COOKIE);
+  await requireApplySession(slug, 0);
 
-  if (!session) {
-    redirect(`/masuk?next=${encodeURIComponent(`/lamar/${slug}`)}`);
-  }
-
-  return <ApplyPage slug={slug} />;
+  return <DataStep />;
 }

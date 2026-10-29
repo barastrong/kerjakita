@@ -144,43 +144,6 @@
   line-height: 22px;
 }
 
-.roles {
-  display: flex;
-  gap: 4px;
-  width: 100%;
-  padding: 4px;
-  border-radius: 12px;
-  background: var(--brand-bg);
-}
-
-.role {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  padding: 0 12px;
-  border: 1px solid transparent;
-  border-radius: 9px;
-  background: transparent;
-  color: var(--brand-muted);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 18px;
-}
-
-.roleActive {
-  border-color: var(--brand-line);
-  background: var(--brand-surface);
-  color: var(--brand-ink);
-  font-weight: 700;
-}
-
-.role:focus-visible {
-  outline: 2px solid var(--brand-accent);
-  outline-offset: 1px;
-}
-
 .field {
   display: flex;
   flex-direction: column;

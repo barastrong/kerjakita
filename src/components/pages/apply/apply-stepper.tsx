@@ -14,7 +14,10 @@ export function ApplyStepper({ steps }: ApplyStepperProps) {
       <nav className={styles.stepper} aria-label="Langkah lamaran">
         {steps.map((step, index) => (
           <Fragment key={step.label}>
-            <div className={styles.step}>
+            <div
+              className={styles.step}
+              aria-current={step.status === "current" ? "step" : undefined}
+            >
               <span
                 className={`${styles.circle} ${styles[step.status]}`}
                 aria-hidden="true"

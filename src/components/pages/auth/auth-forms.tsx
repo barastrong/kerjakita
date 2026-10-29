@@ -29,32 +29,6 @@ function FormIntro({
   );
 }
 
-function RoleSwitch({ name }: { name: string }) {
-  const [role, setRole] = useState<"seeker" | "recruiter">("seeker");
-
-  return (
-    <div className={styles.roles} role="group" aria-label="Pilih peran">
-      <button
-        type="button"
-        aria-pressed={role === "seeker"}
-        className={`${styles.role} ${role === "seeker" ? styles.roleActive : ""}`}
-        onClick={() => setRole("seeker")}
-      >
-        Pencari kerja
-      </button>
-      <button
-        type="button"
-        aria-pressed={role === "recruiter"}
-        className={`${styles.role} ${role === "recruiter" ? styles.roleActive : ""}`}
-        onClick={() => setRole("recruiter")}
-      >
-        Perekrut
-      </button>
-      <input type="hidden" name={name} value={role} />
-    </div>
-  );
-}
-
 type FieldProps = {
   id: string;
   label: string;
@@ -250,7 +224,7 @@ export function LoginForm() {
         document.cookie =
           "kerjakita-session=1; path=/; max-age=86400; samesite=lax";
         const next = new URLSearchParams(window.location.search).get("next");
-        router.push(next?.startsWith("/") ? next : "/");
+        router.push(next?.startsWith("/") ? next : "/pelamar/ringkasan");
         router.refresh();
       }}
     >
@@ -258,7 +232,6 @@ export function LoginForm() {
         title="Selamat datang kembali"
         description="Masuk untuk melanjutkan."
       />
-      <RoleSwitch name="role" />
       <Field
         id="login-email"
         label="Email"
@@ -291,9 +264,6 @@ export function LoginForm() {
       <p className={styles.formFooter}>
         Belum punya akun? <Link href="/daftar">Daftar</Link>
       </p>
-      <p className={styles.formFooter}>
-        Mengelola rekrutmen? <Link href="/masuk">Masuk sebagai perekrut</Link>
-      </p>
     </form>
   );
 }
@@ -320,7 +290,6 @@ export function RegisterForm() {
         title="Buat akun Kerjakita"
         description="Gratis, tidak sampai dua menit."
       />
-      <RoleSwitch name="role" />
       <Field
         id="register-name"
         label="Nama lengkap"
@@ -413,7 +382,7 @@ export function OtpForm() {
       onSubmit={(event) => {
         event.preventDefault();
         document.cookie = `${SESSION_COOKIE}=1; path=/; max-age=86400; samesite=lax`;
-        router.push("/");
+        router.push("/pelamar/ringkasan");
         router.refresh();
       }}
     >

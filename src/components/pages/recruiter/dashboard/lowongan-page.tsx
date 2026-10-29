@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ButtonLink } from "@/components/ui/button/button";
 import { SearchIcon } from "@/components/ui/icons/icons";
 import { PageHeading } from "./dashboard-parts";
 import styles from "./dashboard.module.css";
@@ -118,19 +117,7 @@ export function LowonganPage() {
 
   return (
     <div className={styles.mainInner}>
-      <PageHeading
-        title="Lowongan"
-        subtitle="6 aktif, 2 draf, 3 ditutup."
-        action={
-          <ButtonLink
-            href="/perekrut/pasang-lowongan"
-            size="sm"
-            className={styles.headerCta}
-          >
-            Pasang lowongan baru
-          </ButtonLink>
-        }
-      />
+      <PageHeading title="Lowongan" subtitle="6 aktif, 2 draf, 3 ditutup." />
 
       <div className={styles.toolbar}>
         <div className={styles.tabs} role="group" aria-label="Filter status lowongan">
@@ -178,9 +165,7 @@ export function LowonganPage() {
                 <th scope="col">Pelamar</th>
                 <th scope="col">Dilihat</th>
                 <th scope="col">Ditutup</th>
-                <th scope="col">
-                  <span className={styles.srOnly}>Kelola</span>
-                </th>
+                <th scope="col" aria-label="Kelola" />
               </tr>
             </thead>
             <tbody>

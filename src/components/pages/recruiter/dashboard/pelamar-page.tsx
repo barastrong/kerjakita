@@ -1,166 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { SearchIcon } from "@/components/ui/icons/icons";
 import { Avatar, PageHeading } from "./dashboard-parts";
+import { COLUMNS, candidateHref, type Candidate } from "./pelamar-data";
 import styles from "./dashboard.module.css";
-
-type Candidate = {
-  name: string;
-  initials: string;
-  color: string;
-  years: string;
-  location: string;
-  match: number;
-  time: string;
-};
-
-type Column = {
-  title: string;
-  total: number;
-  candidates: Candidate[];
-};
-
-const COLUMNS: Column[] = [
-  {
-    title: "Baru",
-    total: 12,
-    candidates: [
-      {
-        name: "Rani Ayu P.",
-        initials: "RA",
-        color: "#3d3bf3",
-        years: "4 tahun",
-        location: "Surabaya",
-        match: 92,
-        time: "Hari ini",
-      },
-      {
-        name: "Dimas Pratama",
-        initials: "DP",
-        color: "#0b7a62",
-        years: "6 tahun",
-        location: "Jakarta",
-        match: 89,
-        time: "Hari ini",
-      },
-      {
-        name: "Salsa Nuraini",
-        initials: "SN",
-        color: "#7c3aed",
-        years: "5 tahun",
-        location: "Remote",
-        match: 85,
-        time: "Kemarin",
-      },
-    ],
-  },
-  {
-    title: "Ditinjau",
-    total: 8,
-    candidates: [
-      {
-        name: "Bagas Wicaksono",
-        initials: "BW",
-        color: "#c2410c",
-        years: "3 tahun",
-        location: "Bandung",
-        match: 81,
-        time: "2 hari lalu",
-      },
-      {
-        name: "Intan Maharani",
-        initials: "IM",
-        color: "#0f766e",
-        years: "4 tahun",
-        location: "Jakarta",
-        match: 79,
-        time: "3 hari lalu",
-      },
-    ],
-  },
-  {
-    title: "Wawancara",
-    total: 5,
-    candidates: [
-      {
-        name: "Fajar Nugroho",
-        initials: "FN",
-        color: "#4338ca",
-        years: "5 tahun",
-        location: "Jakarta",
-        match: 88,
-        time: "Hari ini 10.00",
-      },
-      {
-        name: "Maya Kusuma",
-        initials: "MK",
-        color: "#b45309",
-        years: "4 tahun",
-        location: "Remote",
-        match: 87,
-        time: "Hari ini 14.00",
-      },
-      {
-        name: "Yoga Pranata",
-        initials: "YP",
-        color: "#be185d",
-        years: "6 tahun",
-        location: "Surabaya",
-        match: 84,
-        time: "Kamis 15 Okt",
-      },
-    ],
-  },
-  {
-    title: "Penawaran",
-    total: 2,
-    candidates: [
-      {
-        name: "Citra Lestari",
-        initials: "CL",
-        color: "#15803d",
-        years: "7 tahun",
-        location: "Jakarta",
-        match: 94,
-        time: "Penawaran dikirim",
-      },
-      {
-        name: "Hendra Saputra",
-        initials: "HS",
-        color: "#1d4ed8",
-        years: "5 tahun",
-        location: "Remote",
-        match: 90,
-        time: "Menunggu jawaban",
-      },
-    ],
-  },
-  {
-    title: "Ditolak",
-    total: 14,
-    candidates: [
-      {
-        name: "Tio Ardian",
-        initials: "TA",
-        color: "#334155",
-        years: "2 tahun",
-        location: "Medan",
-        match: 62,
-        time: "Tidak sesuai",
-      },
-      {
-        name: "Wulan Sari",
-        initials: "WS",
-        color: "#7c3aed",
-        years: "1 tahun",
-        location: "Bali",
-        match: 58,
-        time: "Tidak sesuai",
-      },
-    ],
-  },
-];
 
 export function PelamarPage() {
   const [query, setQuery] = useState("");
@@ -230,7 +75,11 @@ export function PelamarPage() {
               </div>
 
               {candidates.map((candidate) => (
-                <article key={candidate.name} className={styles.candidateCard}>
+                <Link
+                  key={candidate.name}
+                  href={candidateHref(candidate)}
+                  className={styles.candidateCard}
+                >
                   <div className={styles.candidateTop}>
                     <Avatar
                       initials={candidate.initials}
@@ -250,7 +99,7 @@ export function PelamarPage() {
                     </span>
                     <span className={styles.timeNote}>{candidate.time}</span>
                   </div>
-                </article>
+                </Link>
               ))}
 
               {candidates.length === 0 ? (

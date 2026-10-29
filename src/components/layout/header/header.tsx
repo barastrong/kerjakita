@@ -114,7 +114,7 @@ export function Header({ user }: HeaderProps) {
       <div className={styles.actions}>
         {user ? (
           <Link
-            href="/perekrut/ringkasan"
+            href="/pelamar/ringkasan"
             className={styles.dashboardLink}
           >
             Dashboard
@@ -181,7 +181,7 @@ export function Header({ user }: HeaderProps) {
                   aria-label="Menu akun"
                 >
                   <Link
-                    href="/perekrut/ringkasan"
+                    href="/pelamar/ringkasan"
                     role="menuitem"
                     className={`${styles.accountMenuItem} ${styles.accountMenuDashboard}`}
                     onClick={() => setAccountOpen(false)}

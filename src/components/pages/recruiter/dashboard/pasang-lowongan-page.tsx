@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, ButtonLink } from "@/components/ui/button/button";
+import type { CompanyVerification } from "@/lib/data/company";
 import { PageHeading } from "./dashboard-parts";
 import styles from "./dashboard.module.css";
 
@@ -25,7 +26,11 @@ function salaryLabel(minimum: string, maximum: string) {
   return "Gaji belum diisi";
 }
 
-export function PasangLowonganPage() {
+export function PasangLowonganPage({
+  verification,
+}: {
+  verification: CompanyVerification;
+}) {
   const router = useRouter();
   const [title, setTitle] = useState("Senior Product Designer");
   const [location, setLocation] = useState("Jakarta Selatan");
@@ -59,11 +64,40 @@ export function PasangLowonganPage() {
         subtitle="Isi detailnya. Pratinjau tampil di sisi kanan."
       />
 
+      {verification !== "verified" ? (
+        <section
+          className={`${styles.card} ${styles.sideCard}`}
+          aria-labelledby="verification-title"
+        >
+          <h2 id="verification-title" className={styles.cardTitle}>
+            {verification === "pending"
+              ? "Verifikasi sedang ditinjau"
+              : "Verifikasi perusahaan dulu"}
+          </h2>
+          <p className={styles.cardText}>
+            {verification === "pending"
+              ? "Admin sedang memeriksa data perusahaan. Kamu bisa menyimpan draf, tapi belum bisa menerbitkan lowongan."
+              : "Ajukan data perusahaan di halaman profil. Setelah terverifikasi, lowongan bisa diterbitkan."}
+          </p>
+          <div className={styles.formActions}>
+            <ButtonLink
+              href="/perekrut/profil-perusahaan"
+              variant="outline"
+            >
+              {verification === "pending"
+                ? "Lihat status verifikasi"
+                : "Verifikasi perusahaan"}
+            </ButtonLink>
+          </div>
+        </section>
+      ) : null}
+
       <div className={styles.formGrid}>
         <form
           className={styles.formCard}
           onSubmit={(event) => {
             event.preventDefault();
+            if (verification !== "verified") return;
             router.push("/perekrut/lowongan");
           }}
         >
@@ -214,7 +248,9 @@ export function PasangLowonganPage() {
             >
               Simpan draf
             </Button>
-            <Button type="submit">Terbitkan lowongan</Button>
+            <Button type="submit" disabled={verification !== "verified"}>
+              Terbitkan lowongan
+            </Button>
           </div>
         </form>
 
