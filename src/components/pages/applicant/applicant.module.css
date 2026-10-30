@@ -613,10 +613,240 @@
   color: #a16207;
 }
 
-.matchText {
-  font-size: 13.5px;
+.detailLink {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-accent);
+}
+
+.detailLink:hover {
+  text-decoration: underline;
+}
+
+.detailHero {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--brand-surface);
+}
+
+.detailHeroInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.detailRole {
+  margin-top: 8px;
+  font-size: 24px;
   font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--brand-ink);
+}
+
+.detailCompany {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #5b6482;
+}
+
+.detailMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.detailPill {
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #f1f3f9;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #5b6482;
+}
+
+.detailMatch {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.detailMatchValue {
+  display: block;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.1;
   color: #0b7a62;
+}
+
+.detailMatchLabel {
+  font-size: 11.5px;
+  line-height: 1.3;
+  color: #7e88a8;
+}
+
+.detailFacts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 0 0;
+}
+
+.detailFact {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.detailFact dt {
+  color: #7e88a8;
+}
+
+.detailFact dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+  color: var(--brand-ink);
+}
+
+.detailNote {
+  margin-top: 12px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #5b6482;
+}
+
+.timeline {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timelineItem {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  padding-bottom: 20px;
+}
+
+.timelineItem:last-child {
+  padding-bottom: 0;
+}
+
+.timelineItem:not(:last-child)::before {
+  position: absolute;
+  top: 18px;
+  bottom: 0;
+  left: 7px;
+  width: 2px;
+  background: #e6eaf3;
+  content: "";
+}
+
+.timelineDot {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  border: 2px solid #cfd5e3;
+  border-radius: 50%;
+  background: var(--brand-surface);
+}
+
+.timelineDotDone {
+  border-color: #0f7a5a;
+  background: #0f7a5a;
+}
+
+.timelineDotCurrent {
+  border-color: var(--brand-accent);
+  background: var(--brand-accent);
+  box-shadow: 0 0 0 4px #ececff;
+}
+
+.timelineDotUpcoming {
+  border-color: #cfd5e3;
+  background: var(--brand-surface);
+}
+
+.timelineDotStopped {
+  border-color: #f3b4b0;
+  background: #fde2e1;
+}
+
+.timelineBody {
+  min-width: 0;
+}
+
+.timelineLabel {
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--brand-ink);
+}
+
+.timelineDate {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #7e88a8;
+}
+
+.timelineNote {
+  margin-top: 4px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #5b6482;
+}
+
+.fileList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fileRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fileIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #ececff;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: var(--brand-accent);
+}
+
+.fileName {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--brand-ink);
+}
+
+.fileMeta {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #7e88a8;
 }
 
 .savedLayout {
@@ -898,7 +1128,8 @@
 
 .tipsCard,
 .prepCard,
-.historyCard {
+.historyCard,
+.detailCard {
   padding: 24px;
   border-radius: 16px;
   background: var(--brand-surface);
@@ -906,7 +1137,8 @@
 
 .tipsTitle,
 .prepTitle,
-.historyTitle {
+.historyTitle,
+.detailTitle {
   font-size: 19px;
   font-weight: 800;
   line-height: 1.25;
@@ -1079,6 +1311,10 @@
 
 .profileActions {
   flex-shrink: 0;
+}
+
+.profileSaved {
+  margin-top: 8px;
 }
 
 .skillCard,
@@ -1336,6 +1572,93 @@
   box-shadow: 0 0 0 3px rgba(61, 59, 243, 0.12);
 }
 
+.formSection {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #eef1f7;
+}
+
+.formSectionTitle {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--brand-ink);
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+.textarea {
+  min-height: 88px;
+  padding: 10px 12px;
+  border: 1px solid #dfe4ee;
+  border-radius: 8px;
+  background: var(--brand-surface);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--brand-ink);
+  outline: none;
+  resize: vertical;
+}
+
+.textarea:focus {
+  border-color: var(--brand-accent);
+  box-shadow: 0 0 0 3px rgba(61, 59, 243, 0.12);
+}
+
+.inlineAdd {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.inlineAdd input {
+  flex: 1;
+}
+
+.skillRemove {
+  margin-left: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 13px;
+  line-height: 1;
+  color: inherit;
+  opacity: 0.7;
+}
+
+.skillRemove:hover {
+  opacity: 1;
+}
+
+.editItem {
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f8f9fc;
+}
+
+.editItem .formGrid {
+  margin-top: 0;
+}
+
+.removeItemButton,
+.addItemButton {
+  margin-top: 12px;
+}
+
+.formActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #eef1f7;
+}
+
 .toggleRow {
   display: flex;
   align-items: center;
@@ -1569,11 +1892,6 @@
     text-align: right;
   }
 
-  .table td:nth-child(5) {
-    grid-column: 1 / -1;
-    text-align: right;
-  }
-
   .table td:nth-child(2)::before {
     color: #7e88a8;
     content: "Dikirim ";
@@ -1586,14 +1904,16 @@
     font-size: 12px;
   }
 
-  .table td:nth-child(4)::before {
-    color: #7e88a8;
-    content: "Kecocokan ";
-    font-size: 12px;
+  .table td[colspan="4"] {
+    grid-column: 1 / -1;
   }
 
-  .table td[colspan="5"] {
-    grid-column: 1 / -1;
+  .detailHero {
+    flex-wrap: wrap;
+  }
+
+  .detailMatch {
+    text-align: left;
   }
 
   .weekCard {

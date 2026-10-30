@@ -1,114 +1,17 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { ButtonLink } from "@/components/ui/button/button";
 import { SearchIcon } from "@/components/ui/icons/icons";
 import dashboardStyles from "@/components/pages/recruiter/dashboard/dashboard.module.css";
-import { ApplicantHeading, CompanyMark } from "./applicant-parts";
+import {
+  ApplicantHeading,
+  ApplicationStatus,
+  CompanyMark,
+} from "./applicant-parts";
+import { APPLICATIONS } from "./lamaran-data";
 import styles from "./applicant.module.css";
-
-type Tone = "muted" | "mint" | "yellow";
-type Group = "Aktif" | "Wawancara" | "Selesai";
-
-type Application = {
-  id: string;
-  initials: string;
-  color: string;
-  role: string;
-  company: string;
-  sent: string;
-  status: string;
-  tone: Tone;
-  group: Group;
-  match: number;
-};
-
-const APPLICATIONS: Application[] = [
-  {
-    id: "tokoloka",
-    initials: "TL",
-    color: "#3d3bf3",
-    role: "Senior Product Designer",
-    company: "Tokoloka",
-    sent: "Hari ini",
-    status: "Terkirim",
-    tone: "muted",
-    group: "Aktif",
-    match: 92,
-  },
-  {
-    id: "bayarpintar",
-    initials: "BP",
-    color: "#0b7a62",
-    role: "Product Designer, Pembayaran",
-    company: "Bayarpintar",
-    sent: "11 Okt",
-    status: "Terkirim",
-    tone: "muted",
-    group: "Aktif",
-    match: 86,
-  },
-  {
-    id: "kopi-sinar",
-    initials: "KS",
-    color: "#b45309",
-    role: "UI/UX Designer",
-    company: "Kopi Sinar Digital",
-    sent: "9 Okt",
-    status: "Dilihat perekrut",
-    tone: "mint",
-    group: "Aktif",
-    match: 81,
-  },
-  {
-    id: "nawasehat",
-    initials: "NW",
-    color: "#6d28d9",
-    role: "Lead Designer",
-    company: "Nawasehat",
-    sent: "5 Okt",
-    status: "Wawancara 15 Okt",
-    tone: "yellow",
-    group: "Wawancara",
-    match: 74,
-  },
-  {
-    id: "garuda-retail",
-    initials: "GR",
-    color: "#1f2937",
-    role: "Product Designer (Kontrak)",
-    company: "Garuda Retail Tech",
-    sent: "28 Sep",
-    status: "Tidak lanjut",
-    tone: "muted",
-    group: "Selesai",
-    match: 71,
-  },
-  {
-    id: "dagangin",
-    initials: "DG",
-    color: "#0b7a62",
-    role: "UX Designer",
-    company: "Dagangin",
-    sent: "20 Sep",
-    status: "Tidak lanjut",
-    tone: "muted",
-    group: "Selesai",
-    match: 68,
-  },
-  {
-    id: "pintarta",
-    initials: "PT",
-    color: "#6d28d9",
-    role: "Design Researcher",
-    company: "Pintarta",
-    sent: "14 Sep",
-    status: "Ditarik",
-    tone: "muted",
-    group: "Selesai",
-    match: 66,
-  },
-];
 
 const TABS = [
   { label: "Semua", count: 7 },
@@ -116,12 +19,6 @@ const TABS = [
   { label: "Wawancara", count: 1 },
   { label: "Selesai", count: 3 },
 ];
-
-function toneClass(tone: Tone) {
-  if (tone === "mint") return styles.statusBadgeMint;
-  if (tone === "yellow") return styles.statusBadgeYellow;
-  return styles.statusBadgeMuted;
-}
 
 export function LamaranPage() {
   const [activeTab, setActiveTab] = useState("Semua");
@@ -192,7 +89,7 @@ export function LamaranPage() {
                 <th>Posisi</th>
                 <th>Dikirim</th>
                 <th>Status</th>
-                <th>Kecocokan</th>
+                <th>Detail</th>
               </tr>
             </thead>
             <tbody>
@@ -217,18 +114,19 @@ export function LamaranPage() {
                   </td>
                   <td className={styles.tableDate}>{application.sent}</td>
                   <td>
-                    <span
-                      className={`${styles.statusBadge} ${toneClass(
-                        application.tone,
-                      )}`}
-                    >
-                      {application.status}
-                    </span>
+                    <ApplicationStatus
+                      status={application.status}
+                      tone={application.tone}
+                    />
                   </td>
                   <td>
-                    <span className={styles.matchText}>
-                      {application.match}%
-                    </span>
+                    <Link
+                      href={`/pelamar/lamaran/${application.id}`}
+                      className={styles.detailLink}
+                      aria-label={`Lihat detail ${application.role} di ${application.company}`}
+                    >
+                      Lihat detail
+                    </Link>
                   </td>
                 </tr>
               ))}
