@@ -2,7 +2,7 @@
 
 import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "@/components/ui/button/button";
-import { CheckIcon } from "@/components/ui/icons/icons";
+import { CheckIcon, ChevronDownIcon } from "@/components/ui/icons/icons";
 import dashboardStyles from "@/components/pages/recruiter/dashboard/dashboard.module.css";
 import { ApplicantHeading, CompanyMark } from "./applicant-parts";
 import styles from "./applicant.module.css";
@@ -16,6 +16,14 @@ type Experience = {
   description: string;
 };
 
+type Education = {
+  level: string;
+  degree: string;
+  institution: string;
+  period: string;
+  gpa: string;
+};
+
 type Profile = {
   name: string;
   role: string;
@@ -23,14 +31,11 @@ type Profile = {
   years: string;
   availability: string;
   workPreference: string;
+  accountUrl: string;
+  portfolioUrl: string;
   skills: string[];
   experiences: Experience[];
-  education: {
-    degree: string;
-    university: string;
-    period: string;
-    gpa: string;
-  };
+  educations: Education[];
   cvs: { name: string; meta: string }[];
 };
 
@@ -41,6 +46,8 @@ const INITIAL_PROFILE: Profile = {
   years: "4 tahun",
   availability: "Terbuka untuk pekerjaan",
   workPreference: "Hybrid atau remote",
+  accountUrl: "",
+  portfolioUrl: "",
   skills: [
     "Figma · Ahli",
     "Design system · Kuat",
@@ -67,25 +74,20 @@ const INITIAL_PROFILE: Profile = {
       description: "Mengerjakan identitas digital dan situs untuk klien UMKM.",
     },
   ],
-  education: {
-    degree: "S1 Desain Komunikasi Visual",
-    university: "Universitas Surya Nusa",
-    period: "2018 – 2022",
-    gpa: "3,64",
-  },
+  educations: [
+    {
+      level: "S1",
+      degree: "Desain Komunikasi Visual",
+      institution: "Universitas Surya Nusa",
+      period: "2018 – 2022",
+      gpa: "3,64",
+    },
+  ],
   cvs: [
     { name: "CV_Rani_2026.pdf", meta: "Utama · 3 Okt 2026" },
     { name: "CV_Rani_Desain.pdf", meta: "12 Agu 2026" },
   ],
 };
-
-const SUGGESTIONS = [
-  { label: "Foto profil", done: true },
-  { label: "CV diunggah", done: true },
-  { label: "Minimal 5 keahlian", done: true },
-  { label: "Tambahkan sertifikat", done: false },
-  { label: "Tautan LinkedIn", done: false },
-];
 
 export function ProfilPage() {
   const [profile, setProfile] = useState(INITIAL_PROFILE);
@@ -93,11 +95,22 @@ export function ProfilPage() {
   const [editing, setEditing] = useState(false);
   const [saved, setSaved] = useState(false);
   const [newSkill, setNewSkill] = useState("");
+  const [openExperience, setOpenExperience] = useState<number | null>(0);
+  const [openEducation, setOpenEducation] = useState<number | null>(0);
   const cvInputRef = useRef<HTMLInputElement>(null);
+  const suggestions = [
+    { label: "Foto profil", done: true },
+    { label: "CV diunggah", done: profile.cvs.length > 0 },
+    { label: "Minimal 5 keahlian", done: profile.skills.length >= 5 },
+    { label: "Tambahkan sertifikat", done: false },
+    { label: "Tautan LinkedIn", done: Boolean(profile.accountUrl) },
+  ];
 
   function startEdit() {
     setDraft(profile);
     setSaved(false);
+    setOpenExperience(0);
+    setOpenEducation(0);
     setEditing(true);
   }
 
@@ -158,6 +171,7 @@ export function ProfilPage() {
         },
       ],
     }));
+    setOpenExperience(draft.experiences.length);
   }
 
   function removeExperience(index: number) {
@@ -167,13 +181,51 @@ export function ProfilPage() {
         (_, experienceIndex) => experienceIndex !== index,
       ),
     }));
+    setOpenExperience((current) => {
+      if (current === null) return null;
+      if (current === index) return index > 0 ? index - 1 : 0;
+      return current > index ? current - 1 : current;
+    });
   }
 
-  function updateEducation(patch: Partial<Profile["education"]>) {
+  function updateEducation(index: number, patch: Partial<Education>) {
     setDraft((current) => ({
       ...current,
-      education: { ...current.education, ...patch },
+      educations: current.educations.map((education, educationIndex) =>
+        educationIndex === index ? { ...education, ...patch } : education,
+      ),
     }));
+  }
+
+  function addEducation() {
+    setDraft((current) => ({
+      ...current,
+      educations: [
+        ...current.educations,
+        {
+          level: "SMA/SMK",
+          degree: "",
+          institution: "",
+          period: "",
+          gpa: "",
+        },
+      ],
+    }));
+    setOpenEducation(draft.educations.length);
+  }
+
+  function removeEducation(index: number) {
+    setDraft((current) => ({
+      ...current,
+      educations: current.educations.filter(
+        (_, educationIndex) => educationIndex !== index,
+      ),
+    }));
+    setOpenEducation((current) => {
+      if (current === null) return null;
+      if (current === index) return index > 0 ? index - 1 : 0;
+      return current > index ? current - 1 : current;
+    });
   }
 
   function handleCvUpload(event: ChangeEvent<HTMLInputElement>) {
@@ -290,6 +342,44 @@ export function ProfilPage() {
                       }
                     />
                   </label>
+                  <label
+                    className={`${styles.field} ${styles.fieldWide}`}
+                  >
+                    <span className={styles.label}>URL akun (LinkedIn)</span>
+                    <input
+                      className={styles.input}
+                      type="url"
+                      pattern="https?://.+"
+                      title="Gunakan URL lengkap yang diawali http:// atau https://"
+                      placeholder="https://linkedin.com/in/nama-kamu"
+                      value={draft.accountUrl}
+                      onChange={(event) =>
+                        setDraft((current) => ({
+                          ...current,
+                          accountUrl: event.target.value,
+                        }))
+                      }
+                    />
+                  </label>
+                  <label
+                    className={`${styles.field} ${styles.fieldWide}`}
+                  >
+                    <span className={styles.label}>URL portofolio</span>
+                    <input
+                      className={styles.input}
+                      type="url"
+                      pattern="https?://.+"
+                      title="Gunakan URL lengkap yang diawali http:// atau https://"
+                      placeholder="https://karya-kamu.com"
+                      value={draft.portfolioUrl}
+                      onChange={(event) =>
+                        setDraft((current) => ({
+                          ...current,
+                          portfolioUrl: event.target.value,
+                        }))
+                      }
+                    />
+                  </label>
                 </div>
 
                 <div className={styles.formSection}>
@@ -336,74 +426,100 @@ export function ProfilPage() {
                 <div className={styles.formSection}>
                   <h3 className={styles.formSectionTitle}>Pengalaman</h3>
                   {draft.experiences.map((experience, index) => (
-                    <div
+                    <details
                       key={`experience-${index}`}
                       className={styles.editItem}
+                      open={openExperience === index}
+                      onToggle={(event) => {
+                        const isOpen = event.currentTarget.open;
+                        setOpenExperience((current) =>
+                          isOpen
+                            ? index
+                            : current === index
+                              ? null
+                              : current,
+                        );
+                      }}
                     >
-                      <div className={styles.formGrid}>
-                        <label className={styles.field}>
-                          <span className={styles.label}>Posisi</span>
-                          <input
-                            className={styles.input}
-                            value={experience.role}
-                            onChange={(event) =>
-                              updateExperience(index, {
-                                role: event.target.value,
-                              })
-                            }
-                          />
-                        </label>
-                        <label className={styles.field}>
-                          <span className={styles.label}>Perusahaan</span>
-                          <input
-                            className={styles.input}
-                            value={experience.company}
-                            onChange={(event) =>
-                              updateExperience(index, {
-                                company: event.target.value,
-                              })
-                            }
-                          />
-                        </label>
-                        <label className={styles.field}>
-                          <span className={styles.label}>Periode</span>
-                          <input
-                            className={styles.input}
-                            value={experience.period}
-                            onChange={(event) =>
-                              updateExperience(index, {
-                                period: event.target.value,
-                              })
-                            }
-                          />
-                        </label>
-                        <label
-                          className={`${styles.field} ${styles.fieldWide}`}
-                        >
-                          <span className={styles.label}>Deskripsi</span>
-                          <textarea
-                            className={styles.textarea}
-                            value={experience.description}
-                            onChange={(event) =>
-                              updateExperience(index, {
-                                description: event.target.value,
-                              })
-                            }
-                          />
-                        </label>
+                      <summary className={styles.editItemSummary}>
+                        <span className={styles.editItemTitle}>
+                          Pengalaman {index + 1}
+                        </span>
+                        <span className={styles.editItemMeta}>
+                          {experience.role || "Belum diisi"}
+                          {experience.company ? ` · ${experience.company}` : ""}
+                        </span>
+                        <ChevronDownIcon
+                          size={16}
+                          className={styles.editItemChevron}
+                        />
+                      </summary>
+                      <div className={styles.editItemBody}>
+                        <div className={styles.formGrid}>
+                          <label className={styles.field}>
+                            <span className={styles.label}>Posisi</span>
+                            <input
+                              className={styles.input}
+                              value={experience.role}
+                              onChange={(event) =>
+                                updateExperience(index, {
+                                  role: event.target.value,
+                                })
+                              }
+                            />
+                          </label>
+                          <label className={styles.field}>
+                            <span className={styles.label}>Perusahaan</span>
+                            <input
+                              className={styles.input}
+                              value={experience.company}
+                              onChange={(event) =>
+                                updateExperience(index, {
+                                  company: event.target.value,
+                                })
+                              }
+                            />
+                          </label>
+                          <label className={styles.field}>
+                            <span className={styles.label}>Periode</span>
+                            <input
+                              className={styles.input}
+                              value={experience.period}
+                              onChange={(event) =>
+                                updateExperience(index, {
+                                  period: event.target.value,
+                                })
+                              }
+                            />
+                          </label>
+                          <label
+                            className={`${styles.field} ${styles.fieldWide}`}
+                          >
+                            <span className={styles.label}>Deskripsi</span>
+                            <textarea
+                              className={styles.textarea}
+                              value={experience.description}
+                              onChange={(event) =>
+                                updateExperience(index, {
+                                  description: event.target.value,
+                                })
+                              }
+                            />
+                          </label>
+                        </div>
+                        {draft.experiences.length > 1 ? (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className={styles.removeItemButton}
+                            onClick={() => removeExperience(index)}
+                          >
+                            Hapus pengalaman
+                          </Button>
+                        ) : null}
                       </div>
-                      {draft.experiences.length > 1 ? (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          className={styles.removeItemButton}
-                          onClick={() => removeExperience(index)}
-                        >
-                          Hapus pengalaman
-                        </Button>
-                      ) : null}
-                    </div>
+                    </details>
                   ))}
                   <Button
                     type="button"
@@ -418,48 +534,137 @@ export function ProfilPage() {
 
                 <div className={styles.formSection}>
                   <h3 className={styles.formSectionTitle}>Pendidikan</h3>
-                  <div className={styles.formGrid}>
-                    <label className={styles.field}>
-                      <span className={styles.label}>Jenjang dan jurusan</span>
-                      <input
-                        className={styles.input}
-                        value={draft.education.degree}
-                        onChange={(event) =>
-                          updateEducation({ degree: event.target.value })
-                        }
-                      />
-                    </label>
-                    <label className={styles.field}>
-                      <span className={styles.label}>Universitas</span>
-                      <input
-                        className={styles.input}
-                        value={draft.education.university}
-                        onChange={(event) =>
-                          updateEducation({ university: event.target.value })
-                        }
-                      />
-                    </label>
-                    <label className={styles.field}>
-                      <span className={styles.label}>Periode</span>
-                      <input
-                        className={styles.input}
-                        value={draft.education.period}
-                        onChange={(event) =>
-                          updateEducation({ period: event.target.value })
-                        }
-                      />
-                    </label>
-                    <label className={styles.field}>
-                      <span className={styles.label}>IPK</span>
-                      <input
-                        className={styles.input}
-                        value={draft.education.gpa}
-                        onChange={(event) =>
-                          updateEducation({ gpa: event.target.value })
-                        }
-                      />
-                    </label>
-                  </div>
+                  {draft.educations.map((education, index) => (
+                    <details
+                      key={`education-${index}`}
+                      className={styles.editItem}
+                      open={openEducation === index}
+                      onToggle={(event) => {
+                        const isOpen = event.currentTarget.open;
+                        setOpenEducation((current) =>
+                          isOpen
+                            ? index
+                            : current === index
+                              ? null
+                              : current,
+                        );
+                      }}
+                    >
+                      <summary className={styles.editItemSummary}>
+                        <span className={styles.editItemTitle}>
+                          Pendidikan {index + 1}
+                        </span>
+                        <span className={styles.editItemMeta}>
+                          {education.level}{" "}
+                          {education.degree || "Belum diisi"}
+                          {education.institution
+                            ? ` · ${education.institution}`
+                            : ""}
+                        </span>
+                        <ChevronDownIcon
+                          size={16}
+                          className={styles.editItemChevron}
+                        />
+                      </summary>
+                      <div className={styles.editItemBody}>
+                        <div className={styles.formGrid}>
+                          <label className={styles.field}>
+                            <span className={styles.label}>Jenjang</span>
+                            <select
+                              className={styles.input}
+                              value={education.level}
+                              onChange={(event) =>
+                                updateEducation(index, {
+                                  level: event.target.value,
+                                })
+                              }
+                            >
+                              <option>SMA/SMK</option>
+                              <option>D3</option>
+                              <option>S1</option>
+                              <option>S2</option>
+                              <option>S3</option>
+                              <option>Kursus / Bootcamp</option>
+                              <option>Sertifikasi</option>
+                              <option>Lainnya</option>
+                            </select>
+                          </label>
+                          <label className={styles.field}>
+                            <span className={styles.label}>
+                              Jurusan / program
+                            </span>
+                            <input
+                              className={styles.input}
+                              value={education.degree}
+                              onChange={(event) =>
+                                updateEducation(index, {
+                                  degree: event.target.value,
+                                })
+                              }
+                            />
+                          </label>
+                          <label className={styles.field}>
+                            <span className={styles.label}>Institusi</span>
+                            <input
+                              className={styles.input}
+                              value={education.institution}
+                              onChange={(event) =>
+                                updateEducation(index, {
+                                  institution: event.target.value,
+                                })
+                              }
+                            />
+                          </label>
+                          <label className={styles.field}>
+                            <span className={styles.label}>Periode</span>
+                            <input
+                              className={styles.input}
+                              value={education.period}
+                              onChange={(event) =>
+                                updateEducation(index, {
+                                  period: event.target.value,
+                                })
+                              }
+                            />
+                          </label>
+                          <label className={styles.field}>
+                            <span className={styles.label}>
+                              IPK / nilai (opsional)
+                            </span>
+                            <input
+                              className={styles.input}
+                              value={education.gpa}
+                              onChange={(event) =>
+                                updateEducation(index, {
+                                  gpa: event.target.value,
+                                })
+                              }
+                            />
+                          </label>
+                        </div>
+                        {draft.educations.length > 1 ? (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className={styles.removeItemButton}
+                            onClick={() => removeEducation(index)}
+                          >
+                            Hapus pendidikan
+                          </Button>
+                        ) : null}
+                      </div>
+                    </details>
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className={styles.addItemButton}
+                    onClick={addEducation}
+                  >
+                    Tambah pendidikan
+                  </Button>
                 </div>
 
                 <div className={styles.formActions}>
@@ -496,6 +701,32 @@ export function ProfilPage() {
                       {profile.workPreference}
                     </span>
                   </div>
+                  {profile.accountUrl ? (
+                    <p className={styles.profileLinkRow}>
+                      Tautan akun:{" "}
+                      <a
+                        className={styles.profileLink}
+                        href={profile.accountUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {profile.accountUrl}
+                      </a>
+                    </p>
+                  ) : null}
+                  {profile.portfolioUrl ? (
+                    <p className={styles.profileLinkRow}>
+                      Portofolio:{" "}
+                      <a
+                        className={styles.profileLink}
+                        href={profile.portfolioUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {profile.portfolioUrl}
+                      </a>
+                    </p>
+                  ) : null}
                   {saved ? (
                     <p
                       className={`${styles.saveNote} ${styles.profileSaved}`}
@@ -569,13 +800,23 @@ export function ProfilPage() {
 
               <section className={styles.educationCard}>
                 <h2 className={styles.cardTitle}>Pendidikan</h2>
-                <p className={styles.eduTitle}>
-                  {profile.education.degree} ·{" "}
-                  {profile.education.university}
-                </p>
-                <p className={styles.eduMeta}>
-                  {profile.education.period} · IPK {profile.education.gpa}
-                </p>
+                <div className={styles.educationList}>
+                  {profile.educations.map((education, index) => (
+                    <div
+                      key={`${education.institution}-${index}`}
+                      className={styles.educationRow}
+                    >
+                      <p className={styles.eduTitle}>
+                        {education.level} {education.degree} ·{" "}
+                        {education.institution}
+                      </p>
+                      <p className={styles.eduMeta}>
+                        {education.period}
+                        {education.gpa ? ` · IPK ${education.gpa}` : ""}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </section>
             </>
           )}
@@ -585,7 +826,7 @@ export function ProfilPage() {
           <section className={styles.sideCard}>
             <h2 className={styles.sideTitle}>Saran untuk naik ke 90%</h2>
             <div className={styles.suggestionList}>
-              {SUGGESTIONS.map((suggestion) => (
+              {suggestions.map((suggestion) => (
                 <div key={suggestion.label} className={styles.suggestionItem}>
                   <span
                     className={`${styles.checkCircle} ${

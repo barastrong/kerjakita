@@ -7,6 +7,8 @@ import {
   COMPANY_VERIFICATION_COOKIE,
   type CompanyVerification,
 } from "@/lib/data/company";
+import { companyDirectory } from "@/lib/data/company-directory";
+import { getCompany } from "@/lib/data/companies";
 import { PageHeading } from "./dashboard-parts";
 import styles from "./dashboard.module.css";
 
@@ -51,6 +53,25 @@ export function ProfilPerusahaanPage({
   verification: CompanyVerification;
 }) {
   const [verification, setVerification] = useState(initialVerification);
+  const [companyName, setCompanyName] = useState(COMPANY.name);
+  const [industry, setIndustry] = useState(COMPANY.industry);
+  const [size, setSize] = useState(COMPANY.size);
+  const [office, setOffice] = useState(COMPANY.office);
+  const [about, setAbout] = useState(COMPANY.about);
+
+  function updateCompanyName(value: string) {
+    setCompanyName(value);
+    const match = companyDirectory.find(
+      (company) => company.name.toLowerCase() === value.trim().toLowerCase(),
+    );
+    if (!match) return;
+
+    const detail = getCompany(match.slug);
+    setIndustry(detail?.industry ?? match.industry);
+    setSize(detail?.employees ?? "");
+    setOffice(detail?.locations ?? "");
+    setAbout(detail?.about ?? "");
+  }
 
   const statusLabel =
     verification === "verified"
@@ -79,7 +100,7 @@ export function ProfilPerusahaanPage({
     <div className={styles.mainInner}>
       <PageHeading
         title="Profil perusahaan"
-        subtitle="Perubahan di sini tampil di halaman publik Tokoloka."
+        subtitle={`Perubahan di sini tampil di halaman publik ${companyName || "perusahaan"}.`}
       />
 
       <div className={styles.contentGrid}>
@@ -98,8 +119,20 @@ export function ProfilPerusahaanPage({
                 <input
                   id="company-name"
                   className={styles.input}
-                  defaultValue={COMPANY.name}
+                  value={companyName}
+                  onChange={(event) => updateCompanyName(event.target.value)}
+                  list="company-options"
+                  autoComplete="off"
+                  aria-describedby="company-name-hint"
                 />
+                <datalist id="company-options">
+                  {companyDirectory.map((company) => (
+                    <option key={company.slug} value={company.name} />
+                  ))}
+                </datalist>
+                <span id="company-name-hint" className={styles.cardText}>
+                  Pilih perusahaan terdaftar atau ketik nama baru.
+                </span>
               </div>
               <div className={styles.field}>
                 <label className={styles.label} htmlFor="company-industry">
@@ -108,7 +141,8 @@ export function ProfilPerusahaanPage({
                 <input
                   id="company-industry"
                   className={styles.input}
-                  defaultValue={COMPANY.industry}
+                  value={industry}
+                  onChange={(event) => setIndustry(event.target.value)}
                 />
               </div>
               <div className={styles.field}>
@@ -118,7 +152,8 @@ export function ProfilPerusahaanPage({
                 <input
                   id="company-size"
                   className={styles.input}
-                  defaultValue={COMPANY.size}
+                  value={size}
+                  onChange={(event) => setSize(event.target.value)}
                 />
               </div>
               <div className={styles.field}>
@@ -128,7 +163,8 @@ export function ProfilPerusahaanPage({
                 <input
                   id="company-office"
                   className={styles.input}
-                  defaultValue={COMPANY.office}
+                  value={office}
+                  onChange={(event) => setOffice(event.target.value)}
                 />
               </div>
             </div>
@@ -140,7 +176,8 @@ export function ProfilPerusahaanPage({
               <textarea
                 id="company-about"
                 className={`${styles.textarea} ${styles.aboutInput}`}
-                defaultValue={COMPANY.about}
+                value={about}
+                onChange={(event) => setAbout(event.target.value)}
               />
             </div>
           </form>
@@ -268,7 +305,9 @@ export function ProfilPerusahaanPage({
             <h2 className={styles.cardTitle}>Pratinjau halaman publik</h2>
             <div className={styles.publicBanner}>
               <span className={styles.publicLogo}>TL</span>
-              <span className={styles.publicName}>Tokoloka</span>
+              <span className={styles.publicName}>
+                {companyName || "Nama perusahaan"}
+              </span>
             </div>
             <div className={styles.publicTabs}>
               <span className={styles.publicTabActive}>Ringkasan</span>
