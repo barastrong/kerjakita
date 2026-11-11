@@ -403,9 +403,10 @@ Pakai alias di komponen. Token `--brand-*` hanya boleh dipakai di `globals.css`.
 
 ### 10.7 Courses
 
-- Catalog memakai rows dengan durasi, level, skill, dan linked jobs.
+- Catalog memakai grid kartu dengan cover warna, kategori, judul, durasi, level, provider, skill, dan harga.
+- Kartu kursus adalah unit mandiri: 3 kolom desktop, 2 kolom tablet, 1 kolom mobile.
 - Course detail: curriculum, outcome, dan lowongan terkait.
-- Jangan memakai tiga kartu kursus seragam.
+- Jangan mengubah katalog menjadi baris data padat.
 
 ### 10.8 Auth
 

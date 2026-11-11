@@ -28,9 +28,6 @@ export function RecruiterPage() {
             <ButtonLink href="/masuk" size="lg">
               Pasang lowongan
             </ButtonLink>
-            <ButtonLink href="/masuk" variant="outline" size="lg">
-              Jadwalkan demo
-            </ButtonLink>
           </div>
         </section>
       </main>

@@ -44,9 +44,25 @@
 }
 
 .hero {
+  position: relative;
+  isolation: isolate;
   padding-block: var(--space-24);
-  background: var(--color-text);
+  background-color: var(--color-text);
   color: var(--color-surface);
+}
+
+.heroImage {
+  object-fit: cover;
+  object-position: center 42%;
+  z-index: -2;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(17, 17, 17, 0.74);
 }
 
 .heroInner {
@@ -128,9 +144,9 @@
 
 .exampleTag {
   flex-shrink: 0;
-  padding: 2px var(--space-2);
+  padding: var(--space-1) var(--space-2);
   border: 1px solid var(--color-line);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-xs);
   font-size: var(--text-xs);
   font-weight: 600;
   line-height: var(--leading-xs);
@@ -365,8 +381,8 @@
   width: 40px;
   height: 40px;
   border-radius: var(--radius-md);
-  background: var(--color-accent-soft);
-  color: var(--color-accent);
+  background: var(--color-canvas);
+  color: var(--color-text);
 }
 
 .featureTitle {
@@ -407,9 +423,9 @@
 
 .pipelineTag {
   flex-shrink: 0;
-  padding: 2px var(--space-2);
+  padding: var(--space-1) var(--space-2);
   border: 1px solid var(--color-line-dark);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-xs);
   font-size: var(--text-xs);
   font-weight: 600;
   line-height: var(--leading-xs);
@@ -547,17 +563,6 @@
   color: var(--color-surface);
 }
 
-.planBadge {
-  padding: 2px var(--space-2);
-  border-radius: var(--radius-pill);
-  background: var(--color-accent);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  line-height: var(--leading-xs);
-  white-space: nowrap;
-  color: var(--color-surface);
-}
-
 .planPrice {
   margin-top: var(--space-4);
   font-family: var(--font-display);
@@ -608,11 +613,11 @@
 .planCheck {
   flex-shrink: 0;
   margin-top: 2px;
-  color: var(--color-accent);
+  color: var(--color-text-muted);
 }
 
 .planFeatured .planCheck {
-  color: var(--color-surface);
+  color: rgba(255, 255, 255, 0.64);
 }
 
 .planButton {

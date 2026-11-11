@@ -4,7 +4,7 @@ import { CourseList } from "@/components/pages/courses/course-list";
 export const metadata: Metadata = {
   title: "Kursus | Kerjakita",
   description:
-    "Kursus singkat dan jalur belajar yang disesuaikan dengan lowongan yang kamu incar.",
+    "Kursus singkat dan jalur belajar dari keahlian yang diminta lowongan Product Designer.",
 };
 
 export const instant = false;

@@ -47,7 +47,7 @@ const PLANS = [
 
 export function RecruiterPricing() {
   return (
-    <section className={styles.pricing}>
+    <section id="harga" className={styles.pricing}>
       <div className={styles.pricingHead}>
         <div>
           <p className={styles.kicker}>Harga</p>
@@ -69,9 +69,6 @@ export function RecruiterPricing() {
           >
             <div className={styles.planHead}>
               <h3 className={styles.planName}>{plan.name}</h3>
-              {plan.highlighted && (
-                <span className={styles.planBadge}>Paling populer</span>
-              )}
             </div>
             <p className={styles.planPrice}>{plan.price}</p>
             <p className={styles.planNote}>{plan.note}</p>

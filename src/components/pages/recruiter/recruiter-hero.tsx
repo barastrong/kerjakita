@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { ButtonLink } from "@/components/ui/button";
 import styles from "./recruiter-page.module.css";
 
@@ -37,6 +39,14 @@ const PIPELINE = [
 export function RecruiterHero() {
   return (
     <section className={styles.hero}>
+      <Image
+        src="/images/perekrut-hero.jpg"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className={styles.heroImage}
+      />
       <div className={styles.heroInner}>
         <div className={styles.heroContent}>
           <p className={`${styles.kicker} ${styles.kickerOnDark}`}>
@@ -53,8 +63,8 @@ export function RecruiterHero() {
             <ButtonLink href="/masuk" size="lg">
               Pasang lowongan
             </ButtonLink>
-            <ButtonLink href="/masuk" variant="outline" size="lg">
-              Jadwalkan demo
+            <ButtonLink href="#harga" variant="outline" size="lg">
+              Lihat harga
             </ButtonLink>
           </div>
           <p className={styles.heroNote}>

@@ -4,11 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ButtonLink } from "@/components/ui/button/button";
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  GlobeIcon,
-} from "@/components/ui/icons/icons";
 import { SESSION_COOKIE } from "@/lib/data/session";
 import styles from "./header.module.css";
 
@@ -19,13 +14,6 @@ const NAV_ITEMS = [
   { label: "Cek gaji", href: "/gaji" },
   { label: "Kursus", href: "/kursus" },
 ] as const;
-
-const LANGUAGES = [
-  { code: "id", label: "Bahasa Indonesia", short: "ID" },
-  { code: "en", label: "English", short: "EN" },
-] as const;
-
-type LanguageCode = (typeof LANGUAGES)[number]["code"];
 
 type HeaderProps = {
   user?: { name: string } | null;
@@ -44,14 +32,11 @@ export function Header({ user }: HeaderProps) {
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
-  const [language, setLanguage] = useState<LanguageCode>("id");
-  const [languageOpen, setLanguageOpen] = useState(false);
   const accountRef = useRef<HTMLDivElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
-  const languageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!drawerOpen && !accountOpen && !languageOpen) return;
+    if (!drawerOpen && !accountOpen) return;
 
     function handlePointerDown(event: MouseEvent) {
       const target = event.target as Node;
@@ -63,17 +48,12 @@ export function Header({ user }: HeaderProps) {
       if (accountOpen && !accountRef.current?.contains(target)) {
         setAccountOpen(false);
       }
-
-      if (languageOpen && !languageRef.current?.contains(target)) {
-        setLanguageOpen(false);
-      }
     }
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setDrawerOpen(false);
         setAccountOpen(false);
-        setLanguageOpen(false);
       }
     }
 
@@ -84,7 +64,7 @@ export function Header({ user }: HeaderProps) {
       document.removeEventListener("mousedown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [drawerOpen, accountOpen, languageOpen]);
+  }, [drawerOpen, accountOpen]);
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -104,9 +84,6 @@ export function Header({ user }: HeaderProps) {
     setDrawerOpen(false);
     router.refresh();
   }
-
-  const currentLanguage =
-    LANGUAGES.find((item) => item.code === language) ?? LANGUAGES[0];
 
   return (
     <header className={`nav ${styles.header}`}>
@@ -146,7 +123,6 @@ export function Header({ user }: HeaderProps) {
               aria-expanded={accountOpen}
               onClick={() => {
                 setDrawerOpen(false);
-                setLanguageOpen(false);
                 setAccountOpen((open) => !open);
               }}
             >
@@ -200,63 +176,6 @@ export function Header({ user }: HeaderProps) {
           </>
         )}
 
-        <div className={styles.langWrap} ref={languageRef}>
-          <button
-            type="button"
-            className={`${styles.language} ${
-              languageOpen ? styles.languageOpen : ""
-            }`}
-            aria-label={`Ubah bahasa, ${currentLanguage.label}`}
-            aria-haspopup="listbox"
-            aria-expanded={languageOpen}
-            onClick={() => {
-              setAccountOpen(false);
-              setDrawerOpen(false);
-              setLanguageOpen((open) => !open);
-            }}
-          >
-            <GlobeIcon size={16} />
-            <span>{currentLanguage.short}</span>
-            <ChevronDownIcon size={14} />
-          </button>
-
-          {languageOpen && (
-            <div
-              className={styles.languageMenu}
-              role="listbox"
-              aria-label="Pilih bahasa"
-            >
-              {LANGUAGES.map((item) => {
-                const active = item.code === language;
-
-                return (
-                  <button
-                    key={item.code}
-                    type="button"
-                    role="option"
-                    aria-selected={active}
-                    className={`${styles.languageOption} ${
-                      active ? styles.languageOptionActive : ""
-                    }`}
-                    onClick={() => {
-                      setLanguage(item.code);
-                      setLanguageOpen(false);
-                    }}
-                  >
-                    <span className={styles.optionText}>
-                      <span className={styles.optionTitle}>{item.label}</span>
-                      <span className={styles.optionCode}>{item.short}</span>
-                    </span>
-                    {active && (
-                      <CheckIcon size={16} className={styles.optionCheck} />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
         <button
           type="button"
           className={styles.menuButton}
@@ -265,7 +184,6 @@ export function Header({ user }: HeaderProps) {
           aria-controls="mobile-nav"
           onClick={() => {
             setAccountOpen(false);
-            setLanguageOpen(false);
             setDrawerOpen((open) => !open);
           }}
         >
