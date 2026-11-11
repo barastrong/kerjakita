@@ -8,13 +8,18 @@ const STATS = [
 
 export function RecruiterStats() {
   return (
-    <ul className={styles.stats} aria-label="Statistik Kerjakita">
-      {STATS.map((stat) => (
-        <li key={stat.value} className={styles.stat}>
-          <span className={styles.statValue}>{stat.value}</span>
-          <span className={styles.statLabel}>{stat.label}</span>
-        </li>
-      ))}
-    </ul>
+    <section className={styles.statsBand} aria-label="Statistik Kerjakita">
+      <ul className={styles.stats}>
+        {STATS.map((stat) => (
+          <li key={stat.value} className={styles.stat}>
+            <span className={styles.statValue}>{stat.value}</span>
+            <span className={styles.statLabel}>{stat.label}</span>
+          </li>
+        ))}
+      </ul>
+      <p className={styles.statsNote}>
+        Angka pada halaman ini adalah contoh data prototipe.
+      </p>
+    </section>
   );
 }

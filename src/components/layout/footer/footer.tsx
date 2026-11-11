@@ -5,7 +5,7 @@ export function Footer() {
     <footer className={styles.footer}>
       <span className={styles.brand}>kerjakita</span>
       <span className={styles.text}>
-        © 2026 Kerjakita · Syarat · Privasi · Bantuan
+        © 2026 Kerjakita
       </span>
     </footer>
   );

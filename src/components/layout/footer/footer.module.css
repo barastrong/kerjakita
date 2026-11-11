@@ -1,32 +1,30 @@
 .footer {
   display: flex;
   align-items: center;
-  padding: 32px 40px;
-  background: var(--brand-ink);
+  padding: var(--space-8) var(--page-gutter);
+  background: var(--color-text);
 }
 
 .brand {
   font-family: var(--font-bricolage), Arial, sans-serif;
-  font-size: 20px;
+  font-size: var(--text-wordmark);
   font-weight: 800;
-  line-height: normal;
-  color: var(--brand-surface);
+  line-height: var(--leading-wordmark);
+  color: var(--color-surface);
 }
 
 .text {
   margin-left: auto;
-  font-size: 13px;
-  line-height: normal;
-  color: var(--brand-line);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  color: var(--color-line);
 }
 
 @media (max-width: 720px) {
   .footer {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
-    padding-left: 20px;
-    padding-right: 20px;
+    gap: var(--space-2);
   }
 
   .text {

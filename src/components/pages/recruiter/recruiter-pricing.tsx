@@ -47,12 +47,16 @@ const PLANS = [
 
 export function RecruiterPricing() {
   return (
-    <section className={styles.section}>
-      <div className={styles.sectionHeading}>
-        <h2 className={styles.sectionTitle}>Harga pasang lowongan</h2>
-        <p className={styles.sectionSubtitle}>
-          Bayar per lowongan, tanpa kontrak berlangganan.
-        </p>
+    <section className={styles.pricing}>
+      <div className={styles.pricingHead}>
+        <div>
+          <p className={styles.kicker}>Harga</p>
+          <h2 className={styles.sectionTitle}>Harga pasang lowongan</h2>
+          <p className={styles.sectionText}>
+            Bayar per lowongan, tanpa kontrak berlangganan.
+          </p>
+        </div>
+        <p className={styles.pricingNote}>Harga contoh prototipe.</p>
       </div>
 
       <ul className={styles.pricingGrid}>
@@ -60,7 +64,7 @@ export function RecruiterPricing() {
           <li
             key={plan.name}
             className={`${styles.plan} ${
-              plan.highlighted ? styles.planHighlighted : ""
+              plan.highlighted ? styles.planFeatured : ""
             }`}
           >
             <div className={styles.planHead}>
@@ -82,7 +86,7 @@ export function RecruiterPricing() {
             <ButtonLink
               href={plan.href}
               variant={plan.variant}
-              size="sm"
+              size="md"
               className={styles.planButton}
             >
               {plan.cta}

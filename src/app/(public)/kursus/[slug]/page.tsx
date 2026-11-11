@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CourseDetail } from "@/components/pages/courses/course-detail";
-import { getCourse } from "@/lib/data/courses";
+import { courseDetails, getCourse } from "@/lib/data/courses";
 
 export const instant = false;
 
 export function generateStaticParams() {
-  return [{ slug: "design-system-dari-nol" }];
+  return courseDetails.map((course) => ({ slug: course.slug }));
 }
 
 export async function generateMetadata({
@@ -33,10 +33,11 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const course = getCourse(slug);
 
-  if (!getCourse(slug)) {
+  if (!course) {
     notFound();
   }
 
-  return <CourseDetail />;
+  return <CourseDetail course={course} />;
 }

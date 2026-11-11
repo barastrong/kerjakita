@@ -7,10 +7,10 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@/components/ui/icons/icons";
-import { designSystemCourse as course } from "@/lib/data/courses";
+import type { CourseDetailData } from "@/lib/data/courses";
 import styles from "./course-pages.module.css";
 
-export function CourseDetail() {
+export function CourseDetail({ course }: { course: CourseDetailData }) {
   return (
     <div className={styles.page}>
       <div className={styles.breadcrumbWrap}>
@@ -67,7 +67,7 @@ export function CourseDetail() {
           <div className={styles.instructorInline}>
             <span
               className={styles.instructorMini}
-              style={{ backgroundColor: "#0b7a62" }}
+              style={{ backgroundColor: course.color }}
               aria-hidden="true"
             >
               {course.instructor.initials}
@@ -83,7 +83,7 @@ export function CourseDetail() {
           id="preview"
           className={styles.preview}
           role="img"
-          aria-label="Pratinjau video kursus Design System dari Nol"
+          aria-label={`Pratinjau video kursus ${course.title}`}
         >
           <span className={styles.previewPlay} aria-hidden="true" />
           <span className={styles.previewCaption}>
@@ -192,7 +192,7 @@ export function CourseDetail() {
             <div className={styles.instructorCard}>
               <span
                 className={styles.instructorLogo}
-                style={{ backgroundColor: "#0b7a62" }}
+                style={{ backgroundColor: course.color }}
                 aria-hidden="true"
               >
                 {course.instructor.initials}
@@ -238,8 +238,12 @@ export function CourseDetail() {
           <Card className={styles.priceCard}>
             <div className={styles.priceRow}>
               <span className={styles.price}>{course.price}</span>
-              <span className={styles.oldPrice}>{course.oldPrice}</span>
-              <span className={styles.discount}>{course.discount}</span>
+              {course.oldPrice ? (
+                <span className={styles.oldPrice}>{course.oldPrice}</span>
+              ) : null}
+              {course.discount ? (
+                <span className={styles.discount}>{course.discount}</span>
+              ) : null}
             </div>
 
             <div className={styles.ctaStack}>
