@@ -16,9 +16,11 @@ type Props = {
     tipe?: string;
     lokasi?: string;
     pengalaman?: string;
+    pendidikan?: string;
     kecamatan?: string;
     diperbarui?: string;
     perusahaan?: string;
+    urutkan?: string;
   }>;
 };
 
@@ -32,9 +34,11 @@ export default async function Page({ searchParams }: Props) {
       tipe={params.tipe}
       lokasi={params.lokasi}
       pengalaman={params.pengalaman}
+      pendidikan={params.pendidikan}
       kecamatan={params.kecamatan}
       diperbarui={params.diperbarui}
       perusahaan={params.perusahaan}
+      urutkan={params.urutkan}
     />
   );
 }

@@ -1,167 +1,76 @@
-"use client";
-
-import { useState } from "react";
-import { Avatar } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import {
-  BookmarkIcon,
-  ChevronDownIcon,
-  LockIcon,
-} from "@/components/ui/icons/icons";
+import { ButtonLink } from "@/components/ui/button";
+import { SearchIcon } from "@/components/ui/icons/icons";
 import type { Job } from "@/lib/data/jobs";
-import { JobDetail } from "./job-detail";
+import { JobCard } from "./job-card";
+import { SearchSort } from "./search-sort";
 import styles from "./search-page.module.css";
 
-const PAGES = ["1", "2", "3", "…", "42"];
+type SortOption = {
+  value: string;
+  label: string;
+};
+
+function EmptyState() {
+  return (
+    <div className={styles.empty}>
+      <span className={styles.emptyIcon}>
+        <SearchIcon size={22} />
+      </span>
+      <h3 className={styles.emptyTitle}>Tidak ada lowongan yang cocok</h3>
+      <p className={styles.emptyText}>
+        Coba hapus satu filter atau gunakan kata kunci yang lebih umum.
+      </p>
+      <ButtonLink href="/lowongan" variant="outline" size="sm">
+        Cari semua lowongan
+      </ButtonLink>
+    </div>
+  );
+}
 
 export function SearchResults({
   jobs,
   query,
   companyName,
+  sort,
+  sortLabel,
+  sortOptions,
 }: {
   jobs: Job[];
   query: string;
   companyName?: string;
+  sort: string;
+  sortLabel: string;
+  sortOptions: SortOption[];
 }) {
-  const [selectedSlug, setSelectedSlug] = useState(jobs[0]?.slug);
-  const selectedJob =
-    jobs.find((job) => job.slug === selectedSlug) ?? jobs[0];
-
-  function select(slug: string) {
-    setSelectedSlug(slug);
-  }
-
   return (
-    <>
-      <section className={styles.results}>
-        <div className={styles.resultsHead}>
-          <div>
-            <h1 className={styles.resultsTitle}>
-              {jobs.length} lowongan{companyName ? ` di ${companyName}` : ""}
-              {query ? ` ${query}` : ""}
-            </h1>
-            <p className={styles.resultsSubtitle}>
-              Diurutkan dari yang paling relevan
-            </p>
+    <section className={styles.results} aria-labelledby="results-title">
+      <div className={styles.resultsHead}>
+        <div className={styles.resultsHeading}>
+          <div className={styles.resultsTitleRow}>
+            <h2 id="results-title" className={styles.resultsTitle}>
+              {jobs.length} lowongan
+              {companyName ? ` di ${companyName}` : ""}
+              {query ? ` untuk “${query}”` : ""}
+            </h2>
+            <span className={styles.resultsDataTag}>Contoh data</span>
           </div>
-          <button type="button" className={styles.sortButton}>
-            <span>
-              Urutkan: <strong>Paling relevan</strong>
-            </span>
-            <ChevronDownIcon size={14} />
-          </button>
-        </div>
-
-        <div className={styles.guestBanner}>
-          <LockIcon size={18} />
-          <p>Masuk untuk melihat skor kecocokan dan menyimpan lowongan.</p>
-          <a href="/masuk">Masuk</a>
-        </div>
-
-        {jobs.length === 0 ? (
-          <p className={styles.emptyResults}>
-            Tidak ada lowongan yang cocok. Coba kata kunci atau lokasi lain.
+          <p className={styles.resultsSubtitle}>
+            Diurutkan: {sortLabel}. Angka diambil dari daftar lowongan contoh
+            di halaman ini.
           </p>
-        ) : (
-          <div className={styles.resultList}>
-            {jobs.map((job) => (
-              <article
-                key={job.slug}
-                className={`${styles.resultCard} ${
-                  job.slug === selectedJob?.slug ? styles.resultCardActive : ""
-                }`}
-                role="button"
-                tabIndex={0}
-                aria-pressed={job.slug === selectedJob?.slug}
-                onClick={() => select(job.slug)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    select(job.slug);
-                  }
-                }}
-              >
-                <div className={styles.resultTop}>
-                  <Avatar
-                    initials={job.initials}
-                    color={job.color}
-                    size="xl"
-                    label={job.company}
-                  />
-                  <div className={styles.resultTitles}>
-                    <h2>{job.title}</h2>
-                    <p>
-                      {job.company} · {job.location}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    className={styles.resultBookmark}
-                    aria-label={`Simpan lowongan ${job.title}`}
-                    onClick={(event) => event.stopPropagation()}
-                  >
-                    <BookmarkIcon size={20} />
-                  </button>
-                </div>
+        </div>
+        <SearchSort value={sort} options={sortOptions} />
+      </div>
 
-                <div className={styles.resultSalary}>
-                  <span>{job.salaryShort}</span>
-                  <Badge>{job.workStyle}</Badge>
-                  <Badge>{job.employmentType}</Badge>
-                </div>
-
-                <div className={styles.resultSkills}>
-                  {(job.searchSkills ?? job.skills).map((skill) => (
-                    <Badge key={skill} tone="mint">
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
-
-                <div
-                  className={`${styles.resultFooter} ${
-                    job.quickApply ? "" : styles.resultFooterCompact
-                  }`}
-                >
-                  <span>Diposting {job.posted}</span>
-                  {job.quickApply && <Badge tone="gold">Lamar cepat</Badge>}
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-
-        <nav className={styles.pagination} aria-label="Halaman hasil pencarian">
-          <button
-            type="button"
-            className={styles.pageButton}
-            aria-label="Sebelumnya"
-          >
-            ‹
-          </button>
-          {PAGES.map((page) => (
-            <button
-              key={page}
-              type="button"
-              className={`${styles.pageButton} ${
-                page === "1" ? styles.pageButtonActive : ""
-              } ${page === "…" ? styles.pageEllipsis : ""}`}
-              aria-current={page === "1" ? "page" : undefined}
-            >
-              {page}
-            </button>
+      {jobs.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <div className={styles.resultList}>
+          {jobs.map((job) => (
+            <JobCard key={job.slug} job={job} />
           ))}
-          <button
-            type="button"
-            className={styles.pageButton}
-            aria-label="Berikutnya"
-          >
-            ›
-          </button>
-        </nav>
-      </section>
-
-      {selectedJob && <JobDetail job={selectedJob} />}
-    </>
+        </div>
+      )}
+    </section>
   );
 }

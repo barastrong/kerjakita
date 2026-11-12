@@ -1,16 +1,27 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { BellIcon, PinIcon, SearchIcon } from "@/components/ui/icons/icons";
+import { PinIcon, SearchIcon } from "@/components/ui/icons/icons";
 import styles from "./search-page.module.css";
 
 type Filters = {
   tipe: string[];
   lokasi: string[];
   pengalaman: string[];
+  pendidikan: string[];
   kecamatan: string[];
   diperbarui: string;
   perusahaan: string;
+  urutkan: string;
 };
+
+type ActiveKey =
+  | "tipe"
+  | "lokasi"
+  | "pengalaman"
+  | "pendidikan"
+  | "kecamatan"
+  | "diperbarui"
+  | "perusahaan";
 
 export function SearchBar({
   q,
@@ -18,139 +29,193 @@ export function SearchBar({
   tipe,
   lokasi,
   pengalaman,
+  pendidikan,
   kecamatan,
   diperbarui,
   perusahaan,
-}: { q: string; location: string } & Filters) {
-  function href({
-    tipe: nextTipe = tipe,
-    lokasi: nextLokasi = lokasi,
-    pengalaman: nextPengalaman = pengalaman,
-    kecamatan: nextKecamatan = kecamatan,
-    diperbarui: nextDiperbarui = diperbarui,
-    perusahaan: nextPerusahaan = perusahaan,
-  }: Partial<Filters> = {}) {
+  urutkan,
+  companyName,
+}: {
+  q: string;
+  location: string;
+  companyName?: string;
+} & Filters) {
+  function href(overrides: Partial<Filters> = {}) {
+    const next = {
+      tipe,
+      lokasi,
+      pengalaman,
+      pendidikan,
+      kecamatan,
+      diperbarui,
+      perusahaan,
+      urutkan,
+      ...overrides,
+    };
     const params = new URLSearchParams();
+
     if (q) params.set("q", q);
     if (location) params.set("location", location);
-    if (nextTipe.length > 0) params.set("tipe", nextTipe.join(","));
-    if (nextLokasi.length > 0) params.set("lokasi", nextLokasi.join(","));
-    if (nextPengalaman.length > 0) {
-      params.set("pengalaman", nextPengalaman.join(","));
+    if (next.tipe.length > 0) params.set("tipe", next.tipe.join(","));
+    if (next.lokasi.length > 0) params.set("lokasi", next.lokasi.join(","));
+    if (next.pengalaman.length > 0) {
+      params.set("pengalaman", next.pengalaman.join(","));
     }
-    if (nextKecamatan.length > 0) {
-      params.set("kecamatan", nextKecamatan.join(","));
+    if (next.pendidikan.length > 0) {
+      params.set("pendidikan", next.pendidikan.join(","));
     }
-    if (nextDiperbarui) params.set("diperbarui", nextDiperbarui);
-    if (nextPerusahaan) params.set("perusahaan", nextPerusahaan);
+    if (next.kecamatan.length > 0) {
+      params.set("kecamatan", next.kecamatan.join(","));
+    }
+    if (next.diperbarui) params.set("diperbarui", next.diperbarui);
+    if (next.perusahaan) params.set("perusahaan", next.perusahaan);
+    if (next.urutkan !== "relevan") params.set("urutkan", next.urutkan);
 
     return `/lowongan${params.toString() ? `?${params.toString()}` : ""}`;
   }
 
-  function removeHref(key: keyof Filters, value: string) {
+  function removeHref(key: ActiveKey, value: string) {
     if (key === "diperbarui") return href({ diperbarui: "" });
+    if (key === "perusahaan") return href({ perusahaan: "" });
 
-    const next = {
-      tipe: key === "tipe" ? tipe.filter((item) => item !== value) : tipe,
-      lokasi:
-        key === "lokasi" ? lokasi.filter((item) => item !== value) : lokasi,
-      pengalaman:
-        key === "pengalaman"
-          ? pengalaman.filter((item) => item !== value)
-          : pengalaman,
-      kecamatan:
-        key === "kecamatan"
-          ? kecamatan.filter((item) => item !== value)
-          : kecamatan,
-    };
+    const next: Partial<Filters> = {};
+    if (key === "tipe") next.tipe = tipe.filter((item) => item !== value);
+    if (key === "lokasi") next.lokasi = lokasi.filter((item) => item !== value);
+    if (key === "pengalaman") {
+      next.pengalaman = pengalaman.filter((item) => item !== value);
+    }
+    if (key === "pendidikan") {
+      next.pendidikan = pendidikan.filter((item) => item !== value);
+    }
+    if (key === "kecamatan") {
+      next.kecamatan = kecamatan.filter((item) => item !== value);
+    }
+
     return href(next);
   }
 
-  const activeFilters = [
+  const activeFilters: { key: ActiveKey; value: string }[] = [
     ...tipe.map((value) => ({ key: "tipe" as const, value })),
     ...lokasi.map((value) => ({ key: "lokasi" as const, value })),
     ...pengalaman.map((value) => ({ key: "pengalaman" as const, value })),
+    ...pendidikan.map((value) => ({ key: "pendidikan" as const, value })),
     ...kecamatan.map((value) => ({ key: "kecamatan" as const, value })),
     ...(diperbarui
       ? [{ key: "diperbarui" as const, value: diperbarui }]
+      : []),
+    ...(perusahaan
+      ? [{ key: "perusahaan" as const, value: companyName ?? perusahaan }]
       : []),
   ];
 
   return (
     <section className={styles.searchSection}>
-      <form className={styles.searchRow} role="search" action="/lowongan">
-        <label className={styles.searchField}>
-          <span className={styles.srOnly}>Posisi atau kata kunci</span>
-          <SearchIcon size={18} className={styles.fieldIcon} />
-          <input name="q" defaultValue={q} placeholder="Posisi atau kata kunci" />
-        </label>
-        <label className={`${styles.searchField} ${styles.locationField}`}>
-          <span className={styles.srOnly}>Lokasi</span>
-          <PinIcon size={18} className={styles.fieldIcon} />
-          <input
-            name="location"
-            defaultValue={location}
-            placeholder="Lokasi"
-          />
-        </label>
-        {tipe.length > 0 && (
-          <input type="hidden" name="tipe" value={tipe.join(",")} />
-        )}
-        {lokasi.length > 0 && (
-          <input type="hidden" name="lokasi" value={lokasi.join(",")} />
-        )}
-        {pengalaman.length > 0 && (
-          <input
-            type="hidden"
-            name="pengalaman"
-            value={pengalaman.join(",")}
-          />
-        )}
-        {kecamatan.length > 0 && (
-          <input type="hidden" name="kecamatan" value={kecamatan.join(",")} />
-        )}
-        {diperbarui && (
-          <input type="hidden" name="diperbarui" value={diperbarui} />
-        )}
-        {perusahaan && (
-          <input type="hidden" name="perusahaan" value={perusahaan} />
-        )}
-        <Button type="submit" className={styles.searchButton}>
-          Cari
-        </Button>
-        <button type="button" className={styles.saveButton}>
-          <BellIcon size={18} />
-          Simpan pencarian
-        </button>
-      </form>
+      <div className={styles.searchInner}>
+        <h1 className={styles.srOnly}>Cari lowongan</h1>
 
-      {activeFilters.length > 0 && (
-        <div className={styles.activeFilters}>
-          <span className={styles.activeLabel}>Filter aktif:</span>
-          {activeFilters.map((filter) => (
+        <form
+          className={styles.searchForm}
+          role="search"
+          action="/lowongan"
+          method="get"
+        >
+          <div className={styles.searchRow}>
+            <label className={`${styles.searchField} ${styles.keywordField}`}>
+              <span className={styles.fieldControl}>
+                <SearchIcon size={18} className={styles.fieldIcon} />
+                <input
+                  name="q"
+                  defaultValue={q}
+                  aria-label="Cari posisi atau kata kunci"
+                  placeholder="Cari posisi atau kata kunci"
+                />
+              </span>
+            </label>
+            <label className={`${styles.searchField} ${styles.locationField}`}>
+              <span className={styles.fieldControl}>
+                <PinIcon size={18} className={styles.fieldIcon} />
+                <input
+                  name="location"
+                  defaultValue={location}
+                  aria-label="Lokasi"
+                  placeholder="Kota atau Remote"
+                />
+              </span>
+            </label>
+            <Button type="submit" size="lg" className={styles.searchButton}>
+              Cari lowongan
+            </Button>
+          </div>
+
+          {tipe.length > 0 && (
+            <input type="hidden" name="tipe" value={tipe.join(",")} />
+          )}
+          {lokasi.length > 0 && (
+            <input type="hidden" name="lokasi" value={lokasi.join(",")} />
+          )}
+          {pengalaman.length > 0 && (
+            <input
+              type="hidden"
+              name="pengalaman"
+              value={pengalaman.join(",")}
+            />
+          )}
+          {pendidikan.length > 0 && (
+            <input
+              type="hidden"
+              name="pendidikan"
+              value={pendidikan.join(",")}
+            />
+          )}
+          {kecamatan.length > 0 && (
+            <input
+              type="hidden"
+              name="kecamatan"
+              value={kecamatan.join(",")}
+            />
+          )}
+          {diperbarui && (
+            <input type="hidden" name="diperbarui" value={diperbarui} />
+          )}
+          {perusahaan && (
+            <input type="hidden" name="perusahaan" value={perusahaan} />
+          )}
+          {urutkan !== "relevan" && (
+            <input type="hidden" name="urutkan" value={urutkan} />
+          )}
+        </form>
+
+        {activeFilters.length > 0 && (
+          <div className={styles.activeFilters}>
+            <span className={styles.activeLabel}>Filter aktif:</span>
+            {activeFilters.map((filter) => (
+              <Link
+                key={`${filter.key}-${filter.value}`}
+                href={removeHref(filter.key, filter.value)}
+                className={styles.activeFilter}
+                aria-label={`Hapus filter ${filter.value}`}
+              >
+                {filter.value}
+                <span aria-hidden="true">×</span>
+              </Link>
+            ))}
             <Link
-              key={`${filter.key}-${filter.value}`}
-              href={removeHref(filter.key, filter.value)}
-              className={styles.activeFilter}
+              href={href({
+                tipe: [],
+                lokasi: [],
+                pengalaman: [],
+                pendidikan: [],
+                kecamatan: [],
+                diperbarui: "",
+                perusahaan: "",
+              })}
+              className={styles.clearFilters}
             >
-              {filter.value}
-              <span aria-hidden="true">×</span>
+              Hapus semua
             </Link>
-          ))}
-          <Link
-            href={href({
-              tipe: [],
-              lokasi: [],
-              pengalaman: [],
-              kecamatan: [],
-              diperbarui: "",
-            })}
-            className={styles.clearFilters}
-          >
-            Hapus semua
-          </Link>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </section>
   );
 }

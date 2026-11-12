@@ -393,12 +393,14 @@ Pakai alias di komponen. Token `--brand-*` hanya boleh dipakai di `globals.css`.
 
 ### 10.6 Salary
 
-- Intro singkat, badge “Contoh data” jika data statis.
-- Chart card dengan satu accent dan neutral, bukan pelangi.
+- Hero boleh memakai foto workspace gelap dengan overlay solid; jangan memakai foto orang.
+- Form filter posisi, kota, dan pengalaman memakai GET agar hasil bisa dibagikan.
+- Ringkasan median dan kuartil memakai satu card, bukan card di dalam card.
+- Chart memakai satu accent dan neutral, bukan pelangi.
 - Judul chart harus menyatakan pertanyaan yang dijawab chart itu. Jika satu kalimat lebih jelas, pakai kalimat.
-- Segmen chart minimal 3:1 terhadap segmen sebelahnya.
-- Table peran dengan gaji rendah, median, tinggi.
-- Sertakan sumber dan tanggal data.
+- Segmen chart minimal 3:1 terhadap latar.
+- Table peran dengan gaji rendah, median, tinggi; tandai baris yang dipilih.
+- Sertakan sumber dan tanggal data jika data nyata. Untuk data contoh, label “Contoh data” cukup dan jangan memalsukan tanggal.
 - Jangan menampilkan presisi palsu.
 
 ### 10.7 Courses
