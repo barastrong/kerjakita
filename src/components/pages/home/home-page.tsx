@@ -2,6 +2,8 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import Script from "next/script";
 
+import { RevealSection } from "./reveal-section";
+
 const kitCss = [
   "/assets/system.css",
   "/assets/ui/cards.css",
@@ -34,6 +36,7 @@ function KitAssets() {
       ))}
       <Script src="/assets/system.js" type="module" strategy="afterInteractive" />
       <Script src="/assets/layout/layout.js" type="module" strategy="afterInteractive" />
+      <Script src="/assets/motion/motion.js" type="module" strategy="afterInteractive" />
     </>
   );
 }
@@ -609,50 +612,6 @@ export function HomePage() {
                     <div className="pc-note">Rata-rata balasan tiga hari kerja.</div>
                   </div>
                 </div>
-                <div className="ly-collage__set" aria-hidden="true">
-                  <div className="ly-piece pc-card pc-salary">
-                    <span className="pc-label">Gaji Frontend Engineer</span>
-                    <div className="pc-range">Rp18–24 jt<span>/bulan</span></div>
-                    <div className="pc-chart">
-                      <i style={{ height: "34%" }} />
-                      <i style={{ height: "52%" }} />
-                      <i style={{ height: "68%" }} />
-                      <i style={{ height: "84%" }} />
-                      <i style={{ height: "96%" }} />
-                    </div>
-                    <div className="pc-axis"><span>Pemula</span><span>Senior</span></div>
-                    <div className="pc-row"><span>Rentang pasar</span><b>Rp16–26 jt</b></div>
-                    <div className="pc-row"><span>Median Jakarta</span><b>Rp21 jt</b></div>
-                    <div className="pc-row"><span>Lowongan sejenis</span><b>84</b></div>
-                    <div className="pc-note">Dari 1.240 lowongan mitra.</div>
-                  </div>
-                  <div className="ly-piece pc-card pc-filter">
-                    <span className="pc-label">Filter</span>
-                    <div className="pc-tags">
-                      <span>Jakarta</span>
-                      <span>Hibrida</span>
-                      <span>Frontend</span>
-                    </div>
-                    <div className="pc-row"><span>Gaji minimum</span><b>15 jt</b></div>
-                    <div className="pc-row"><span>Pengalaman</span><b>3+ tahun</b></div>
-                  </div>
-                  <div className="ly-piece pc-card pc-course">
-                    <span className="pc-label">Kursus untuk celah</span>
-                    <b className="pc-title">Pengujian otomatis</b>
-                    <div className="pc-bar"><i style={{ "--k": 0.4 } as CSSProperties} /></div>
-                    <div className="pc-small">2 dari 4 modul</div>
-                    <div className="pc-row"><span>Modul 1</span><b>Selesai</b></div>
-                    <div className="pc-row"><span>Modul 2</span><b>Selesai</b></div>
-                    <div className="pc-row"><span>Modul 3</span><b>12 menit</b></div>
-                    <div className="pc-row"><span>Modul 4</span><b>18 menit</b></div>
-                    <div className="pc-next">
-                      <span className="pc-label">Setelah selesai</span>
-                      <div className="pc-row"><span>Sertifikat</span><b>1 halaman</b></div>
-                      <div className="pc-row"><span>Latihan</span><b>6 soal</b></div>
-                    </div>
-                    <div className="pc-note">Sertifikat setelah selesai.</div>
-                  </div>
-                </div>
               </div>
               <div className="span-3 start-10 hero__cta">
                 <Link className="btn btn--primary" href="/lowongan">
@@ -663,7 +622,7 @@ export function HomePage() {
           </div>
         </section>
 
-        <section className="section" id="cara" aria-labelledby="cara-h">
+        <RevealSection className="section" id="cara" labelledBy="cara-h">
           <div className="wrap">
             <div className="section-head">
               <h2 id="cara-h">
@@ -686,9 +645,9 @@ export function HomePage() {
               </div>
             </div>
           </div>
-        </section>
+        </RevealSection>
 
-        <section className="section g2" id="produk" aria-labelledby="produk-h">
+        <RevealSection className="section g2" id="produk" labelledBy="produk-h">
           <div className="wrap">
             <div className="group">
               <div className="section-head">
@@ -774,9 +733,9 @@ export function HomePage() {
               </div>
             </div>
           </div>
-        </section>
+        </RevealSection>
 
-        <section className="section ground-surface" id="angka" aria-labelledby="angka-h">
+        <RevealSection className="section ground-surface" id="angka" labelledBy="angka-h">
           <div className="wrap">
             <div className="grid">
               <h2 id="angka-h" className="span-5">Angka lowongan di Indonesia.</h2>
@@ -808,9 +767,9 @@ export function HomePage() {
               </div>
             </div>
           </div>
-        </section>
+        </RevealSection>
 
-        <section className="section ground-surface" id="langkah" aria-labelledby="langkah-h">
+        <RevealSection className="section ground-surface" id="langkah" labelledBy="langkah-h">
           <div className="wrap">
             <div className="section-head">
               <h2 id="langkah-h">Tiga langkah menuju lowongan yang cocok.</h2>
@@ -870,14 +829,14 @@ export function HomePage() {
               </article>
             </div>
           </div>
-        </section>
+        </RevealSection>
 
-        <section
+        <RevealSection
           className="section ground-inverse"
           id="kursus"
-          aria-labelledby="kursus-h"
-          data-moment="line-carries-colour"
-          data-moment-opts='{"from":"base"}'
+          labelledBy="kursus-h"
+          moment="line-carries-colour"
+          momentOpts='{"from":"base"}'
         >
           <div className="wrap">
             <div className="grid">
@@ -891,29 +850,38 @@ export function HomePage() {
                 </p>
               </div>
               <div className="span-7 start-6">
-                <ul className="rows">
-                  <li>
-                    <span className="rows__name">Dasar SQL untuk analis</span>
-                    <span className="rows__value">12 modul</span>
+                <ul className="courses">
+                  <li className="course">
+                    <div className="course__top">
+                      <span className="course__no">01</span>
+                      <span className="course__mods">12 modul</span>
+                    </div>
+                    <h3 className="course__name">Dasar SQL untuk analis</h3>
                     <p>Query pertama sampai gabungan tabel, dalam bahasa Indonesia.</p>
                   </li>
-                  <li>
-                    <span className="rows__name">React untuk pemula</span>
-                    <span className="rows__value">9 modul</span>
+                  <li className="course">
+                    <div className="course__top">
+                      <span className="course__no">02</span>
+                      <span className="course__mods">9 modul</span>
+                    </div>
+                    <h3 className="course__name">React untuk pemula</h3>
                     <p>Komponen, state, dan form; latihan dari lowongan nyata.</p>
                   </li>
-                  <li>
-                    <span className="rows__name">Menulis lamaran yang dibaca</span>
-                    <span className="rows__value">5 modul</span>
+                  <li className="course">
+                    <div className="course__top">
+                      <span className="course__no">03</span>
+                      <span className="course__mods">5 modul</span>
+                    </div>
+                    <h3 className="course__name">Menulis lamaran yang dibaca</h3>
                     <p>Struktur surat, contoh, dan kesalahan yang paling sering.</p>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-        </section>
+        </RevealSection>
 
-        <section className="section" id="faq" aria-labelledby="faq-h">
+        <RevealSection className="section" id="faq" labelledBy="faq-h">
           <div className="wrap">
             <div className="grid">
               <div className="span-5">
@@ -973,7 +941,7 @@ export function HomePage() {
               </div>
             </div>
           </div>
-        </section>
+        </RevealSection>
       </main>
 
       <footer className="footer closing footer--dark ground-inverse" id="contact" aria-labelledby="close-h">

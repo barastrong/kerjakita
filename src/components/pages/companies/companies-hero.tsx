@@ -1,37 +1,73 @@
+import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { companyDirectory } from "@/lib/data/company-directory";
 import styles from "./companies-page.module.css";
 
-const QUICK_FILTERS = [
-  { label: "Semua", active: true },
-  { label: "Teknologi" },
-  { label: "E-commerce" },
-  { label: "Fintech" },
-  { label: "Kesehatan" },
-  { label: "Ritel" },
-  { label: "Makanan & minuman" },
-];
+type CompaniesHeroProps = {
+  query: string;
+  industry: string;
+};
 
-export function CompaniesHero() {
+const INDUSTRIES = Array.from(
+  companyDirectory.reduce((counts, company) => {
+    counts.set(company.industry, (counts.get(company.industry) ?? 0) + 1);
+    return counts;
+  }, new Map<string, number>()),
+)
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "id"))
+  .map(([name]) => name);
+
+function buildHref(query: string, industry: string) {
+  const params = new URLSearchParams();
+  if (query) params.set("q", query);
+  if (industry) params.set("industri", industry);
+  const search = params.toString();
+  return search ? `/perusahaan?${search}` : "/perusahaan";
+}
+
+export function CompaniesHero({ query, industry }: CompaniesHeroProps) {
   return (
     <section className={styles.hero}>
-      <h1 className={styles.heroTitle}>Temukan tempat kerja berikutnya</h1>
+      <Image
+        src="/images/perusahaan-hero.jpg"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className={styles.heroImage}
+      />
+      <h1 className={styles.heroTitle}>Cek perusahaan sebelum melamar</h1>
       <p className={styles.heroSubtitle}>
-        Baca rating karyawan, lihat gaji, dan cek lowongan yang sedang dibuka di
-        satu tempat.
+        Rating dan ulasan karyawan, kisaran gaji, dan lowongan yang sedang
+        dibuka.
       </p>
+      <p className={styles.dataNote}>Data di halaman ini hanya contoh.</p>
 
-      <form className={styles.searchBar} action="/perusahaan" role="search">
+      <form
+        key={`${query}|${industry}`}
+        className={styles.searchBar}
+        action="/perusahaan"
+        role="search"
+      >
         <label className={`${styles.field} ${styles.fieldName}`}>
           <span className={styles.fieldLabel}>Nama perusahaan</span>
-          <input name="company" placeholder="Cari perusahaan" />
+          <input name="q" defaultValue={query} placeholder="Cari perusahaan" />
         </label>
         <label className={`${styles.field} ${styles.fieldIndustry}`}>
           <span className={styles.fieldLabel}>Industri</span>
-          <input name="industry" placeholder="Semua industri" />
-        </label>
-        <label className={`${styles.field} ${styles.fieldCity}`}>
-          <span className={styles.fieldLabel}>Kota</span>
-          <input name="city" placeholder="Semua kota" />
+          <select
+            name="industri"
+            defaultValue={industry}
+            className={styles.fieldSelect}
+          >
+            <option value="">Semua industri</option>
+            {INDUSTRIES.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
+          </select>
         </label>
         <Button type="submit" className={styles.searchButton}>
           Cari
@@ -39,16 +75,26 @@ export function CompaniesHero() {
       </form>
 
       <div className={styles.quickFilters}>
-        {QUICK_FILTERS.map((filter) => (
-          <button
-            key={filter.label}
-            type="button"
+        <Link
+          href={buildHref(query, "")}
+          className={`${styles.quickFilter} ${
+            industry ? "" : styles.quickFilterActive
+          }`}
+          aria-current={industry ? undefined : "page"}
+        >
+          Semua
+        </Link>
+        {INDUSTRIES.map((name) => (
+          <Link
+            key={name}
+            href={buildHref(query, name)}
             className={`${styles.quickFilter} ${
-              filter.active ? styles.quickFilterActive : ""
+              industry === name ? styles.quickFilterActive : ""
             }`}
+            aria-current={industry === name ? "page" : undefined}
           >
-            {filter.label}
-          </button>
+            {name}
+          </Link>
         ))}
       </div>
     </section>

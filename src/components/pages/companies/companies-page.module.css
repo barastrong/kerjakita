@@ -1,11 +1,34 @@
 .page {
+  --content-max: var(--band-max);
+  --page-gut: var(--space-2);
   min-height: 100vh;
   background: var(--brand-bg);
 }
 
 .hero {
-  padding: 44px 40px 36px;
+  position: relative;
+  isolation: isolate;
+  padding: 44px max(var(--page-gut), calc((100% - var(--content-max)) / 2)) 36px;
   background: var(--brand-ink);
+}
+
+.heroImage {
+  z-index: -2;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    rgba(17, 17, 17, 0.94) 0%,
+    rgba(17, 17, 17, 0.78) 55%,
+    rgba(17, 17, 17, 0.5) 100%
+  );
 }
 
 .heroTitle {
@@ -25,6 +48,13 @@
   color: var(--brand-line);
 }
 
+.dataNote {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--brand-line);
+}
+
 .searchBar {
   display: flex;
   align-items: center;
@@ -36,6 +66,7 @@
   padding: 8px;
   border-radius: 18px;
   background: var(--brand-surface);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
 }
 
 .field {
@@ -57,10 +88,6 @@
   width: 200px;
 }
 
-.fieldCity {
-  width: 160px;
-}
-
 .fieldLabel {
   font-size: 12px;
   font-weight: 600;
@@ -68,7 +95,8 @@
   color: var(--brand-muted);
 }
 
-.field input {
+.field input,
+.field select {
   width: 100%;
   min-width: 0;
   padding: 0;
@@ -79,6 +107,10 @@
   line-height: 19px;
   color: var(--brand-ink);
   outline: none;
+}
+
+.field select {
+  cursor: pointer;
 }
 
 .field input::placeholder {
@@ -114,6 +146,7 @@
   font-weight: 600;
   line-height: 16px;
   color: var(--brand-line);
+  text-decoration: none;
   transition:
     border-color 0.15s ease,
     color 0.15s ease;
@@ -133,7 +166,7 @@
 }
 
 .content {
-  padding: 28px 40px 56px;
+  padding: 28px max(var(--page-gut), calc((100% - var(--content-max)) / 2)) 56px;
 }
 
 .heading {
@@ -153,25 +186,12 @@
   color: var(--brand-ink);
 }
 
-.sortButton {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.headingAside {
   flex-shrink: 0;
-  height: 34px;
-  padding: 0 13px;
-  border: 1px solid var(--brand-line);
-  border-radius: 10px;
-  background: var(--brand-surface);
   font-size: 13px;
   line-height: 16px;
   white-space: nowrap;
   color: var(--brand-muted);
-}
-
-.sortButton strong {
-  font-weight: 700;
-  color: var(--brand-ink);
 }
 
 .grid {
@@ -191,13 +211,19 @@
   border: 1px solid var(--brand-line);
   border-radius: 14px;
   background: var(--brand-surface);
+  box-shadow: 0 1px 2px rgba(17, 17, 17, 0.04);
   color: inherit;
   text-decoration: none;
-  transition: border-color 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 }
 
 .companyCard:hover {
   border-color: var(--brand-accent);
+  box-shadow: 0 12px 28px rgba(17, 17, 17, 0.1);
+  transform: translateY(-2px);
 }
 
 .companyCard:focus-visible {
@@ -208,12 +234,22 @@
 .companyTop {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 52px;
 }
 
-.companyBadge {
-  margin-left: auto;
+.companyScore {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--brand-ink);
+}
+
+.companyScore strong {
+  font-weight: 700;
 }
 
 .companyName {
@@ -232,22 +268,11 @@
   color: var(--brand-muted);
 }
 
-.companyRating {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  height: 18px;
+.companyMeta {
   margin-top: 10px;
   font-size: 13px;
   line-height: 16px;
   color: var(--brand-muted);
-}
-
-.companyRating strong {
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 18px;
-  color: var(--brand-ink);
 }
 
 .star {
@@ -256,39 +281,54 @@
   color: var(--brand-gold);
 }
 
-.companyJobs {
-  margin-top: 10px;
-  font-size: 13px;
-  line-height: 16px;
-  color: var(--brand-muted);
-}
-
-.more {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.empty {
   margin-top: 20px;
+  padding: 48px 24px;
+  border: 1px dashed var(--brand-line);
+  border-radius: 14px;
+  background: var(--brand-surface);
+  text-align: center;
 }
 
-.more p {
+.emptyTitle {
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  color: var(--brand-ink);
+}
+
+.emptyText {
+  margin-top: 6px;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 20px;
   color: var(--brand-muted);
 }
 
-.moreButton {
-  width: 255px;
-  max-width: 100%;
-  height: 45px;
-  margin-top: 10px;
-  padding: 0;
-  border-radius: 12px;
-  font-size: 15px;
+.emptyLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  margin-top: 18px;
+  padding: 0 18px;
+  border: 1px solid var(--brand-line);
+  border-radius: 10px;
+  background: var(--brand-surface);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--brand-ink);
+  text-decoration: none;
+}
+
+.emptyLink:hover {
+  border-color: var(--brand-accent);
 }
 
 .field input:focus-visible,
+.field select:focus-visible,
 .quickFilter:focus-visible,
-.sortButton:focus-visible {
+.emptyLink:focus-visible {
   outline: 2px solid var(--brand-accent);
   outline-offset: 2px;
 }
@@ -317,8 +357,7 @@
     width: 100%;
   }
 
-  .fieldIndustry,
-  .fieldCity {
+  .fieldIndustry {
     flex: 1 1 180px;
     width: auto;
   }
@@ -331,7 +370,7 @@
 
 @media (max-width: 720px) {
   .hero {
-    padding: 32px 20px;
+    padding: 32px var(--page-gut);
   }
 
   .heroTitle {
@@ -350,14 +389,13 @@
     margin-top: 20px;
   }
 
-  .fieldIndustry,
-  .fieldCity {
+  .fieldIndustry {
     flex: 1 1 100%;
     width: 100%;
   }
 
   .content {
-    padding: 24px 20px 48px;
+    padding: 24px var(--page-gut) 48px;
   }
 
   .heading {
@@ -375,8 +413,14 @@
     grid-template-columns: 1fr;
     margin-top: 18px;
   }
+}
 
-  .more {
-    margin-top: 24px;
+@media (prefers-reduced-motion: reduce) {
+  .companyCard {
+    transition: none;
+  }
+
+  .companyCard:hover {
+    transform: none;
   }
 }

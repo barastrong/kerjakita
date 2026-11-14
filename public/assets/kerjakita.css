@@ -50,42 +50,19 @@ footer[id] {
   left: 40%;
   top: 38%;
   width: 56%;
-  height: 58%;
-}
-
-.pc-salary {
-  left: 4%;
-  top: 6%;
-  width: 54%;
-  height: 58%;
-}
-
-.pc-filter {
-  left: 40%;
-  top: 12%;
-  width: 34%;
-}
-
-.pc-course {
-  left: 64%;
-  top: 42%;
-  width: 32%;
-  height: 54%;
+  height: auto;
 }
 
 @media (min-width: 640px) and (max-width: 1023px) {
   .ly-piece.pc-job,
-  .ly-piece.pc-match,
-  .ly-piece.pc-salary,
-  .ly-piece.pc-filter {
+  .ly-piece.pc-match {
     display: none;
   }
-  .pc-apply,
-  .pc-course {
+  .pc-apply {
     left: 4%;
     top: 8%;
     width: 92%;
-    height: 84%;
+    height: auto;
   }
 }
 
@@ -94,17 +71,14 @@ footer[id] {
     --nav: 72px;
   }
   .ly-piece.pc-job,
-  .ly-piece.pc-match,
-  .ly-piece.pc-salary,
-  .ly-piece.pc-filter {
+  .ly-piece.pc-match {
     display: none;
   }
-  .pc-apply,
-  .pc-course {
+  .pc-apply {
     left: 4%;
     top: 8%;
     width: 92%;
-    height: 88%;
+    height: auto;
   }
 }
 
@@ -290,52 +264,9 @@ footer[id] {
   color: var(--muted);
 }
 
-.pc-range {
-  font-size: 22px;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-}
-
-.pc-range span {
-  margin-left: 4px;
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0;
-  color: var(--muted);
-}
-
-.pc-chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
-  height: 84px;
-  margin-top: 4px;
-}
-
-.pc-chart i {
-  flex: 1;
-  border-radius: 3px 3px 0 0;
-  background: var(--p-surface);
-}
-
-.pc-chart i:last-child {
-  background: var(--p-accent);
-}
-
-.pc-axis {
-  display: flex;
-  justify-content: space-between;
-  font-size: 10px;
-  color: var(--muted);
-}
-
-.pc-title {
-  font-size: 13px;
-}
-
-.pc-small {
-  font-size: 10px;
-  color: var(--muted);
+/* one auto margin per card: the note rides under the next-step block instead of opening a second hole */
+.pc-apply .pc-note {
+  margin-top: 0;
 }
 
 .app.ui {
@@ -464,15 +395,57 @@ footer[id] {
   text-align: left;
 }
 
-#kursus .grid {
-  height: 100%;
+/* #kursus: three courses as cards on the dark band, an index and the module count on top */
+#kursus .courses {
+  display: grid;
+  gap: 14px;
 }
 
-#kursus .rows {
-  height: 100%;
+#kursus .course {
+  display: grid;
+  gap: 8px;
+  padding: 20px 22px;
+  border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  transition: border-color var(--dur) var(--ease);
+}
+
+#kursus .course:hover {
+  border-color: color-mix(in oklab, var(--ink) 36%, transparent);
+}
+
+#kursus .course__top {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: space-between;
+  gap: var(--s-3);
+}
+
+#kursus .course__no {
+  font: 500 var(--t-small)/1 var(--font-mono);
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+#kursus .course__mods {
+  padding: 5px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font: 500 var(--t-small)/1 var(--font-mono);
+  white-space: nowrap;
+}
+
+#kursus .course__name {
+  font-size: var(--t-h3);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+#kursus .course p {
+  color: var(--muted);
+  font-size: var(--t-small);
+  max-width: 52ch;
 }
 
 footer.closing .close__word {
