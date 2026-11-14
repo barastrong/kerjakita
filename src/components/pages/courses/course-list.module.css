@@ -1,4 +1,5 @@
 .page {
+  --content-max: var(--band-max);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -18,7 +19,7 @@
 .heroInner {
   width: 100%;
   padding-inline: max(
-    var(--page-gutter),
+    var(--space-2),
     calc((100% - var(--content-max)) / 2)
   );
 }
@@ -135,7 +136,7 @@ select.searchInput {
   gap: var(--space-16);
   width: 100%;
   padding: var(--space-12)
-    max(var(--page-gutter), calc((100% - var(--content-max)) / 2))
+    max(var(--space-2), calc((100% - var(--content-max)) / 2))
     var(--space-16);
 }
 

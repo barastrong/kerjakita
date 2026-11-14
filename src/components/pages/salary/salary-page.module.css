@@ -1,4 +1,5 @@
 .page {
+  --content-max: var(--band-max);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -34,7 +35,7 @@
 
 .heroInner {
   width: 100%;
-  padding-inline: max(var(--page-gutter), calc((100% - var(--content-max)) / 2));
+  padding-inline: max(var(--space-2), calc((100% - var(--content-max)) / 2));
 }
 
 .heroKickerRow {
@@ -154,7 +155,7 @@
   gap: var(--space-6);
   width: 100%;
   padding-block: var(--space-8) var(--space-16);
-  padding-inline: max(var(--page-gutter), calc((100% - var(--content-max)) / 2));
+  padding-inline: max(var(--space-2), calc((100% - var(--content-max)) / 2));
   scroll-margin-top: 0;
 }
 

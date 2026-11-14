@@ -55,7 +55,13 @@ export function CompanyGrid({ companies, filtered }: CompanyGridProps) {
               <h3 className={styles.companyName}>{company.name}</h3>
               <p className={styles.companyIndustry}>{company.industry}</p>
               <p className={styles.companyMeta}>
-                {company.reviewCount} ulasan, {company.openJobs} lowongan
+                <span>{company.reviewCount} ulasan</span>
+                <span className={styles.companyJobs}>
+                  {company.openJobs} lowongan
+                  <span className={styles.companyArrow} aria-hidden="true">
+                    →
+                  </span>
+                </span>
               </p>
             </Link>
           ))}

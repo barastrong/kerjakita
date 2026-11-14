@@ -8,8 +8,51 @@
 .hero {
   position: relative;
   isolation: isolate;
-  padding: 44px max(var(--page-gut), calc((100% - var(--content-max)) / 2)) 36px;
+  padding: 52px max(var(--page-gut), calc((100% - var(--content-max)) / 2)) 40px;
   background: var(--brand-ink);
+}
+
+.kickerRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 15px;
+  text-transform: uppercase;
+  color: var(--brand-accent-soft);
+}
+
+.dataTag {
+  padding: 3px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 15px;
+  color: #d7d7d7;
+}
+
+.heroTitle {
+  max-width: 780px;
+  font-size: clamp(34px, 3.3vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.06;
+  color: var(--brand-surface);
+}
+
+.heroSubtitle {
+  max-width: 600px;
+  margin-top: 16px;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--brand-line);
 }
 
 .heroImage {
@@ -31,42 +74,18 @@
   );
 }
 
-.heroTitle {
-  max-width: 820px;
-  font-size: 40px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  line-height: 44px;
-  color: var(--brand-surface);
-}
-
-.heroSubtitle {
-  max-width: 640px;
-  margin-top: 18px;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--brand-line);
-}
-
-.dataNote {
-  margin-top: 10px;
-  font-size: 13px;
-  line-height: 18px;
-  color: var(--brand-line);
-}
-
 .searchBar {
   display: flex;
   align-items: center;
   gap: 6px;
-  width: 780px;
+  width: 860px;
   max-width: 100%;
   height: 68px;
-  margin-top: 18px;
+  margin-top: 20px;
   padding: 8px;
-  border-radius: 18px;
+  border-radius: 16px;
   background: var(--brand-surface);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
 }
 
 .field {
@@ -78,6 +97,14 @@
   height: 52px;
   padding: 8px 16px;
   border-radius: 12px;
+}
+
+.field + .field {
+  box-shadow: inset 1px 0 0 var(--brand-line);
+}
+
+.field:focus-within {
+  box-shadow: inset 0 0 0 2px var(--brand-accent);
 }
 
 .fieldName {
@@ -154,6 +181,7 @@
 
 .quickFilter:hover {
   border-color: var(--brand-line);
+  background: rgba(255, 255, 255, 0.08);
   color: var(--brand-surface);
 }
 
@@ -165,8 +193,13 @@
   color: var(--brand-ink);
 }
 
+.quickFilterActive:hover {
+  background: var(--brand-surface);
+  color: var(--brand-ink);
+}
+
 .content {
-  padding: 28px max(var(--page-gut), calc((100% - var(--content-max)) / 2)) 56px;
+  padding: 32px max(var(--page-gut), calc((100% - var(--content-max)) / 2)) 64px;
 }
 
 .heading {
@@ -179,10 +212,10 @@
 
 .headingTitle {
   font-family: var(--font-bricolage), Arial, sans-serif;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  line-height: 29px;
+  line-height: 32px;
   color: var(--brand-ink);
 }
 
@@ -207,9 +240,9 @@
   flex-direction: column;
   align-items: flex-start;
   min-height: 206px;
-  padding: 20px 21px;
+  padding: 20px;
   border: 1px solid var(--brand-line);
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--brand-surface);
   box-shadow: 0 1px 2px rgba(17, 17, 17, 0.04);
   color: inherit;
@@ -242,10 +275,13 @@
 .companyScore {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 14px;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--brand-gold-soft);
+  font-size: 13px;
   line-height: 18px;
-  color: var(--brand-ink);
+  color: var(--brand-gold-text);
 }
 
 .companyScore strong {
@@ -253,30 +289,53 @@
 }
 
 .companyName {
-  margin-top: 10px;
+  margin-top: 12px;
   font-family: var(--font-bricolage), Arial, sans-serif;
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
-  line-height: 22px;
+  line-height: 23px;
   color: var(--brand-ink);
 }
 
 .companyIndustry {
-  margin-top: 10px;
-  font-size: 14px;
-  line-height: 16px;
+  margin-top: 4px;
+  font-size: 13.5px;
+  line-height: 17px;
   color: var(--brand-muted);
 }
 
 .companyMeta {
-  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 16px;
   font-size: 13px;
   line-height: 16px;
   color: var(--brand-muted);
 }
 
+.companyJobs {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--brand-accent);
+  white-space: nowrap;
+}
+
+.companyArrow {
+  transition: transform 0.15s ease;
+}
+
+.companyCard:hover .companyArrow {
+  transform: translateX(2px);
+}
+
 .star {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 18px;
   color: var(--brand-gold);
 }
@@ -325,8 +384,6 @@
   border-color: var(--brand-accent);
 }
 
-.field input:focus-visible,
-.field select:focus-visible,
 .quickFilter:focus-visible,
 .emptyLink:focus-visible {
   outline: 2px solid var(--brand-accent);
@@ -352,6 +409,10 @@
     height: auto;
   }
 
+  .field + .field {
+    box-shadow: none;
+  }
+
   .fieldName {
     flex: 1 1 100%;
     width: 100%;
@@ -374,12 +435,12 @@
   }
 
   .heroTitle {
-    font-size: 32px;
-    line-height: 36px;
+    font-size: 30px;
+    line-height: 34px;
   }
 
   .heroSubtitle {
-    margin-top: 16px;
+    margin-top: 14px;
     font-size: 15px;
     line-height: 23px;
   }
@@ -387,6 +448,22 @@
   .searchBar,
   .quickFilters {
     margin-top: 20px;
+  }
+
+  .quickFilters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-inline: calc(-1 * var(--page-gut));
+    padding: 0 var(--page-gut) 2px;
+    scrollbar-width: none;
+  }
+
+  .quickFilters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .quickFilter {
+    flex-shrink: 0;
   }
 
   .fieldIndustry {
@@ -422,5 +499,9 @@
 
   .companyCard:hover {
     transform: none;
+  }
+
+  .companyArrow {
+    transition: none;
   }
 }

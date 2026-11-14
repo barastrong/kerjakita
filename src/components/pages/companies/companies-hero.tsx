@@ -37,12 +37,15 @@ export function CompaniesHero({ query, industry }: CompaniesHeroProps) {
         sizes="100vw"
         className={styles.heroImage}
       />
+      <div className={styles.kickerRow}>
+        <p className={styles.kicker}>Direktori perusahaan</p>
+        <span className={styles.dataTag}>Contoh data</span>
+      </div>
       <h1 className={styles.heroTitle}>Cek perusahaan sebelum melamar</h1>
       <p className={styles.heroSubtitle}>
         Rating dan ulasan karyawan, kisaran gaji, dan lowongan yang sedang
         dibuka.
       </p>
-      <p className={styles.dataNote}>Data di halaman ini hanya contoh.</p>
 
       <form
         key={`${query}|${industry}`}
