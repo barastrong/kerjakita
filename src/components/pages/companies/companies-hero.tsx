@@ -30,7 +30,7 @@ export function CompaniesHero({ query, industry }: CompaniesHeroProps) {
   return (
     <section className={styles.hero}>
       <Image
-        src="/images/perusahaan-hero.jpg"
+        src="/images/perusahaan-hero.webp"
         alt=""
         fill
         priority

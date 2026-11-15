@@ -40,7 +40,7 @@ export function RecruiterHero() {
   return (
     <section className={styles.hero}>
       <Image
-        src="/images/perekrut-hero.jpg"
+        src="/images/perekrut-hero.webp"
         alt=""
         fill
         priority

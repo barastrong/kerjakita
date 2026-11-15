@@ -11,9 +11,31 @@
 }
 
 .hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding-block: var(--space-16) var(--space-12);
   background: var(--color-text);
   color: var(--color-surface);
+}
+
+.heroImage {
+  z-index: -2;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    rgba(17, 17, 17, 0.95) 0%,
+    rgba(17, 17, 17, 0.82) 55%,
+    rgba(17, 17, 17, 0.55) 100%
+  );
 }
 
 .heroInner {
@@ -39,7 +61,7 @@
   margin-top: var(--space-4);
   font-size: var(--text-md);
   line-height: var(--leading-md);
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .search {

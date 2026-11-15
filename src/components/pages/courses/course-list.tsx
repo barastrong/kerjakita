@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/layout/footer";
 import { Badge } from "@/components/ui/badge";
@@ -53,6 +54,14 @@ export function CourseList({ q, level }: CourseListProps) {
     <div className={styles.page}>
       <main className={styles.main}>
         <section className={styles.hero}>
+          <Image
+            src="/images/kursus-hero.webp"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className={styles.heroImage}
+          />
           <div className={styles.heroInner}>
             <h1 className={styles.heroTitle}>
               Belajar keahlian yang dicari perekrut
