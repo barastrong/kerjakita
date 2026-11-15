@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kerjakita
 
-## Getting Started
+Platform lowongan kerja Indonesia: cari lowongan, lihat profil perusahaan, cek gaji, ikut kursus, dan rekrut kandidat.
 
-First, run the development server:
+Dibangun dengan Next.js 16 (App Router, Turbopack, Cache Components), React 19, TypeScript, dan CSS Modules.
+
+## Menjalankan
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Perintah lain:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build   # build produksi
+npm start       # jalankan hasil build
+npm run lint    # eslint
+npx tsc --noEmit
+```
 
-## Learn More
+## Struktur
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+  app/
+    (public)/      # beranda, lowongan, perusahaan, gaji, kursus, perekrut
+    (applicant)/   # dashboard pelamar
+    (recruiter)/   # dashboard perekrut
+    (app)/         # halaman lamar
+    (auth)/        # masuk & daftar
+  components/
+    layout/        # header, footer
+    pages/         # komponen per halaman
+    ui/            # komponen bersama, termasuk skeleton loading
+  lib/data/        # data statis (lowongan, perusahaan, kursus, gaji)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Setiap halaman punya `loading.tsx` dengan skeleton yang mengikuti layout halaman aslinya.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Gambar & Cache
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Foto hero di `public/images/` memakai format WebP.
+- `next.config.ts` mengaktifkan AVIF/WebP untuk `next/image` (`minimumCacheTTL` 31 hari).
+- Aset di `/images/*` dikirim dengan `Cache-Control: public, max-age=2678400, stale-while-revalidate=86400`.
