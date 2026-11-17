@@ -28,7 +28,7 @@ export function CompanyPage({ slug }: CompanyPageProps) {
           <CompanyAbout company={company} />
           <CompanyFacilities company={company} />
           <CompanyRating company={company} />
-          <CompanyReviews company={company} />
+          <CompanyReviews company={company} showAllLink />
         </div>
         <aside className={styles.sidebar}>
           <CompanyJobs company={company} />

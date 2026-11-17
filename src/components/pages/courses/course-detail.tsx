@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { Footer } from "@/components/layout/footer";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -7,10 +8,16 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@/components/ui/icons/icons";
+import { SESSION_COOKIE, enrolledCookie } from "@/lib/data/session";
 import type { CourseDetailData } from "@/lib/data/courses";
+import { CourseEnrollButton } from "./course-enroll-button";
 import styles from "./course-pages.module.css";
 
-export function CourseDetail({ course }: { course: CourseDetailData }) {
+export async function CourseDetail({ course }: { course: CourseDetailData }) {
+  const cookieStore = await cookies();
+  const signedIn = cookieStore.has(SESSION_COOKIE);
+  const enrolled = signedIn && cookieStore.has(enrolledCookie(course.slug));
+
   return (
     <div className={styles.page}>
       <div className={styles.breadcrumbWrap}>
@@ -247,13 +254,26 @@ export function CourseDetail({ course }: { course: CourseDetailData }) {
             </div>
 
             <div className={styles.ctaStack}>
-              <ButtonLink
-                href={`/masuk?next=/kursus/${course.slug}`}
-                size="md"
-                className={styles.cta}
-              >
-                Daftar kursus
-              </ButtonLink>
+              {enrolled ? (
+                <p className={styles.enrolledNote}>
+                  <CheckIcon size={16} />
+                  Kamu sudah terdaftar
+                </p>
+              ) : signedIn ? (
+                <CourseEnrollButton
+                  courseKey={course.slug}
+                  label="Daftar kursus"
+                  className={styles.cta}
+                />
+              ) : (
+                <ButtonLink
+                  href={`/masuk?next=/kursus/${course.slug}`}
+                  size="md"
+                  className={styles.cta}
+                >
+                  Daftar kursus
+                </ButtonLink>
+              )}
               <ButtonLink
                 href="#preview"
                 variant="outline"

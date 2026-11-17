@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { Footer } from "@/components/layout/footer";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -6,10 +7,18 @@ import {
   CheckIcon,
   ChevronRightIcon,
 } from "@/components/ui/icons/icons";
+import { SESSION_COOKIE, enrolledCookie } from "@/lib/data/session";
 import { productDesignerPath as path } from "@/lib/data/courses";
+import { CourseEnrollButton } from "./course-enroll-button";
 import styles from "./course-pages.module.css";
 
-export function CoursePath() {
+const pathKey = "jalur-belajar-product-designer";
+
+export async function CoursePath() {
+  const cookieStore = await cookies();
+  const signedIn = cookieStore.has(SESSION_COOKIE);
+  const enrolled = signedIn && cookieStore.has(enrolledCookie(pathKey));
+
   return (
     <div className={styles.page}>
       <div className={styles.breadcrumbWrap}>
@@ -42,12 +51,24 @@ export function CoursePath() {
           <p className={styles.heroText}>{path.description}</p>
 
           <div className={styles.heroActions}>
-            <ButtonLink
-              href={`/masuk?next=/kursus/jalur-belajar/product-designer`}
-              size="md"
-            >
-              Mulai jalur belajar
-            </ButtonLink>
+            {enrolled ? (
+              <p className={styles.enrolledNote}>
+                <CheckIcon size={16} />
+                Kamu sudah mengikuti jalur ini
+              </p>
+            ) : signedIn ? (
+              <CourseEnrollButton
+                courseKey={pathKey}
+                label="Mulai jalur belajar"
+              />
+            ) : (
+              <ButtonLink
+                href={`/masuk?next=/kursus/jalur-belajar/product-designer`}
+                size="md"
+              >
+                Mulai jalur belajar
+              </ButtonLink>
+            )}
             <ButtonLink href="/kursus" variant="outline" size="md">
               Lihat semua kursus
             </ButtonLink>
@@ -217,15 +238,31 @@ export function CoursePath() {
           <div className={styles.startCard}>
             <h2 className={styles.startTitle}>Siap mulai belajar?</h2>
             <p className={styles.startText}>
-              Masuk atau daftar untuk menyimpan progresmu.
+              {signedIn
+                ? "Progresmu tersimpan di akunmu."
+                : "Masuk atau daftar untuk menyimpan progresmu."}
             </p>
-            <ButtonLink
-              href={`/masuk?next=/kursus/jalur-belajar/product-designer`}
-              variant="outline"
-              size="sm"
-            >
-              Mulai belajar sekarang
-            </ButtonLink>
+            {enrolled ? (
+              <p className={styles.enrolledNote}>
+                <CheckIcon size={16} />
+                Jalur sudah diikuti
+              </p>
+            ) : signedIn ? (
+              <CourseEnrollButton
+                courseKey={pathKey}
+                label="Mulai belajar sekarang"
+                variant="outline"
+                size="sm"
+              />
+            ) : (
+              <ButtonLink
+                href={`/masuk?next=/kursus/jalur-belajar/product-designer`}
+                variant="outline"
+                size="sm"
+              >
+                Mulai belajar sekarang
+              </ButtonLink>
+            )}
           </div>
         </aside>
       </div>

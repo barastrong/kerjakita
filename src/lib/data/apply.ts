@@ -15,8 +15,6 @@ export type ApplicationJob = {
   meta: string;
   salary: string;
   type: string;
-  score: number;
-  skills: { label: string; value: number; level: string; tone: "mint" | "amber" }[];
   documents: { id: string; name: string; meta: string }[];
   checklist: { label: string; done: boolean }[];
 };
@@ -39,12 +37,6 @@ const applications: Record<string, ApplicationJob> = {
     meta: "Tokoloka · Jakarta Selatan · Hybrid",
     salary: "Rp 18 – 25 jt",
     type: "Penuh waktu",
-    score: 92,
-    skills: [
-      { label: "Figma", value: 100, level: "Ahli", tone: "mint" },
-      { label: "Design system", value: 90, level: "Kuat", tone: "mint" },
-      { label: "Data analitik", value: 35, level: "Kurang", tone: "amber" },
-    ],
     documents: [
       {
         id: "cv-2026",
@@ -86,12 +78,5 @@ export function getApplication(slug: string) {
     meta: job.meta,
     salary: job.salaryShort,
     type: job.employmentType,
-    score: job.match,
-    skills: job.skills.map((label, index) => ({
-      label,
-      value: index === 0 ? 95 : 85,
-      level: index === 0 ? "Ahli" : "Kuat",
-      tone: "mint" as const,
-    })),
   };
 }

@@ -18,7 +18,6 @@ import {
 } from "@/lib/data/apply";
 import { ApplyChecklist } from "./apply-checklist";
 import { ApplyJobSummary } from "./apply-job-summary";
-import { ApplyMatch } from "./apply-match";
 import { ApplyStepper } from "./apply-stepper";
 import { INITIAL_DRAFT, type Draft } from "./apply-form-data";
 import { APPLY_STEP_PATHS, applyStepHref } from "./apply-routes";
@@ -164,7 +163,6 @@ export function ApplyLayout({
 
           <aside className={styles.sidebar}>
             <ApplyJobSummary job={job} />
-            <ApplyMatch job={job} />
             <ApplyChecklist job={{ ...job, checklist }} />
           </aside>
         </main>

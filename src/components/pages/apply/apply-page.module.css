@@ -1,4 +1,5 @@
 .page {
+  --page-pad: max(8px, calc((100% - var(--band-max)) / 2));
   min-height: 100vh;
   background: var(--brand-bg);
 }
@@ -7,7 +8,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 20px 40px 0;
+  padding: 20px var(--page-pad) 0;
   font-size: 13px;
   line-height: 16px;
   color: var(--brand-muted);
@@ -23,7 +24,7 @@
 }
 
 .stepperWrap {
-  padding: 16px 40px 0;
+  padding: 16px var(--page-pad) 0;
 }
 
 .stepperCard {
@@ -105,7 +106,7 @@
   display: flex;
   align-items: flex-start;
   gap: 24px;
-  padding: 20px 40px 56px;
+  padding: 20px var(--page-pad) 56px;
 }
 
 .form {
@@ -433,60 +434,6 @@
   gap: 6px;
 }
 
-.matchScore {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.matchNumber {
-  font-family: var(--font-bricolage), Arial, sans-serif;
-  font-size: 48px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  line-height: 48px;
-  color: var(--brand-mint);
-}
-
-.matchText {
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 16px;
-  color: var(--brand-muted);
-}
-
-.matchList {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.matchRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  line-height: 16px;
-}
-
-.matchLabel {
-  width: 100px;
-  flex-shrink: 0;
-  color: var(--brand-muted);
-}
-
-.matchRow > div {
-  width: 130px;
-  flex-shrink: 1;
-}
-
-.matchLevel {
-  width: 56px;
-  flex-shrink: 0;
-  font-weight: 600;
-  color: var(--brand-ink);
-}
-
 .checkTitle {
   font-size: 17px;
   font-weight: 700;
@@ -717,14 +664,8 @@
 }
 
 @media (max-width: 900px) {
-  .breadcrumb,
-  .stepperWrap {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
   .content {
-    padding: 20px 20px 40px;
+    padding: 20px var(--page-pad) 40px;
   }
 
   .stepperCard {

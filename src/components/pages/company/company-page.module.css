@@ -1,4 +1,5 @@
 .page {
+  --page-pad: max(8px, calc((100% - var(--band-max)) / 2));
   width: 100%;
   min-width: 0;
   min-height: 100vh;
@@ -6,40 +7,117 @@
 }
 
 .cover {
+  position: relative;
+  overflow: hidden;
+  padding: 26px var(--page-pad) 36px;
+  background: var(--brand-ink);
+  background:
+    radial-gradient(
+      120% 220% at 100% 0%,
+      color-mix(in srgb, var(--company-color, var(--brand-accent)) 42%, transparent),
+      transparent 62%
+    ),
+    var(--brand-ink);
+}
+
+.coverInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.crumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.crumbLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.crumbLink:hover {
+  color: var(--brand-surface);
+  text-decoration: underline;
+}
+
+.crumbSep {
+  opacity: 0.5;
+}
+
+.coverRow {
   display: flex;
   align-items: center;
   gap: 24px;
-  padding: 36px 40px;
-  background: var(--brand-ink);
+  flex-wrap: wrap;
+}
+
+.coverAvatar {
+  flex-shrink: 0;
+  outline: 1px solid rgba(255, 255, 255, 0.18);
+  outline-offset: 5px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.coverWatermark {
+  position: absolute;
+  top: 50%;
+  right: 2%;
+  transform: translateY(-50%);
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: clamp(140px, 16vw, 240px);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  color: var(--brand-surface);
+  opacity: 0.05;
+  pointer-events: none;
+  user-select: none;
 }
 
 .coverInfo {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 8px;
+  min-width: 0;
 }
 
 .coverName {
-  font-size: 40px;
+  font-size: 44px;
   font-weight: 800;
-  letter-spacing: -0.01em;
-  line-height: 48px;
+  letter-spacing: -0.02em;
+  line-height: 50px;
   color: var(--brand-surface);
 }
 
 .coverMeta {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
   line-height: 18px;
   color: var(--brand-line);
 }
 
+.coverMeta span:not(:last-child)::after {
+  content: "·";
+  margin-left: 8px;
+  opacity: 0.55;
+}
+
 .coverRating {
   display: flex;
   align-items: center;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
   font-size: 14px;
   line-height: 24px;
   color: var(--brand-line);
@@ -61,9 +139,12 @@
 }
 
 .tabs {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   display: flex;
   gap: 28px;
-  padding: 0 40px;
+  padding: 0 var(--page-pad);
   overflow-x: auto;
   background: var(--brand-surface);
   border-bottom: 1px solid var(--brand-line);
@@ -115,7 +196,7 @@
   display: flex;
   align-items: flex-start;
   gap: 24px;
-  padding: 24px 40px 56px;
+  padding: 24px var(--page-pad) 56px;
 }
 
 .main {
@@ -146,6 +227,26 @@
   font-weight: 700;
   line-height: 24px;
   color: var(--brand-ink);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cardLink {
+  align-self: flex-start;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 17px;
+  color: var(--brand-accent);
+  text-decoration: none;
+}
+
+.cardLink:hover {
+  text-decoration: underline;
 }
 
 .aboutText {
@@ -200,7 +301,7 @@
   flex-direction: column;
   gap: 2px;
   flex-shrink: 0;
-  width: 89px;
+  width: 108px;
 }
 
 .ratingBigScore {
@@ -213,15 +314,37 @@
 }
 
 .stars {
+  display: inline-flex;
+  gap: 2px;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.ratingBig .stars {
+  margin-top: 4px;
   font-size: 18px;
-  line-height: 23px;
-  letter-spacing: 1px;
+}
+
+.starOn {
   color: var(--brand-gold);
+}
+
+.starOff {
+  color: var(--brand-line);
+}
+
+.cover .starOn {
+  color: #f0b54a;
+}
+
+.cover .starOff {
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .ratingCount {
   font-size: 13px;
   line-height: 16px;
+  white-space: nowrap;
   color: var(--brand-muted);
 }
 
@@ -345,6 +468,97 @@
   width: 100%;
 }
 
+.jobSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.jobCardGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px;
+}
+
+.jobCardLink {
+  display: block;
+  border-radius: var(--radius-lg);
+  color: inherit;
+  text-decoration: none;
+}
+
+.jobCardLink:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+.jobCard {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) 18px;
+  align-items: start;
+  gap: 12px;
+  height: 100%;
+  padding: 16px;
+  transition: background 0.15s ease;
+}
+
+.jobCardLink:hover .jobCard {
+  background: var(--brand-bg);
+}
+
+.jobCardLink:hover .jobCardChevron {
+  transform: translateX(2px);
+}
+
+.jobCardAvatar {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.jobCardMain {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.jobCardTitle {
+  font-family: var(--font-bricolage);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 22px;
+  letter-spacing: -0.01em;
+  color: var(--brand-ink);
+}
+
+.jobCardMeta {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--brand-muted);
+}
+
+.jobCardSalary {
+  display: block;
+  margin-top: 8px;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 19px;
+  color: var(--brand-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.jobCardChevron {
+  grid-column: 3;
+  grid-row: 1;
+  color: var(--brand-muted);
+  transition: transform 0.15s ease;
+}
+
+.jobSectionAction {
+  align-self: flex-start;
+}
+
 .salaryList {
   display: flex;
   flex-direction: column;
@@ -365,7 +579,6 @@
 }
 
 .salaryNote {
-  max-width: 332px;
   font-size: 12px;
   line-height: 15px;
   color: var(--brand-muted);
@@ -387,9 +600,11 @@
 
 @media (max-width: 900px) {
   .cover {
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 32px 20px;
+    padding: 24px var(--page-pad) 28px;
+  }
+
+  .coverWatermark {
+    display: none;
   }
 
   .coverName {
@@ -402,17 +617,22 @@
     margin-left: 0;
   }
 
+  .coverActions > a,
+  .coverActions > button {
+    height: 52px;
+    border-radius: var(--radius-xs);
+  }
+
   .coverActions > * {
     flex: 1;
   }
 
   .tabs {
     gap: 24px;
-    padding: 0 20px;
   }
 
   .content {
-    padding: 20px 20px 40px;
+    padding: 20px var(--page-pad) 40px;
   }
 
   .facts {
@@ -441,7 +661,17 @@
 
 @media (max-width: 560px) {
   .cover {
-    padding: 24px 20px;
+    padding: 24px var(--page-pad);
+  }
+
+  .coverMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .coverMeta span:not(:last-child)::after {
+    content: none;
   }
 
   .coverName {
@@ -454,6 +684,7 @@
   }
 
   .coverActions > * {
+    flex: none;
     width: 100%;
   }
 
@@ -479,7 +710,7 @@
 }
 
 .sectionContent {
-  padding: 28px 40px 56px;
+  padding: 28px var(--page-pad) 56px;
 }
 
 .sectionColumn {
@@ -511,49 +742,124 @@
   gap: 14px 20px;
 }
 
-.sectionColumn .salaryList {
+.sectionColumn .salaryLayout {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px 24px;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  align-items: start;
+  gap: 20px;
 }
 
-.sectionColumn .salaryRow {
+.salarySub {
+  margin-top: 2px;
+  font-size: 13.5px;
+  line-height: 18px;
+  color: var(--brand-muted);
+}
+
+.salaryItems {
+  display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 12px 14px;
-  border-radius: 12px;
+  gap: 20px;
+}
+
+.salaryItemHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.salaryRole {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--brand-ink);
+}
+
+.salaryAmount {
+  font-family: var(--font-bricolage);
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 23px;
+  letter-spacing: -0.01em;
+  color: var(--brand-ink);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.salaryUnit {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-muted);
+}
+
+.salaryTrack {
+  position: relative;
+  height: 10px;
+  margin-top: 9px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
   background: var(--brand-bg);
 }
 
-.sectionColumn .salaryRange {
-  text-align: left;
+.salaryFill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--brand-accent), #7c96f7);
 }
 
-.sectionColumn .jobList {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px 24px;
-}
-
-.sectionColumn .jobRow {
-  padding: 14px;
-  border-radius: 12px;
-  background: var(--brand-bg);
-}
-
-.sectionColumn .jobRow:first-child {
+.salaryLayout .salaryNote {
   padding-top: 14px;
+  border-top: 1px solid var(--brand-line);
+  font-size: 12.5px;
+  line-height: 17px;
+  color: var(--brand-muted);
 }
 
-.sectionColumn .jobRow + .jobRow {
-  border-top: 0;
+.salaryLayout .salarySummary {
+  justify-content: flex-start;
+  border-color: var(--brand-ink);
+  background: var(--brand-ink);
+  color: #fff;
+}
+
+.salarySummaryLabel {
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.salarySummaryValue {
+  font-family: var(--font-bricolage);
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 36px;
+  letter-spacing: -0.02em;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.salarySummaryMeta {
+  font-size: 13px;
+  line-height: 17px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.salaryCompare {
+  margin-top: auto;
+  width: 100%;
 }
 
 .mediaContent {
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding: 28px 40px 56px;
+  padding: 28px var(--page-pad) 56px;
 }
 
 .mediaSection {
@@ -806,20 +1112,20 @@
 
 @media (max-width: 900px) {
   .sectionContent {
-    padding: 20px 20px 40px;
+    padding: 20px var(--page-pad) 40px;
   }
 
   .sectionColumn .reviewList {
     grid-template-columns: 1fr;
   }
 
-  .sectionColumn .salaryList {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .sectionColumn .salaryLayout {
+    grid-template-columns: 1fr;
   }
 
   .mediaContent {
     gap: 32px;
-    padding: 20px 20px 40px;
+    padding: 20px var(--page-pad) 40px;
   }
 
   .videoRow {
@@ -854,8 +1160,7 @@
     line-height: 29px;
   }
 
-  .sectionColumn .salaryList,
-  .sectionColumn .jobList {
+  .jobCardGrid {
     grid-template-columns: 1fr;
   }
 

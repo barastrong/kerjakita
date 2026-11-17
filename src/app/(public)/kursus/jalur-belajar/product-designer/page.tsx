@@ -7,6 +7,8 @@ export const metadata: Metadata = {
     "Urutan kursus untuk menjadi Product Designer, dari riset pengguna sampai portofolio.",
 };
 
+export const instant = false;
+
 export default function Page() {
   return <CoursePath />;
 }

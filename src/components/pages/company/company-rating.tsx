@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import type { CompanyDetail } from "@/lib/data/companies";
+import { CompanyStars } from "./company-stars";
 import styles from "./company-page.module.css";
 
 type CompanyRatingProps = {
@@ -14,9 +15,7 @@ export function CompanyRating({ company }: CompanyRatingProps) {
       <div className={styles.ratingRow}>
         <div className={styles.ratingBig}>
           <span className={styles.ratingBigScore}>{company.rating}</span>
-          <span className={styles.stars} aria-hidden="true">
-            ★★★★☆
-          </span>
+          <CompanyStars rating={company.rating} />
           <span className={styles.ratingCount}>
             dari {company.reviewCount} ulasan
           </span>

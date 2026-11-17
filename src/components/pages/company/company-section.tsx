@@ -27,8 +27,8 @@ export function CompanySection({ company, section }: CompanySectionProps) {
               <CompanyReviews company={company} />
             </>
           )}
-          {section === "gaji" && <CompanySalaries company={company} />}
-          {section === "lowongan" && <CompanyJobs company={company} />}
+          {section === "gaji" && <CompanySalaries company={company} standalone />}
+          {section === "lowongan" && <CompanyJobs company={company} standalone />}
         </div>
       </main>
     </div>
