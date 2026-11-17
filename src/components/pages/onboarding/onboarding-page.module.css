@@ -1,0 +1,376 @@
+.page {
+  min-height: calc(100vh - var(--header-height));
+  background: var(--brand-bg);
+}
+
+.hero {
+  padding: 40px 0 32px;
+  border-bottom: 1px solid var(--brand-line);
+  background: var(--brand-canvas);
+}
+
+.heroInner,
+.content {
+  width: min(100% - 2 * var(--space-2), var(--band-max));
+  margin-inline: auto;
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  color: var(--brand-accent);
+}
+
+.title {
+  margin-top: 8px;
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 44px;
+  color: var(--brand-ink);
+}
+
+.subtitle {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--brand-muted);
+}
+
+.content {
+  padding-block: 32px 96px;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.rail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px 24px;
+  border-right: 1px solid var(--brand-line);
+  background: var(--brand-canvas);
+}
+
+.railLabel {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 14px;
+  text-transform: uppercase;
+  color: var(--brand-muted);
+}
+
+.railList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+}
+
+.railItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.railItem:hover:not(:disabled) {
+  background: var(--brand-surface);
+  border-color: var(--brand-line);
+}
+
+.railItem:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+.railItem:disabled {
+  cursor: default;
+}
+
+.railItemActive {
+  border-color: var(--brand-line);
+  background: var(--brand-surface);
+  box-shadow: 0 1px 2px rgba(17, 17, 17, 0.04);
+}
+
+.railNumber {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border: 1px solid var(--brand-line);
+  border-radius: 999px;
+  background: var(--brand-surface);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--brand-muted);
+}
+
+.railItemActive .railNumber {
+  border-color: var(--brand-accent);
+  background: var(--brand-accent);
+  color: var(--brand-surface);
+}
+
+.railItemDone .railNumber {
+  border-color: var(--brand-mint);
+  background: var(--brand-mint-soft);
+  color: var(--brand-mint);
+}
+
+.railText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.railTitle {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--brand-ink);
+}
+
+.railMeta {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--brand-muted);
+}
+
+.railItemDone .railMeta {
+  color: var(--brand-mint);
+}
+
+.railHint {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--brand-line);
+  font-size: 12.5px;
+  line-height: 18px;
+  color: var(--brand-muted);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 32px 36px 28px;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.progressBars {
+  display: flex;
+  flex: 1;
+  gap: 6px;
+}
+
+.progressBars span {
+  height: 4px;
+  flex: 1;
+  border-radius: 999px;
+  background: var(--brand-line);
+}
+
+.progressBars .progressFill {
+  background: var(--brand-accent);
+}
+
+.progressText {
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 16px;
+  color: var(--brand-muted);
+  white-space: nowrap;
+}
+
+.stepTitle {
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+  color: var(--brand-ink);
+}
+
+.stepDescription {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--brand-muted);
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--brand-line);
+  border-radius: 12px;
+  background: var(--brand-surface);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--brand-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.option:hover {
+  border-color: var(--brand-accent);
+}
+
+.option:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+.optionActive {
+  border-color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent);
+}
+
+.optionCheck {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 1px solid var(--brand-line);
+  border-radius: 999px;
+  color: var(--brand-surface);
+}
+
+.optionActive .optionCheck {
+  border-color: var(--brand-accent);
+  background: var(--brand-accent);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--brand-line);
+}
+
+.actionsLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.skip {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-muted);
+  cursor: pointer;
+}
+
+.skip:hover {
+  color: var(--brand-ink);
+  text-decoration: underline;
+}
+
+.skip:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .rail {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-right: 0;
+    border-bottom: 1px solid var(--brand-line);
+  }
+
+  .railLabel,
+  .railHint,
+  .railMeta {
+    display: none;
+  }
+
+  .railList {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .railItem {
+    width: auto;
+    padding: 6px 10px 6px 6px;
+  }
+
+  .body {
+    padding: 24px 20px;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    padding: 28px 0 24px;
+  }
+
+  .title {
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .content {
+    padding-block: 20px 64px;
+  }
+
+  .options {
+    grid-template-columns: 1fr;
+  }
+
+  .railText {
+    display: none;
+  }
+
+  .railList {
+    justify-content: center;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+  }
+}

@@ -382,7 +382,7 @@ export function OtpForm() {
       onSubmit={(event) => {
         event.preventDefault();
         document.cookie = `${SESSION_COOKIE}=1; path=/; max-age=86400; samesite=lax`;
-        router.push("/pelamar/ringkasan");
+        router.push("/onboarding");
         router.refresh();
       }}
     >

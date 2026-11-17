@@ -50,6 +50,7 @@ export function JadwalkanWawancaraPage({ slug }: { slug: string }) {
   const [selected, setSelected] = useState(new Date(2026, 9, 15));
   const [time, setTime] = useState("10.00");
   const [format, setFormat] = useState("Zoom");
+  const [zoomLink, setZoomLink] = useState("");
   const [message, setMessage] = useState(
     `Halo ${firstName}, kami ingin mengundangmu wawancara untuk posisi Senior Product Designer pada Kamis, 15 Oktober 2026 pukul 10.00 WIB lewat Zoom. Tautan rapat akan dikirim bersama undangan kalender.`,
   );
@@ -216,6 +217,32 @@ export function JadwalkanWawancaraPage({ slug }: { slug: string }) {
                 ))}
               </div>
             </fieldset>
+
+            {format === "Zoom" && (
+              <div className={styles.field}>
+                <label className={styles.label} htmlFor="zoom-link">
+                  Tautan Zoom
+                </label>
+                <input
+                  id="zoom-link"
+                  type="url"
+                  className={styles.input}
+                  placeholder="https://zoom.us/j/..."
+                  value={zoomLink}
+                  onChange={(event) => setZoomLink(event.target.value)}
+                />
+                {zoomLink.trim() && (
+                  <a
+                    className={styles.zoomLink}
+                    href={zoomLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Buka tautan Zoom
+                  </a>
+                )}
+              </div>
+            )}
 
             <div className={styles.field}>
               <label className={styles.label} htmlFor="duration">

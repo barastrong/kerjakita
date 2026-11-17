@@ -1161,6 +1161,13 @@ a.candidateCard:hover {
   border-color: var(--brand-accent);
 }
 
+.zoomLink {
+  align-self: flex-start;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-accent);
+}
+
 .textarea {
   min-height: 110px;
   resize: vertical;
