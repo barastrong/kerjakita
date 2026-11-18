@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
+import type { RecruiterRole } from "@/lib/data/team";
 import {
   DashboardShell,
   type DashboardNavGroup,
 } from "./dashboard-shell";
+import { RoleSwitcher } from "./role-switcher";
 import styles from "./dashboard.module.css";
 
 const NAV_GROUPS: DashboardNavGroup[] = [
@@ -32,21 +34,46 @@ const NAV_GROUPS: DashboardNavGroup[] = [
   },
 ];
 
-export function RecruiterShell({ children }: { children: ReactNode }) {
+const ADMIN_ONLY_PAGES = ["/perekrut/profil-perusahaan", "/perekrut/tim"];
+
+export function RecruiterShell({
+  role,
+  children,
+}: {
+  role: RecruiterRole;
+  children: ReactNode;
+}) {
+  const navGroups =
+    role === "Admin"
+      ? NAV_GROUPS
+      : NAV_GROUPS.map((group) => ({
+          ...group,
+          items: group.items.filter(
+            (item) => !ADMIN_ONLY_PAGES.includes(item.href),
+          ),
+        })).filter((group) => group.items.length > 0);
+
   return (
     <DashboardShell
       brandHref="/perekrut/ringkasan"
       sidebarLabel="Navigasi dashboard perekrut"
-      topCard={{ initials: "TL", name: "Tokoloka", role: "Portal perekrut" }}
-      navGroups={NAV_GROUPS}
+      topCard={{
+        initials: "TL",
+        name: "Tokoloka",
+        role: `Portal perekrut · ${role}`,
+      }}
+      navGroups={navGroups}
       footer={
-        <div className={styles.planCard}>
-          <p className={styles.planTitle}>Paket Pro</p>
-          <div className={styles.planTrack} aria-hidden="true">
-            <div className={styles.planFill} />
+        <>
+          <RoleSwitcher role={role} />
+          <div className={styles.planCard}>
+            <p className={styles.planTitle}>Paket Pro</p>
+            <div className={styles.planTrack} aria-hidden="true">
+              <div className={styles.planFill} />
+            </div>
+            <p className={styles.planNote}>6 dari 10 lowongan aktif terpakai</p>
           </div>
-          <p className={styles.planNote}>6 dari 10 lowongan aktif terpakai</p>
-        </div>
+        </>
       }
     >
       {children}

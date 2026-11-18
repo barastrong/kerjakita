@@ -25,9 +25,45 @@ const CHECKLIST = [
   { label: "Siapkan jawaban gaji dan tanggal mulai", done: false },
 ];
 
+const MEETING_URL = "https://zoom.us/j/98765432101";
+
+const RESCHEDULE_SLOTS = [
+  "Jumat, 16 Okt · 14.00 WIB",
+  "Senin, 19 Okt · 09.00 WIB",
+  "Selasa, 20 Okt · 13.30 WIB",
+];
+
+function downloadCalendar() {
+  const ics = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Kerjakita//Wawancara//ID",
+    "BEGIN:VEVENT",
+    "UID:wawancara-nawasehat-20261015@kerjakita",
+    "DTSTAMP:20261015T030000Z",
+    "DTSTART:20261015T030000Z",
+    "DTEND:20261015T034500Z",
+    "SUMMARY:Wawancara Lead Designer · Nawasehat",
+    "DESCRIPTION:Wawancara via Zoom bersama Dina P. (Head of Design).",
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+  const url = URL.createObjectURL(
+    new Blob([ics], { type: "text/calendar;charset=utf-8" }),
+  );
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "wawancara-nawasehat.ics";
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
 export function WawancaraPage() {
   const [selectedDate, setSelectedDate] = useState(15);
   const [checklist, setChecklist] = useState(CHECKLIST);
+  const [rescheduling, setRescheduling] = useState(false);
+  const [slot, setSlot] = useState("");
+  const [rescheduleSent, setRescheduleSent] = useState(false);
 
   function toggleChecklist(index: number) {
     setChecklist((current) =>
@@ -37,13 +73,30 @@ export function WawancaraPage() {
     );
   }
 
+  function openReschedule() {
+    setSlot("");
+    setRescheduleSent(false);
+    setRescheduling(true);
+  }
+
+  function closeReschedule() {
+    setRescheduling(false);
+    setSlot("");
+    setRescheduleSent(false);
+  }
+
   return (
     <div className={dashboardStyles.mainInner}>
       <ApplicantHeading
         title="Wawancara"
         subtitle="Satu wawancara terjadwal minggu ini."
         action={
-          <Button type="button" size="sm" className={styles.headerButton}>
+          <Button
+            type="button"
+            size="sm"
+            className={styles.headerButton}
+            onClick={downloadCalendar}
+          >
             Tambah ke kalender
           </Button>
         }
@@ -100,13 +153,95 @@ export function WawancaraPage() {
                   </div>
                 </div>
                 <div className={styles.interviewActions}>
-                  <Button type="button" size="sm">
+                  <Button
+                    type="button"
+                    size="sm"
+                    onClick={() =>
+                      window.open(MEETING_URL, "_blank", "noopener,noreferrer")
+                    }
+                  >
                     Gabung rapat
                   </Button>
-                  <Button type="button" variant="outline" size="sm">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={openReschedule}
+                  >
                     Jadwalkan ulang
                   </Button>
+                  <a
+                    className={styles.joinLink}
+                    href={MEETING_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Buka tautan Zoom
+                  </a>
                 </div>
+
+                {rescheduling && (
+                  <div className={styles.reschedulePanel}>
+                    {rescheduleSent ? (
+                      <>
+                        <p className={styles.rescheduleNote}>
+                          Permintaan jadwal ulang untuk{" "}
+                          <strong>{slot}</strong> sudah dikirim ke Dina P. Kami
+                          kabari lewat email setelah dikonfirmasi.
+                        </p>
+                        <div className={styles.rescheduleActions}>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={closeReschedule}
+                          >
+                            Tutup
+                          </Button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <p className={styles.rescheduleTitle}>
+                          Pilih waktu pengganti
+                        </p>
+                        <div className={styles.slotList}>
+                          {RESCHEDULE_SLOTS.map((option) => (
+                            <button
+                              key={option}
+                              type="button"
+                              className={`${styles.slotButton} ${
+                                slot === option ? styles.slotActive : ""
+                              }`}
+                              aria-pressed={slot === option}
+                              onClick={() => setSlot(option)}
+                            >
+                              {option}
+                            </button>
+                          ))}
+                        </div>
+                        <div className={styles.rescheduleActions}>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={closeReschedule}
+                          >
+                            Batal
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            disabled={!slot}
+                            onClick={() => setRescheduleSent(true)}
+                          >
+                            Kirim permintaan
+                          </Button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
               </>
             ) : (
               <p className={styles.statusEmpty}>

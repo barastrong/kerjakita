@@ -1,10 +1,19 @@
+"use client";
+
+import { useState, type FormEvent } from "react";
+import { Button } from "@/components/ui/button/button";
 import { CheckIcon } from "@/components/ui/icons/icons";
+import {
+  RECRUITER_PERMISSIONS,
+  RECRUITER_ROLES,
+  can,
+  type RecruiterRole as Role,
+} from "@/lib/data/team";
 import { Avatar, PageHeading } from "./dashboard-parts";
 import styles from "./dashboard.module.css";
 
-type Role = "Admin" | "Hiring manager" | "Perekrut" | "Pewawancara";
-
 type Member = {
+  id: string;
   name: string;
   title: string;
   initials: string;
@@ -14,8 +23,11 @@ type Member = {
   lastActive: string;
 };
 
-const MEMBERS: Member[] = [
+const COLORS = ["#7c3aed", "#3d3bf3", "#0b7a62", "#c2410c", "#334155", "#a21caf"];
+
+const INITIAL_MEMBERS: Member[] = [
   {
+    id: "rina",
     name: "Rina Kusuma",
     title: "HR Manager",
     initials: "RK",
@@ -25,6 +37,7 @@ const MEMBERS: Member[] = [
     lastActive: "Hari ini",
   },
   {
+    id: "dina",
     name: "Dina Prameswari",
     title: "Head of Design",
     initials: "DP",
@@ -34,6 +47,7 @@ const MEMBERS: Member[] = [
     lastActive: "Hari ini",
   },
   {
+    id: "raka",
     name: "Raka Aditya",
     title: "Engineering Manager",
     initials: "RA",
@@ -43,6 +57,7 @@ const MEMBERS: Member[] = [
     lastActive: "Kemarin",
   },
   {
+    id: "salma",
     name: "Salma Putri",
     title: "Recruiter",
     initials: "SP",
@@ -52,6 +67,7 @@ const MEMBERS: Member[] = [
     lastActive: "2 hari lalu",
   },
   {
+    id: "bima",
     name: "Bima Santoso",
     title: "Product Lead",
     initials: "BS",
@@ -69,15 +85,17 @@ const ROLE_CLASS: Record<Role, string> = {
   Pewawancara: styles.roleInterviewer,
 };
 
-const PERMISSIONS = [
-  { label: "Pasang dan ubah lowongan", admin: true, manager: true, recruiter: true, interviewer: false },
-  { label: "Tinjau pelamar", admin: true, manager: true, recruiter: true, interviewer: true },
-  { label: "Setujui atau tolak pelamar", admin: true, manager: true, recruiter: true, interviewer: false },
-  { label: "Jadwalkan wawancara", admin: true, manager: true, recruiter: true, interviewer: false },
-  { label: "Beri catatan dan nilai", admin: true, manager: true, recruiter: true, interviewer: true },
-  { label: "Ubah profil perusahaan", admin: true, manager: false, recruiter: false, interviewer: false },
-  { label: "Kelola anggota tim", admin: true, manager: false, recruiter: false, interviewer: false },
-];
+const EMPTY_FORM = {
+  name: "",
+  title: "",
+  role: "Perekrut" as Role,
+  jobs: "Semua lowongan",
+};
+
+function initialsOf(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  return parts.slice(0, 2).map((part) => part[0]?.toUpperCase()).join("") || "?";
+}
 
 function PermissionMark({ allowed }: { allowed: boolean }) {
   return allowed ? (
@@ -88,12 +106,187 @@ function PermissionMark({ allowed }: { allowed: boolean }) {
 }
 
 export function TimPage() {
+  const [members, setMembers] = useState(INITIAL_MEMBERS);
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [form, setForm] = useState(EMPTY_FORM);
+
+  function openAdd() {
+    setEditingId(null);
+    setForm(EMPTY_FORM);
+    setFormOpen(true);
+  }
+
+  function openEdit(member: Member) {
+    setEditingId(member.id);
+    setForm({
+      name: member.name,
+      title: member.title,
+      role: member.role,
+      jobs: member.jobs,
+    });
+    setFormOpen(true);
+  }
+
+  function closeForm() {
+    setFormOpen(false);
+    setEditingId(null);
+  }
+
+  function saveMember(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const name = form.name.trim();
+    if (!name) return;
+
+    const title = form.title.trim() || "Anggota tim";
+    const jobs = form.jobs.trim() || "Semua lowongan";
+
+    if (editingId) {
+      setMembers((current) =>
+        current.map((member) =>
+          member.id === editingId
+            ? {
+                ...member,
+                name,
+                title,
+                jobs,
+                role: form.role,
+                initials: initialsOf(name),
+              }
+            : member,
+        ),
+      );
+    } else {
+      setMembers((current) => [
+        ...current,
+        {
+          id: `member-${Date.now()}`,
+          name,
+          title,
+          jobs,
+          role: form.role,
+          initials: initialsOf(name),
+          color: COLORS[current.length % COLORS.length],
+          lastActive: "Baru ditambahkan",
+        },
+      ]);
+    }
+
+    closeForm();
+  }
+
+  function removeMember() {
+    if (!editingId) return;
+    setMembers((current) => current.filter((member) => member.id !== editingId));
+    closeForm();
+  }
+
   return (
     <div className={styles.mainInner}>
       <PageHeading
         title="Tim perekrut"
-        subtitle="5 anggota. Atur siapa yang boleh meninjau dan menyetujui pelamar."
+        subtitle={`${members.length} anggota. Atur siapa yang boleh meninjau dan menyetujui pelamar.`}
+        action={
+          <Button type="button" onClick={openAdd}>
+            Tambah anggota
+          </Button>
+        }
       />
+
+      {formOpen ? (
+        <form className={`${styles.card} ${styles.teamFormCard}`} onSubmit={saveMember}>
+          <h2 className={styles.cardTitle}>
+            {editingId ? "Ubah anggota" : "Tambah anggota"}
+          </h2>
+
+          <div className={styles.twoCol}>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="team-name">
+                Nama
+              </label>
+              <input
+                id="team-name"
+                className={styles.input}
+                value={form.name}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, name: event.target.value }))
+                }
+                required
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="team-title">
+                Jabatan
+              </label>
+              <input
+                id="team-title"
+                className={styles.input}
+                value={form.title}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, title: event.target.value }))
+                }
+              />
+            </div>
+          </div>
+
+          <div className={styles.twoCol}>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="team-role">
+                Peran
+              </label>
+              <select
+                id="team-role"
+                className={styles.input}
+                value={form.role}
+                onChange={(event) =>
+                  setForm((current) => ({
+                    ...current,
+                    role: event.target.value as Role,
+                  }))
+                }
+              >
+                {RECRUITER_ROLES.map((role) => (
+                  <option key={role} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="team-jobs">
+                Lowongan
+              </label>
+              <input
+                id="team-jobs"
+                className={styles.input}
+                value={form.jobs}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, jobs: event.target.value }))
+                }
+              />
+            </div>
+          </div>
+
+          <div className={styles.formActions}>
+            <Button type="submit">
+              {editingId ? "Simpan perubahan" : "Tambah anggota"}
+            </Button>
+            <Button type="button" variant="outline" onClick={closeForm}>
+              Batal
+            </Button>
+            {editingId ? (
+              <Button
+                type="button"
+                variant="outline"
+                className={styles.dangerButton}
+                onClick={removeMember}
+              >
+                Hapus anggota
+              </Button>
+            ) : null}
+          </div>
+        </form>
+      ) : null}
 
       <div className={`${styles.tableCard} ${styles.teamTableCard}`}>
         <div className={styles.tableScroll}>
@@ -108,8 +301,8 @@ export function TimPage() {
               </tr>
             </thead>
             <tbody>
-              {MEMBERS.map((member) => (
-                <tr key={member.name}>
+              {members.map((member) => (
+                <tr key={member.id}>
                   <td>
                     <div className={styles.teamMemberCell}>
                       <Avatar initials={member.initials} color={member.color} />
@@ -127,7 +320,11 @@ export function TimPage() {
                   <td>{member.jobs}</td>
                   <td>{member.lastActive}</td>
                   <td>
-                    <button type="button" className={styles.manage}>
+                    <button
+                      type="button"
+                      className={styles.manage}
+                      onClick={() => openEdit(member)}
+                    >
                       Ubah
                     </button>
                   </td>
@@ -154,20 +351,20 @@ export function TimPage() {
               </tr>
             </thead>
             <tbody>
-              {PERMISSIONS.map((permission) => (
-                <tr key={permission.label}>
-                  <td>{permission.label}</td>
+              {RECRUITER_PERMISSIONS.map((item) => (
+                <tr key={item.label}>
+                  <td>{item.label}</td>
                   <td>
-                    <PermissionMark allowed={permission.admin} />
+                    <PermissionMark allowed={can("Admin", item.permission)} />
                   </td>
                   <td>
-                    <PermissionMark allowed={permission.manager} />
+                    <PermissionMark allowed={can("Hiring manager", item.permission)} />
                   </td>
                   <td>
-                    <PermissionMark allowed={permission.recruiter} />
+                    <PermissionMark allowed={can("Perekrut", item.permission)} />
                   </td>
                   <td>
-                    <PermissionMark allowed={permission.interviewer} />
+                    <PermissionMark allowed={can("Pewawancara", item.permission)} />
                   </td>
                 </tr>
               ))}

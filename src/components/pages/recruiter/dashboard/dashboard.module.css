@@ -243,6 +243,41 @@ a.navItemActive:hover {
   white-space: nowrap;
 }
 
+.roleSwitcher {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.roleSwitcherLabel {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #8d96b4;
+}
+
+.roleSelect {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  outline: 0;
+  background: rgba(255, 255, 255, 0.08);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--brand-surface);
+  cursor: pointer;
+}
+
+.roleSelect option {
+  color: var(--brand-ink);
+}
+
 .planCard {
   display: flex;
   flex-direction: column;
@@ -1594,6 +1629,18 @@ a.candidateCard:hover {
   overflow: hidden;
 }
 
+.teamFormCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 26px;
+}
+
+.dangerButton {
+  color: #b42318;
+  border-color: #f0b4ae;
+}
+
 .teamTable {
   min-width: 900px;
 }
@@ -1767,6 +1814,13 @@ a.candidateCard:hover {
   color: var(--brand-surface);
 }
 
+.logoImage {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 16px;
+}
+
 .mediaText {
   display: flex;
   flex-direction: column;
@@ -1824,6 +1878,39 @@ a.candidateCard:hover {
   position: relative;
   height: 113px;
   border-radius: 12px;
+  overflow: hidden;
+}
+
+.photoMedia {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoActions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 6px;
+}
+
+.photoAction {
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.92);
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--brand-ink);
+  cursor: pointer;
+}
+
+.photoAction:hover {
+  background: var(--brand-surface);
 }
 
 .photoLabel {
@@ -1990,6 +2077,49 @@ a.candidateCard:hover {
   font-size: 18px;
   font-weight: 700;
   color: var(--brand-surface);
+}
+
+.publicLogoImage {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 10px;
+}
+
+.publicMeta {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--brand-muted);
+}
+
+.publicAbout {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--brand-muted);
+}
+
+.publicMediaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.publicMedia {
+  width: 56px;
+  height: 42px;
+  border-radius: 8px;
+}
+
+.publicMediaMore {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--brand-muted);
 }
 
 .publicTabs {

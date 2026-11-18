@@ -5,6 +5,7 @@ import { Button, ButtonLink } from "@/components/ui/button/button";
 import { CheckIcon } from "@/components/ui/icons/icons";
 import { Avatar, Breadcrumbs } from "./dashboard-parts";
 import { getCandidate } from "./pelamar-data";
+import { can, type RecruiterRole } from "@/lib/data/team";
 import styles from "./dashboard.module.css";
 
 const SKILLS = [
@@ -61,8 +62,15 @@ const NOTES = [
   },
 ];
 
-export function PelamarDetailPage({ slug }: { slug: string }) {
+export function PelamarDetailPage({
+  slug,
+  role,
+}: {
+  slug: string;
+  role: RecruiterRole;
+}) {
   const candidate = getCandidate(slug);
+  const canDecide = can(role, "putuskan-pelamar");
   const [decision, setDecision] = useState<"Baru" | "Ditolak">("Baru");
   const [notes, setNotes] = useState(NOTES);
   const [note, setNote] = useState("");
@@ -220,32 +228,42 @@ export function PelamarDetailPage({ slug }: { slug: string }) {
               </span>
             </div>
 
-            <ButtonLink
-              href={`/perekrut/pelamar/${candidate.slug}/jadwalkan-wawancara`}
-              className={styles.fullButton}
-            >
-              Setujui dan jadwalkan wawancara
-            </ButtonLink>
-            <Button
-              type="button"
-              variant="outline"
-              className={styles.fullButton}
-              onClick={() => setDecision("Ditolak")}
-            >
-              Tolak
-            </Button>
+            {canDecide ? (
+              <>
+                <ButtonLink
+                  href={`/perekrut/pelamar/${candidate.slug}/jadwalkan-wawancara`}
+                  className={styles.fullButton}
+                >
+                  Setujui dan jadwalkan wawancara
+                </ButtonLink>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={styles.fullButton}
+                  onClick={() => setDecision("Ditolak")}
+                >
+                  Tolak
+                </Button>
 
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="reject-reason">
-                Alasan (opsional, tidak dikirim ke pelamar)
-              </label>
-              <select id="reject-reason" className={styles.input} defaultValue="">
-                <option value="">Pilih alasan</option>
-                <option>Kualifikasi belum sesuai</option>
-                <option>Pengalaman kurang</option>
-                <option>Kandidat cocok untuk posisi lain</option>
-              </select>
-            </div>
+                <div className={styles.field}>
+                  <label className={styles.label} htmlFor="reject-reason">
+                    Alasan (opsional, tidak dikirim ke pelamar)
+                  </label>
+                  <select id="reject-reason" className={styles.input} defaultValue="">
+                    <option value="">Pilih alasan</option>
+                    <option>Kualifikasi belum sesuai</option>
+                    <option>Pengalaman kurang</option>
+                    <option>Kandidat cocok untuk posisi lain</option>
+                  </select>
+                </div>
+              </>
+            ) : (
+              <p className={styles.publicMeta}>
+                Peran Pewawancara hanya dapat meninjau pelamar serta memberi
+                catatan dan nilai. Keputusan diambil Admin, Hiring manager, atau
+                Perekrut.
+              </p>
+            )}
           </section>
 
           <section className={`${styles.card} ${styles.historyCard}`}>

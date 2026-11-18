@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import { Button } from "@/components/ui/button/button";
 import { CheckIcon } from "@/components/ui/icons/icons";
 import {
@@ -30,6 +30,21 @@ const PHOTOS = [
   { label: "Gathering", color: "#d9d0f7" },
 ];
 
+type MediaItem = {
+  id: string;
+  label: string;
+  kind: "photo" | "video";
+  color?: string;
+  src?: string;
+};
+
+const INITIAL_MEDIA: MediaItem[] = PHOTOS.map((photo, index) => ({
+  id: `foto-${index}`,
+  label: photo.label,
+  kind: "photo",
+  color: photo.color,
+}));
+
 const FACILITIES = [
   "Kerja hybrid",
   "Asuransi kesehatan",
@@ -58,6 +73,65 @@ export function ProfilPerusahaanPage({
   const [size, setSize] = useState(COMPANY.size);
   const [office, setOffice] = useState(COMPANY.office);
   const [about, setAbout] = useState(COMPANY.about);
+  const [logoUrl, setLogoUrl] = useState("");
+  const [coverUrl, setCoverUrl] = useState("");
+  const [media, setMedia] = useState<MediaItem[]>(INITIAL_MEDIA);
+  const logoInput = useRef<HTMLInputElement>(null);
+  const coverInput = useRef<HTMLInputElement>(null);
+  const photoInput = useRef<HTMLInputElement>(null);
+  const videoInput = useRef<HTMLInputElement>(null);
+  const replaceInput = useRef<HTMLInputElement>(null);
+  const replaceTarget = useRef<MediaItem | null>(null);
+
+  function pickImage(
+    event: ChangeEvent<HTMLInputElement>,
+    onPick: (url: string) => void,
+  ) {
+    const file = event.target.files?.[0];
+    if (file) onPick(URL.createObjectURL(file));
+    event.target.value = "";
+  }
+
+  function addMedia(
+    event: ChangeEvent<HTMLInputElement>,
+    kind: MediaItem["kind"],
+  ) {
+    const files = Array.from(event.target.files ?? []);
+    if (files.length > 0) {
+      setMedia((current) => [
+        ...current,
+        ...files.map((file, index) => ({
+          id: `${kind}-${Date.now()}-${index}`,
+          label: kind === "video" ? "Video baru" : "Foto baru",
+          kind,
+          src: URL.createObjectURL(file),
+        })),
+      ]);
+    }
+    event.target.value = "";
+  }
+
+  function startReplace(item: MediaItem) {
+    replaceTarget.current = item;
+    replaceInput.current?.click();
+  }
+
+  function replaceMedia(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    const target = replaceTarget.current;
+    if (file && target) {
+      const src = URL.createObjectURL(file);
+      setMedia((current) =>
+        current.map((item) => (item.id === target.id ? { ...item, src } : item)),
+      );
+    }
+    replaceTarget.current = null;
+    event.target.value = "";
+  }
+
+  function removeMedia(id: string) {
+    setMedia((current) => current.filter((item) => item.id !== id));
+  }
 
   function updateCompanyName(value: string) {
     setCompanyName(value);
@@ -186,20 +260,68 @@ export function ProfilPerusahaanPage({
             <h2 className={styles.cardTitle}>Logo dan sampul</h2>
 
             <div className={styles.mediaRow}>
+              <input
+                ref={logoInput}
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={(event) => pickImage(event, setLogoUrl)}
+              />
               <div className={styles.logoBox}>
-                <span className={styles.companyLogo}>TL</span>
+                {logoUrl ? (
+                  <div
+                    className={styles.logoImage}
+                    style={{
+                      backgroundImage: `url(${logoUrl})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <span className={styles.companyLogo}>TL</span>
+                )}
                 <div className={styles.mediaText}>
                   <span className={styles.mediaLabel}>Logo</span>
-                  <Button type="button" variant="outline" className={styles.smallButton}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className={styles.smallButton}
+                    onClick={() => logoInput.current?.click()}
+                  >
                     Ganti logo
                   </Button>
                 </div>
               </div>
 
+              <input
+                ref={coverInput}
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={(event) => pickImage(event, setCoverUrl)}
+              />
               <div className={styles.coverBox}>
                 <span className={styles.coverLabel}>Sampul · 1440 × 320</span>
-                <div className={styles.coverPreview} aria-hidden="true" />
-                <Button type="button" variant="outline" className={styles.smallButton}>
+                <div
+                  className={styles.coverPreview}
+                  aria-hidden="true"
+                  style={
+                    coverUrl
+                      ? {
+                          backgroundImage: `url(${coverUrl})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }
+                      : undefined
+                  }
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={styles.smallButton}
+                  onClick={() => coverInput.current?.click()}
+                >
                   Ganti sampul
                 </Button>
               </div>
@@ -210,23 +332,99 @@ export function ProfilPerusahaanPage({
             <h2 className={styles.cardTitle}>Foto dan video</h2>
 
             <div className={styles.photoGrid}>
-              {PHOTOS.map((photo) => (
+              {media.map((item) => (
                 <div
-                  key={photo.label}
+                  key={item.id}
                   className={styles.photoTile}
-                  style={{ backgroundColor: photo.color }}
+                  style={
+                    item.src
+                      ? undefined
+                      : { backgroundColor: item.color ?? "#e5e5e5" }
+                  }
                 >
-                  <span className={styles.photoLabel}>{photo.label}</span>
+                  {item.src ? (
+                    item.kind === "video" ? (
+                      <video
+                        className={styles.photoMedia}
+                        src={item.src}
+                        muted
+                        playsInline
+                        preload="metadata"
+                      />
+                    ) : (
+                      <div
+                        className={styles.photoMedia}
+                        style={{
+                          backgroundImage: `url(${item.src})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }}
+                        aria-hidden="true"
+                      />
+                    )
+                  ) : null}
+                  <span className={styles.photoLabel}>{item.label}</span>
+                  <div className={styles.photoActions}>
+                    <button
+                      type="button"
+                      className={styles.photoAction}
+                      onClick={() => startReplace(item)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.photoAction}
+                      onClick={() => removeMedia(item.id)}
+                    >
+                      Hapus
+                    </button>
+                  </div>
                 </div>
               ))}
-              {[0, 1].map((item) => (
-                <button key={item} type="button" className={styles.photoAdd}>
-                  <span className={styles.photoPlus} aria-hidden="true">
-                    +
-                  </span>
-                  Tambah
-                </button>
-              ))}
+              <input
+                ref={photoInput}
+                type="file"
+                accept="image/*"
+                multiple
+                hidden
+                onChange={(event) => addMedia(event, "photo")}
+              />
+              <input
+                ref={videoInput}
+                type="file"
+                accept="video/*"
+                multiple
+                hidden
+                onChange={(event) => addMedia(event, "video")}
+              />
+              <input
+                ref={replaceInput}
+                type="file"
+                accept="image/*,video/*"
+                hidden
+                onChange={replaceMedia}
+              />
+              <button
+                type="button"
+                className={styles.photoAdd}
+                onClick={() => photoInput.current?.click()}
+              >
+                <span className={styles.photoPlus} aria-hidden="true">
+                  +
+                </span>
+                Tambah foto
+              </button>
+              <button
+                type="button"
+                className={styles.photoAdd}
+                onClick={() => videoInput.current?.click()}
+              >
+                <span className={styles.photoPlus} aria-hidden="true">
+                  +
+                </span>
+                Tambah video
+              </button>
             </div>
           </section>
 
@@ -303,12 +501,71 @@ export function ProfilPerusahaanPage({
 
           <section className={`${styles.card} ${styles.publicCard}`}>
             <h2 className={styles.cardTitle}>Pratinjau halaman publik</h2>
-            <div className={styles.publicBanner}>
-              <span className={styles.publicLogo}>TL</span>
+            <p className={styles.cardText}>
+              Perubahan di formulir langsung tampil di pratinjau ini.
+            </p>
+            <div
+              className={styles.publicBanner}
+              style={
+                coverUrl
+                  ? {
+                      backgroundImage: `linear-gradient(rgba(17, 17, 17, 0.55), rgba(17, 17, 17, 0.55)), url(${coverUrl})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }
+                  : undefined
+              }
+            >
+              {logoUrl ? (
+                <div
+                  className={styles.publicLogoImage}
+                  style={{
+                    backgroundImage: `url(${logoUrl})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                  aria-hidden="true"
+                />
+              ) : (
+                <span className={styles.publicLogo}>TL</span>
+              )}
               <span className={styles.publicName}>
                 {companyName || "Nama perusahaan"}
               </span>
             </div>
+
+            <p className={styles.publicMeta}>
+              {[industry, size, office].filter(Boolean).join(" · ") ||
+                "Industri · Ukuran · Kantor"}
+            </p>
+            <p className={styles.publicAbout}>
+              {about || "Ceritakan tentang perusahaanmu."}
+            </p>
+
+            {media.length > 0 ? (
+              <div className={styles.publicMediaRow}>
+                {media.slice(0, 3).map((item) => (
+                  <div
+                    key={item.id}
+                    className={styles.publicMedia}
+                    style={
+                      item.src
+                        ? {
+                            backgroundImage: `url(${item.src})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                          }
+                        : { backgroundColor: item.color ?? "#e5e5e5" }
+                    }
+                    aria-hidden="true"
+                  />
+                ))}
+                <span className={styles.publicMediaMore}>
+                  {media.length} foto &amp; video
+                </span>
+              </div>
+            ) : null}
+
             <div className={styles.publicTabs}>
               <span className={styles.publicTabActive}>Ringkasan</span>
               <span>Ulasan</span>

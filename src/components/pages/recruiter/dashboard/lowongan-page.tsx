@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { SearchIcon } from "@/components/ui/icons/icons";
+import { can, type RecruiterRole } from "@/lib/data/team";
 import { PageHeading } from "./dashboard-parts";
 import styles from "./dashboard.module.css";
 
@@ -105,7 +106,8 @@ function formatCount(value: number | null) {
   return value === null ? "-" : value.toLocaleString("id-ID");
 }
 
-export function LowonganPage() {
+export function LowonganPage({ role }: { role: RecruiterRole }) {
+  const canManage = can(role, "pasang-lowongan");
   const [tab, setTab] = useState<TabKey>("aktif");
   const [query, setQuery] = useState("");
 
@@ -196,13 +198,17 @@ export function LowonganPage() {
                   <td>{formatCount(job.views)}</td>
                   <td>{job.closed}</td>
                   <td>
-                    <Link
-                      href="/perekrut/pasang-lowongan"
-                      className={styles.manage}
-                      aria-label={`Kelola lowongan ${job.title}`}
-                    >
-                      Kelola
-                    </Link>
+                    {canManage ? (
+                      <Link
+                        href="/perekrut/pasang-lowongan"
+                        className={styles.manage}
+                        aria-label={`Kelola lowongan ${job.title}`}
+                      >
+                        Kelola
+                      </Link>
+                    ) : (
+                      <span className={styles.emptyCell}>–</span>
+                    )}
                   </td>
                 </tr>
               ))}
