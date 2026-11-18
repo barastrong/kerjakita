@@ -28,8 +28,10 @@ function salaryLabel(minimum: string, maximum: string) {
 
 export function PasangLowonganPage({
   verification,
+  companyName,
 }: {
   verification: CompanyVerification;
+  companyName: string;
 }) {
   const router = useRouter();
   const [title, setTitle] = useState("Senior Product Designer");
@@ -266,7 +268,7 @@ export function PasangLowonganPage({
                   {title || "Judul posisi"}
                 </span>
                 <span className={styles.previewMeta}>
-                  Tokoloka · {location || "Lokasi"} · {mode}
+                  {companyName} · {location || "Lokasi"} · {mode}
                 </span>
               </div>
             </div>

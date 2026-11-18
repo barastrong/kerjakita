@@ -81,7 +81,13 @@ const ATTENTION = [
   { name: "UX Researcher", note: "18 pelamar belum ditinjau" },
 ];
 
-export function RingkasanPage({ role }: { role: RecruiterRole }) {
+export function RingkasanPage({
+  role,
+  companyName,
+}: {
+  role: RecruiterRole;
+  companyName: string;
+}) {
   const [queue, setQueue] = useState(QUEUE);
   const canDecide = can(role, "putuskan-pelamar");
 
@@ -92,7 +98,7 @@ export function RingkasanPage({ role }: { role: RecruiterRole }) {
   return (
     <div className={styles.mainInner}>
       <PageHeading
-        title="Halo, tim Tokoloka"
+        title={`Halo, tim ${companyName}`}
         subtitle="12 pelamar menunggu tinjauan dan 2 wawancara hari ini."
       />
 

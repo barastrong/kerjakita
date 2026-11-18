@@ -4,5 +4,5 @@ import { requireRecruiter } from "@/lib/data/recruiter-session";
 export default async function Page() {
   const member = await requireRecruiter();
 
-  return <RingkasanPage role={member.role} />;
+  return <RingkasanPage role={member.role} companyName={member.company.name} />;
 }

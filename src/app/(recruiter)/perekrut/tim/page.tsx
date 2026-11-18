@@ -10,5 +10,21 @@ export default async function Page() {
     redirect("/perekrut/ringkasan");
   }
 
-  return <TimPage />;
+  const initialMembers = member.newCompany
+    ? [
+        {
+          id: "admin",
+          name: member.name,
+          email: member.email,
+          title: "Admin perusahaan",
+          initials: member.company.initials,
+          color: "#7c3aed",
+          role: "Admin" as const,
+          jobs: "Semua lowongan",
+          lastActive: "Hari ini",
+        },
+      ]
+    : undefined;
+
+  return <TimPage initialMembers={initialMembers} />;
 }

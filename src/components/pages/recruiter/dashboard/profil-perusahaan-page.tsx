@@ -64,15 +64,21 @@ const COMPLETENESS = [
 
 export function ProfilPerusahaanPage({
   verification: initialVerification,
+  company,
 }: {
   verification: CompanyVerification;
+  company?: { name: string; industry: string; city: string };
 }) {
   const [verification, setVerification] = useState(initialVerification);
-  const [companyName, setCompanyName] = useState(COMPANY.name);
-  const [industry, setIndustry] = useState(COMPANY.industry);
-  const [size, setSize] = useState(COMPANY.size);
-  const [office, setOffice] = useState(COMPANY.office);
-  const [about, setAbout] = useState(COMPANY.about);
+  const [companyName, setCompanyName] = useState(company?.name ?? COMPANY.name);
+  const [industry, setIndustry] = useState(
+    company ? company.industry : COMPANY.industry,
+  );
+  const [size, setSize] = useState(company ? "" : COMPANY.size);
+  const [office, setOffice] = useState(
+    company ? company.city : COMPANY.office,
+  );
+  const [about, setAbout] = useState(company ? "" : COMPANY.about);
   const [logoUrl, setLogoUrl] = useState("");
   const [coverUrl, setCoverUrl] = useState("");
   const [media, setMedia] = useState<MediaItem[]>(INITIAL_MEDIA);

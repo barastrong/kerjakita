@@ -44,8 +44,12 @@ function PermissionMark({ allowed }: { allowed: boolean }) {
   );
 }
 
-export function TimPage() {
-  const [members, setMembers] = useState(RECRUITER_TEAM);
+export function TimPage({
+  initialMembers = RECRUITER_TEAM,
+}: {
+  initialMembers?: Member[];
+}) {
+  const [members, setMembers] = useState(initialMembers);
   const [formOpen, setFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);

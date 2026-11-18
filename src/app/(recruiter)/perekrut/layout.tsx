@@ -17,7 +17,12 @@ export default async function RecruiterLayout({
   const member = await requireRecruiter();
 
   return (
-    <RecruiterShell role={member.role} memberName={member.name}>
+    <RecruiterShell
+      role={member.role}
+      memberName={member.name}
+      companyName={member.company.name}
+      companyInitials={member.company.initials}
+    >
       {children}
     </RecruiterShell>
   );

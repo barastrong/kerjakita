@@ -12,8 +12,23 @@ import {
   MailIcon,
 } from "@/components/ui/icons/icons";
 import { SESSION_COOKIE } from "@/lib/data/session";
-import { recruiterMemberForSession } from "@/lib/data/team";
+import { REGISTERED_COMPANY_COOKIE, parseRegisteredCompany } from "@/lib/data/company";
+import { RECRUITER_TEAM, recruiterMemberForSession } from "@/lib/data/team";
 import styles from "./auth-page.module.css";
+
+function readCookie(name: string) {
+  const raw = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(`${name}=`))
+    ?.slice(name.length + 1);
+  if (!raw) return undefined;
+
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
+}
 
 function FormIntro({
   title,
@@ -230,9 +245,13 @@ export function LoginForm() {
         document.cookie = `${SESSION_COOKIE}=${encodeURIComponent(email)}; path=/; max-age=86400; samesite=lax`;
         const next = new URLSearchParams(window.location.search).get("next");
         const member = recruiterMemberForSession(email);
-        const fallback = member ? "/perekrut/ringkasan" : "/pelamar/ringkasan";
+        const registered = parseRegisteredCompany(
+          readCookie(REGISTERED_COMPANY_COOKIE),
+        );
+        const isRecruiter = Boolean(member) || registered?.adminEmail === email;
+        const fallback = isRecruiter ? "/perekrut/ringkasan" : "/pelamar/ringkasan";
         const target =
-          next?.startsWith("/") && (member || !next.startsWith("/perekrut"))
+          next?.startsWith("/") && (isRecruiter || !next.startsWith("/perekrut"))
             ? next
             : fallback;
         router.push(target);
@@ -257,7 +276,6 @@ export function LoginForm() {
         type="password"
         placeholder="Masukkan password"
         autoComplete="current-password"
-        required
         action={
           <Link href="/lupa-password" className={styles.inlineLink}>
             Lupa password?
@@ -274,10 +292,105 @@ export function LoginForm() {
       <GoogleButton />
       <p className={styles.demoHint}>
         Demo anggota tim Tokoloka: rina@tokoloka.id (Admin), salma@tokoloka.id
-        (Perekrut), bima@tokoloka.id (Pewawancara). Password bebas.
+        (Perekrut), bima@tokoloka.id (Pewawancara). Password boleh dikosongkan.
       </p>
       <p className={styles.formFooter}>
         Belum punya akun? <Link href="/daftar">Daftar</Link>
+      </p>
+      <p className={styles.formFooter}>
+        Ingin mendaftarkan perusahaan?{" "}
+        <Link href="/daftar-perusahaan">Daftar perusahaan</Link>
+      </p>
+    </form>
+  );
+}
+
+export function CompanyRegisterForm() {
+  const router = useRouter();
+  const [error, setError] = useState("");
+
+  return (
+    <form
+      className={styles.form}
+      onSubmit={(event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const name = String(data.get("company-name") ?? "").trim();
+        const adminName = String(data.get("company-admin") ?? "").trim();
+        const email = String(data.get("company-email") ?? "")
+          .trim()
+          .toLowerCase();
+
+        if (!name || !adminName || !email) return;
+
+        if (RECRUITER_TEAM.some((member) => member.email === email)) {
+          setError(
+            "Email ini sudah terdaftar sebagai anggota Tokoloka. Masuk lewat halaman masuk.",
+          );
+          return;
+        }
+
+        const company = {
+          name,
+          industry: String(data.get("company-industry") ?? "").trim(),
+          city: String(data.get("company-city") ?? "").trim(),
+          adminName,
+          adminEmail: email,
+        };
+
+        document.cookie = `${REGISTERED_COMPANY_COOKIE}=${encodeURIComponent(
+          JSON.stringify(company),
+        )}; path=/; max-age=31536000; samesite=lax`;
+        document.cookie = `${SESSION_COOKIE}=${encodeURIComponent(
+          email,
+        )}; path=/; max-age=86400; samesite=lax`;
+        router.push("/perekrut/ringkasan");
+        router.refresh();
+      }}
+    >
+      <FormIntro
+        title="Daftarkan perusahaanmu"
+        description="Buat akun Admin perusahaan, lalu undang tim perekrut."
+      />
+      <Field
+        id="company-name"
+        label="Nama perusahaan"
+        placeholder="Contoh: Nawasari"
+        required
+      />
+      <Field
+        id="company-industry"
+        label="Industri"
+        placeholder="Contoh: E-commerce"
+      />
+      <Field id="company-city" label="Kota" placeholder="Contoh: Bandung" />
+      <Field
+        id="company-admin"
+        label="Nama kamu"
+        placeholder="Nama lengkap"
+        required
+      />
+      <Field
+        id="company-email"
+        label="Email admin"
+        type="email"
+        placeholder="nama@perusahaan.id"
+        autoComplete="email"
+        required
+      />
+      <Field
+        id="company-password"
+        label="Password"
+        type="password"
+        placeholder="Boleh dikosongkan (demo)"
+        autoComplete="new-password"
+      />
+      {error ? <p className={styles.formError}>{error}</p> : null}
+      <button type="submit" className={styles.submit}>
+        Daftar perusahaan
+      </button>
+      <p className={styles.formFooter}>
+        Sudah punya akun? <Link href="/masuk">Masuk</Link>
       </p>
     </form>
   );

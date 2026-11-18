@@ -38,10 +38,14 @@ const ADMIN_ONLY_PAGES = ["/perekrut/profil-perusahaan", "/perekrut/tim"];
 export function RecruiterShell({
   role,
   memberName,
+  companyName,
+  companyInitials,
   children,
 }: {
   role: RecruiterRole;
   memberName: string;
+  companyName: string;
+  companyInitials: string;
   children: ReactNode;
 }) {
   const navGroups =
@@ -59,8 +63,8 @@ export function RecruiterShell({
       brandHref="/perekrut/ringkasan"
       sidebarLabel="Navigasi dashboard perekrut"
       topCard={{
-        initials: "TL",
-        name: "Tokoloka",
+        initials: companyInitials,
+        name: companyName,
         role: `Portal perekrut · ${role}`,
       }}
       navGroups={navGroups}

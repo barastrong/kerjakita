@@ -19,5 +19,10 @@ export default async function Page() {
     (await cookies()).get(COMPANY_VERIFICATION_COOKIE)?.value,
   );
 
-  return <PasangLowonganPage verification={verification} />;
+  return (
+    <PasangLowonganPage
+      verification={verification}
+      companyName={member.company.name}
+    />
+  );
 }
