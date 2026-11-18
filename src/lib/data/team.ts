@@ -4,20 +4,12 @@ export type RecruiterRole =
   | "Perekrut"
   | "Pewawancara";
 
-export const RECRUITER_ROLE_COOKIE = "kerjakita-recruiter-role";
-
 export const RECRUITER_ROLES: RecruiterRole[] = [
   "Admin",
   "Hiring manager",
   "Perekrut",
   "Pewawancara",
 ];
-
-export const DEFAULT_RECRUITER_ROLE: RecruiterRole = "Admin";
-
-export function parseRecruiterRole(value?: string | null): RecruiterRole {
-  return RECRUITER_ROLES.find((role) => role === value) ?? DEFAULT_RECRUITER_ROLE;
-}
 
 export type RecruiterPermission =
   | "pasang-lowongan"
@@ -64,4 +56,80 @@ const PAGE_PERMISSION: Record<string, RecruiterPermission> = {
 export function canAccessRecruiterPage(role: RecruiterRole, pathname: string) {
   const permission = PAGE_PERMISSION[pathname];
   return !permission || can(role, permission);
+}
+
+export type TeamMember = {
+  id: string;
+  name: string;
+  email: string;
+  title: string;
+  initials: string;
+  color: string;
+  role: RecruiterRole;
+  jobs: string;
+  lastActive: string;
+};
+
+export const RECRUITER_TEAM: TeamMember[] = [
+  {
+    id: "rina",
+    name: "Rina Kusuma",
+    email: "rina@tokoloka.id",
+    title: "HR Manager",
+    initials: "RK",
+    color: "#7c3aed",
+    role: "Admin",
+    jobs: "Semua lowongan",
+    lastActive: "Hari ini",
+  },
+  {
+    id: "dina",
+    name: "Dina Prameswari",
+    email: "dina@tokoloka.id",
+    title: "Head of Design",
+    initials: "DP",
+    color: "#3d3bf3",
+    role: "Hiring manager",
+    jobs: "Desain (4)",
+    lastActive: "Hari ini",
+  },
+  {
+    id: "raka",
+    name: "Raka Aditya",
+    email: "raka@tokoloka.id",
+    title: "Engineering Manager",
+    initials: "RA",
+    color: "#0b7a62",
+    role: "Hiring manager",
+    jobs: "Engineering (2)",
+    lastActive: "Kemarin",
+  },
+  {
+    id: "salma",
+    name: "Salma Putri",
+    email: "salma@tokoloka.id",
+    title: "Recruiter",
+    initials: "SP",
+    color: "#c2410c",
+    role: "Perekrut",
+    jobs: "Semua lowongan",
+    lastActive: "2 hari lalu",
+  },
+  {
+    id: "bima",
+    name: "Bima Santoso",
+    email: "bima@tokoloka.id",
+    title: "Product Lead",
+    initials: "BS",
+    color: "#334155",
+    role: "Pewawancara",
+    jobs: "Product (1)",
+    lastActive: "5 hari lalu",
+  },
+];
+
+export function recruiterMemberForSession(session: string | null | undefined) {
+  const email = session?.trim().toLowerCase();
+  if (!email) return null;
+  return RECRUITER_TEAM.find((member) => member.email === email) ?? null;
 }

@@ -792,7 +792,19 @@
     font-size: 24px;
   }
 
-  .formFooter {
+.demoHint {
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(61, 59, 243, 0.06);
+  color: var(--brand-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.formFooter {
     flex-wrap: wrap;
   }
 }

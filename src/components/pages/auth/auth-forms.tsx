@@ -12,6 +12,7 @@ import {
   MailIcon,
 } from "@/components/ui/icons/icons";
 import { SESSION_COOKIE } from "@/lib/data/session";
+import { recruiterMemberForSession } from "@/lib/data/team";
 import styles from "./auth-page.module.css";
 
 function FormIntro({
@@ -221,10 +222,20 @@ export function LoginForm() {
       className={styles.form}
       onSubmit={(event) => {
         event.preventDefault();
-        document.cookie =
-          "kerjakita-session=1; path=/; max-age=86400; samesite=lax";
+        const email = String(
+          new FormData(event.currentTarget).get("login-email") ?? "",
+        )
+          .trim()
+          .toLowerCase();
+        document.cookie = `${SESSION_COOKIE}=${encodeURIComponent(email)}; path=/; max-age=86400; samesite=lax`;
         const next = new URLSearchParams(window.location.search).get("next");
-        router.push(next?.startsWith("/") ? next : "/pelamar/ringkasan");
+        const member = recruiterMemberForSession(email);
+        const fallback = member ? "/perekrut/ringkasan" : "/pelamar/ringkasan";
+        const target =
+          next?.startsWith("/") && (member || !next.startsWith("/perekrut"))
+            ? next
+            : fallback;
+        router.push(target);
         router.refresh();
       }}
     >
@@ -261,6 +272,10 @@ export function LoginForm() {
       </button>
       <Divider />
       <GoogleButton />
+      <p className={styles.demoHint}>
+        Demo anggota tim Tokoloka: rina@tokoloka.id (Admin), salma@tokoloka.id
+        (Perekrut), bima@tokoloka.id (Pewawancara). Password bebas.
+      </p>
       <p className={styles.formFooter}>
         Belum punya akun? <Link href="/daftar">Daftar</Link>
       </p>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button/button";
+import { can, type RecruiterRole } from "@/lib/data/team";
 import { Avatar, PageHeading } from "./dashboard-parts";
 import styles from "./dashboard.module.css";
 
@@ -80,8 +81,9 @@ const ATTENTION = [
   { name: "UX Researcher", note: "18 pelamar belum ditinjau" },
 ];
 
-export function RingkasanPage() {
+export function RingkasanPage({ role }: { role: RecruiterRole }) {
   const [queue, setQueue] = useState(QUEUE);
+  const canDecide = can(role, "putuskan-pelamar");
 
   function dismiss(name: string) {
     setQueue((current) => current.filter((candidate) => candidate.name !== name));
@@ -126,25 +128,27 @@ export function RingkasanPage() {
                 </div>
                 <span className={styles.queueSpacer} />
                 <span className={styles.match}>{candidate.match}%</span>
-                <div className={styles.queueActions}>
-                  <Button
-                    type="button"
-                    className={styles.buttonSm}
-                    aria-label={`Setujui ${candidate.name}`}
-                    onClick={() => dismiss(candidate.name)}
-                  >
-                    Setujui
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className={styles.buttonSm}
-                    aria-label={`Tolak ${candidate.name}`}
-                    onClick={() => dismiss(candidate.name)}
-                  >
-                    Tolak
-                  </Button>
-                </div>
+                {canDecide ? (
+                  <div className={styles.queueActions}>
+                    <Button
+                      type="button"
+                      className={styles.buttonSm}
+                      aria-label={`Setujui ${candidate.name}`}
+                      onClick={() => dismiss(candidate.name)}
+                    >
+                      Setujui
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className={styles.buttonSm}
+                      aria-label={`Tolak ${candidate.name}`}
+                      onClick={() => dismiss(candidate.name)}
+                    >
+                      Tolak
+                    </Button>
+                  </div>
+                ) : null}
               </div>
             ))}
 

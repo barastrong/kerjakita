@@ -243,16 +243,16 @@ a.navItemActive:hover {
   white-space: nowrap;
 }
 
-.roleSwitcher {
+.roleCard {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   padding: 12px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.06);
 }
 
-.roleSwitcherLabel {
+.roleLabel {
   font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -260,22 +260,17 @@ a.navItemActive:hover {
   color: #8d96b4;
 }
 
-.roleSelect {
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 8px;
-  outline: 0;
-  background: rgba(255, 255, 255, 0.08);
-  font-family: inherit;
-  font-size: 12.5px;
-  font-weight: 600;
+.roleValue {
+  font-size: 13px;
+  font-weight: 700;
   color: var(--brand-surface);
-  cursor: pointer;
 }
 
-.roleSelect option {
-  color: var(--brand-ink);
+.roleNote {
+  margin: 0;
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: #8d96b4;
 }
 
 .planCard {

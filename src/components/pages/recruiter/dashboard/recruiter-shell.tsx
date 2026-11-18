@@ -4,7 +4,6 @@ import {
   DashboardShell,
   type DashboardNavGroup,
 } from "./dashboard-shell";
-import { RoleSwitcher } from "./role-switcher";
 import styles from "./dashboard.module.css";
 
 const NAV_GROUPS: DashboardNavGroup[] = [
@@ -38,9 +37,11 @@ const ADMIN_ONLY_PAGES = ["/perekrut/profil-perusahaan", "/perekrut/tim"];
 
 export function RecruiterShell({
   role,
+  memberName,
   children,
 }: {
   role: RecruiterRole;
+  memberName: string;
   children: ReactNode;
 }) {
   const navGroups =
@@ -65,7 +66,14 @@ export function RecruiterShell({
       navGroups={navGroups}
       footer={
         <>
-          <RoleSwitcher role={role} />
+          <div className={styles.roleCard}>
+            <span className={styles.roleLabel}>Masuk sebagai</span>
+            <span className={styles.roleValue}>{memberName}</span>
+            <p className={styles.roleNote}>
+              Peran: {role}. Diatur Admin di halaman Tim, tidak bisa diubah
+              sendiri.
+            </p>
+          </div>
           <div className={styles.planCard}>
             <p className={styles.planTitle}>Paket Pro</p>
             <div className={styles.planTrack} aria-hidden="true">

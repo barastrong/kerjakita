@@ -5,22 +5,18 @@ import {
   COMPANY_VERIFICATION_COOKIE,
   parseCompanyVerification,
 } from "@/lib/data/company";
-import {
-  RECRUITER_ROLE_COOKIE,
-  canAccessRecruiterPage,
-  parseRecruiterRole,
-} from "@/lib/data/team";
+import { requireRecruiter } from "@/lib/data/recruiter-session";
+import { canAccessRecruiterPage } from "@/lib/data/team";
 
 export default async function Page() {
-  const cookieStore = await cookies();
-  const role = parseRecruiterRole(cookieStore.get(RECRUITER_ROLE_COOKIE)?.value);
+  const member = await requireRecruiter();
 
-  if (!canAccessRecruiterPage(role, "/perekrut/profil-perusahaan")) {
+  if (!canAccessRecruiterPage(member.role, "/perekrut/profil-perusahaan")) {
     redirect("/perekrut/ringkasan");
   }
 
   const verification = parseCompanyVerification(
-    cookieStore.get(COMPANY_VERIFICATION_COOKIE)?.value,
+    (await cookies()).get(COMPANY_VERIFICATION_COOKIE)?.value,
   );
 
   return <ProfilPerusahaanPage verification={verification} />;

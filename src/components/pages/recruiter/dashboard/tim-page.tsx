@@ -6,77 +6,15 @@ import { CheckIcon } from "@/components/ui/icons/icons";
 import {
   RECRUITER_PERMISSIONS,
   RECRUITER_ROLES,
+  RECRUITER_TEAM,
   can,
   type RecruiterRole as Role,
+  type TeamMember as Member,
 } from "@/lib/data/team";
 import { Avatar, PageHeading } from "./dashboard-parts";
 import styles from "./dashboard.module.css";
 
-type Member = {
-  id: string;
-  name: string;
-  title: string;
-  initials: string;
-  color: string;
-  role: Role;
-  jobs: string;
-  lastActive: string;
-};
-
 const COLORS = ["#7c3aed", "#3d3bf3", "#0b7a62", "#c2410c", "#334155", "#a21caf"];
-
-const INITIAL_MEMBERS: Member[] = [
-  {
-    id: "rina",
-    name: "Rina Kusuma",
-    title: "HR Manager",
-    initials: "RK",
-    color: "#7c3aed",
-    role: "Admin",
-    jobs: "Semua lowongan",
-    lastActive: "Hari ini",
-  },
-  {
-    id: "dina",
-    name: "Dina Prameswari",
-    title: "Head of Design",
-    initials: "DP",
-    color: "#3d3bf3",
-    role: "Hiring manager",
-    jobs: "Desain (4)",
-    lastActive: "Hari ini",
-  },
-  {
-    id: "raka",
-    name: "Raka Aditya",
-    title: "Engineering Manager",
-    initials: "RA",
-    color: "#0b7a62",
-    role: "Hiring manager",
-    jobs: "Engineering (2)",
-    lastActive: "Kemarin",
-  },
-  {
-    id: "salma",
-    name: "Salma Putri",
-    title: "Recruiter",
-    initials: "SP",
-    color: "#c2410c",
-    role: "Perekrut",
-    jobs: "Semua lowongan",
-    lastActive: "2 hari lalu",
-  },
-  {
-    id: "bima",
-    name: "Bima Santoso",
-    title: "Product Lead",
-    initials: "BS",
-    color: "#334155",
-    role: "Pewawancara",
-    jobs: "Product (1)",
-    lastActive: "5 hari lalu",
-  },
-];
 
 const ROLE_CLASS: Record<Role, string> = {
   Admin: styles.roleAdmin,
@@ -87,6 +25,7 @@ const ROLE_CLASS: Record<Role, string> = {
 
 const EMPTY_FORM = {
   name: "",
+  email: "",
   title: "",
   role: "Perekrut" as Role,
   jobs: "Semua lowongan",
@@ -106,7 +45,7 @@ function PermissionMark({ allowed }: { allowed: boolean }) {
 }
 
 export function TimPage() {
-  const [members, setMembers] = useState(INITIAL_MEMBERS);
+  const [members, setMembers] = useState(RECRUITER_TEAM);
   const [formOpen, setFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -121,6 +60,7 @@ export function TimPage() {
     setEditingId(member.id);
     setForm({
       name: member.name,
+      email: member.email,
       title: member.title,
       role: member.role,
       jobs: member.jobs,
@@ -140,6 +80,7 @@ export function TimPage() {
 
     const title = form.title.trim() || "Anggota tim";
     const jobs = form.jobs.trim() || "Semua lowongan";
+    const email = form.email.trim().toLowerCase();
 
     if (editingId) {
       setMembers((current) =>
@@ -148,6 +89,7 @@ export function TimPage() {
             ? {
                 ...member,
                 name,
+                email,
                 title,
                 jobs,
                 role: form.role,
@@ -162,6 +104,7 @@ export function TimPage() {
         {
           id: `member-${Date.now()}`,
           name,
+          email,
           title,
           jobs,
           role: form.role,
@@ -227,6 +170,23 @@ export function TimPage() {
                 }
               />
             </div>
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="team-email">
+              Email untuk masuk
+            </label>
+            <input
+              id="team-email"
+              type="email"
+              className={styles.input}
+              value={form.email}
+              placeholder="nama@tokoloka.id"
+              onChange={(event) =>
+                setForm((current) => ({ ...current, email: event.target.value }))
+              }
+              required
+            />
           </div>
 
           <div className={styles.twoCol}>

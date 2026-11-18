@@ -1,11 +1,8 @@
-import { cookies } from "next/headers";
 import { LowonganPage } from "@/components/pages/recruiter/dashboard/lowongan-page";
-import { RECRUITER_ROLE_COOKIE, parseRecruiterRole } from "@/lib/data/team";
+import { requireRecruiter } from "@/lib/data/recruiter-session";
 
 export default async function Page() {
-  const role = parseRecruiterRole(
-    (await cookies()).get(RECRUITER_ROLE_COOKIE)?.value,
-  );
+  const member = await requireRecruiter();
 
-  return <LowonganPage role={role} />;
+  return <LowonganPage role={member.role} />;
 }

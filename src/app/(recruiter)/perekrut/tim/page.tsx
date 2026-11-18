@@ -1,18 +1,12 @@
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { TimPage } from "@/components/pages/recruiter/dashboard/tim-page";
-import {
-  RECRUITER_ROLE_COOKIE,
-  canAccessRecruiterPage,
-  parseRecruiterRole,
-} from "@/lib/data/team";
+import { requireRecruiter } from "@/lib/data/recruiter-session";
+import { canAccessRecruiterPage } from "@/lib/data/team";
 
 export default async function Page() {
-  const role = parseRecruiterRole(
-    (await cookies()).get(RECRUITER_ROLE_COOKIE)?.value,
-  );
+  const member = await requireRecruiter();
 
-  if (!canAccessRecruiterPage(role, "/perekrut/tim")) {
+  if (!canAccessRecruiterPage(member.role, "/perekrut/tim")) {
     redirect("/perekrut/ringkasan");
   }
 
