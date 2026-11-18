@@ -918,6 +918,76 @@
   border-radius: 12px;
 }
 
+.videoThumbButton {
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+}
+
+.videoThumbButton:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 3px;
+}
+
+.videoModal {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(9, 14, 30, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.videoModalInner {
+  width: min(960px, 100%);
+  padding: 16px;
+  border-radius: 20px;
+  background: var(--brand-surface);
+  box-shadow: 0 30px 80px rgba(9, 14, 30, 0.4);
+}
+
+.videoModalHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 4px 12px;
+}
+
+.videoModalTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  color: var(--brand-ink);
+}
+
+.videoClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--brand-line);
+  border-radius: 50%;
+  background: var(--brand-surface);
+  font-size: 22px;
+  line-height: 1;
+  color: var(--brand-ink);
+  cursor: pointer;
+}
+
+.videoPlayer {
+  display: block;
+  width: 100%;
+  aspect-ratio: 960 / 360;
+  border-radius: 12px;
+  background: #101a3a;
+}
+
 .videoLarge .videoThumb {
   aspect-ratio: 910 / 340;
 }

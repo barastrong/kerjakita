@@ -1,9 +1,10 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
 import { Avatar } from "@/components/ui/avatar";
-import { Button, ButtonLink } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import type { CompanyDetail } from "@/lib/data/companies";
 import { CompanyStars } from "./company-stars";
+import { FollowButton } from "./follow-button";
 import styles from "./company-page.module.css";
 
 type CompanyCoverProps = {
@@ -54,9 +55,7 @@ export function CompanyCover({ company }: CompanyCoverProps) {
           </div>
 
           <div className={styles.coverActions}>
-            <Button type="button" variant="outline">
-              Ikuti perusahaan
-            </Button>
+            <FollowButton slug={company.slug} />
             <ButtonLink href={`/lowongan?perusahaan=${company.slug}`}>
               Lihat {company.openJobCount} lowongan
             </ButtonLink>

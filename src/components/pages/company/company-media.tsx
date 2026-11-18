@@ -1,6 +1,7 @@
 import type { CompanyDetail } from "@/lib/data/companies";
 import { CompanyCover } from "./company-cover";
 import { CompanyTabs } from "./company-tabs";
+import { CompanyVideoCard } from "./company-video";
 import styles from "./company-page.module.css";
 
 type CompanyMediaProps = {
@@ -71,51 +72,21 @@ export function CompanyMedia({ company }: CompanyMediaProps) {
           </div>
 
           <div className={styles.videoRow}>
-            <article className={`${styles.videoCard} ${styles.videoLarge}`}>
-              <div
-                className={styles.videoThumb}
-                style={{
-                  backgroundColor:
-                    company.slug === "tokoloka" ? "#2B2F8F" : company.color,
-                }}
-              >
-                <span className={styles.playButton} aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </span>
-              </div>
-              <div className={styles.videoText}>
-                <h3 className={styles.videoTitle}>
-                  Sehari di kantor {company.name}
-                </h3>
-                <p className={styles.videoMeta}>
-                  3:42 · Tim Produk dan Desain
-                </p>
-              </div>
-            </article>
+            <CompanyVideoCard
+              large
+              title={`Sehari di kantor ${company.name}`}
+              meta="3:42 · Tim Produk dan Desain"
+              color={company.slug === "tokoloka" ? "#2B2F8F" : company.color}
+            />
 
             <div className={styles.videoSide}>
               {smallVideos.map((video) => (
-                <article
+                <CompanyVideoCard
                   key={video.title}
-                  className={`${styles.videoCard} ${styles.videoSmall}`}
-                >
-                  <div
-                    className={styles.videoThumb}
-                    style={{ backgroundColor: video.color }}
-                  >
-                    <span className={styles.playButton} aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </span>
-                  </div>
-                  <div className={styles.videoText}>
-                    <h3 className={styles.videoTitle}>{video.title}</h3>
-                    <p className={styles.videoMeta}>{video.meta}</p>
-                  </div>
-                </article>
+                  title={video.title}
+                  meta={video.meta}
+                  color={video.color}
+                />
               ))}
             </div>
           </div>
