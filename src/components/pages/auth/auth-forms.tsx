@@ -11,29 +11,8 @@ import {
   EyeOffIcon,
   MailIcon,
 } from "@/components/ui/icons/icons";
-import { SESSION_COOKIE } from "@/lib/data/session";
-import {
-  COMPANY_SESSION_COOKIE,
-  PLATFORM_ADMIN_EMAIL,
-  REGISTERED_COMPANY_COOKIE,
-  parseRegisteredCompany,
-} from "@/lib/data/company";
-import { RECRUITER_TEAM, recruiterMemberForSession } from "@/lib/data/team";
+import { login, registerCompany, verifyOtp } from "@/lib/actions/auth";
 import styles from "./auth-page.module.css";
-
-function readCookie(name: string) {
-  const raw = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith(`${name}=`))
-    ?.slice(name.length + 1);
-  if (!raw) return undefined;
-
-  try {
-    return decodeURIComponent(raw);
-  } catch {
-    return raw;
-  }
-}
 
 function FormIntro({
   title,
@@ -239,7 +218,6 @@ export function LoginForm({
 }: {
   variant?: "user" | "company" | "admin";
 } = {}) {
-  const router = useRouter();
   const [error, setError] = useState("");
   const company = variant === "company";
   const admin = variant === "admin";
@@ -247,64 +225,17 @@ export function LoginForm({
   return (
     <form
       className={styles.form}
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
         setError("");
-        const email = String(
-          new FormData(event.currentTarget).get("login-email") ?? "",
-        )
-          .trim()
-          .toLowerCase();
-        const member = recruiterMemberForSession(email);
-        const registered = parseRegisteredCompany(
-          readCookie(REGISTERED_COMPANY_COOKIE),
+        const data = new FormData(event.currentTarget);
+        data.set("variant", variant);
+        data.set(
+          "next",
+          new URLSearchParams(window.location.search).get("next") ?? "",
         );
-        const isRecruiter = Boolean(member) || registered?.adminEmail === email;
-
-        if (admin && email !== PLATFORM_ADMIN_EMAIL) {
-          setError("Email ini bukan akun admin platform.");
-          return;
-        }
-
-        if (company && !isRecruiter) {
-          setError(
-            "Email ini bukan akun perusahaan. Daftarkan perusahaan dulu, atau masuk sebagai pencari kerja.",
-          );
-          return;
-        }
-
-        if (!admin && !company && isRecruiter) {
-          setError(
-            "Email ini akun perusahaan. Masuk lewat halaman Masuk Perusahaan.",
-          );
-          return;
-        }
-
-        const sessionCookie = admin || company
-          ? COMPANY_SESSION_COOKIE
-          : SESSION_COOKIE;
-        document.cookie = `${sessionCookie}=${encodeURIComponent(email)}; path=/; max-age=86400; samesite=lax`;
-        const next = new URLSearchParams(window.location.search).get("next");
-        const recruiterTarget =
-          registered &&
-          !member &&
-          registered.adminEmail === email &&
-          registered.status !== "approved"
-            ? "/verifikasi-perusahaan"
-            : "/perekrut/ringkasan";
-        const fallback = admin
-          ? "/admin/verifikasi-perusahaan"
-          : company
-            ? recruiterTarget
-            : "/pelamar/ringkasan";
-        const nextAllowed = admin
-          ? Boolean(next?.startsWith("/admin"))
-          : company
-            ? Boolean(next?.startsWith("/perekrut"))
-            : Boolean(next && !next.startsWith("/perekrut"));
-        const target = next?.startsWith("/") && nextAllowed ? next : fallback;
-        router.push(target);
-        router.refresh();
+        const message = await login(data);
+        if (message) setError(message);
       }}
     >
       <FormIntro
@@ -401,47 +332,16 @@ export function LoginForm({
 }
 
 export function CompanyRegisterForm() {
-  const router = useRouter();
   const [error, setError] = useState("");
 
   return (
     <form
       className={styles.form}
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const name = String(data.get("company-name") ?? "").trim();
-        const adminName = String(data.get("company-admin") ?? "").trim();
-        const email = String(data.get("company-email") ?? "")
-          .trim()
-          .toLowerCase();
-
-        if (!name || !adminName || !email) return;
-
-        if (RECRUITER_TEAM.some((member) => member.email === email)) {
-          setError(
-            "Email ini sudah terdaftar sebagai anggota Tokoloka. Masuk lewat halaman masuk.",
-          );
-          return;
-        }
-
-        const company = {
-          name,
-          industry: String(data.get("company-industry") ?? "").trim(),
-          city: String(data.get("company-city") ?? "").trim(),
-          adminName,
-          adminEmail: email,
-          status: "pending" as const,
-        };
-
-        document.cookie = `${REGISTERED_COMPANY_COOKIE}=${encodeURIComponent(
-          JSON.stringify(company),
-        )}; path=/; max-age=31536000; samesite=lax`;
-        document.cookie = `${COMPANY_SESSION_COOKIE}=${encodeURIComponent(
-          email,
-        )}; path=/; max-age=86400; samesite=lax`;
-        router.push("/verifikasi-perusahaan");
-        router.refresh();
+        setError("");
+        const message = await registerCompany(new FormData(event.currentTarget));
+        if (message) setError(message);
       }}
     >
       <FormIntro
@@ -577,7 +477,6 @@ export function RegisterForm() {
 }
 
 export function OtpForm() {
-  const router = useRouter();
   const [digits, setDigits] = useState(["", "", "", "", "", ""]);
   const inputs = useRef<Array<HTMLInputElement | null>>([]);
 
@@ -606,9 +505,7 @@ export function OtpForm() {
       className={styles.form}
       onSubmit={(event) => {
         event.preventDefault();
-        document.cookie = `${SESSION_COOKIE}=1; path=/; max-age=86400; samesite=lax`;
-        router.push("/onboarding");
-        router.refresh();
+        void verifyOtp();
       }}
     >
       <FormIntro

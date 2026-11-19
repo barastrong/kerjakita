@@ -31,28 +31,39 @@ export function parseRegisteredCompany(
   if (!value) return null;
 
   try {
-    const data = JSON.parse(value) as Partial<RegisteredCompany>;
-    if (!data || typeof data.name !== "string" || typeof data.adminEmail !== "string") {
-      return null;
-    }
-
-    return {
-      name: data.name,
-      industry: typeof data.industry === "string" ? data.industry : "",
-      city: typeof data.city === "string" ? data.city : "",
-      adminName:
-        typeof data.adminName === "string" && data.adminName
-          ? data.adminName
-          : data.name,
-      adminEmail: data.adminEmail.toLowerCase(),
-      status:
-        data.status === "approved" || data.status === "rejected"
-          ? data.status
-          : "pending",
-    };
+    return sanitizeRegisteredCompany(JSON.parse(value));
   } catch {
     return null;
   }
+}
+
+export function sanitizeRegisteredCompany(
+  data: unknown,
+): RegisteredCompany | null {
+  if (!data || typeof data !== "object") return null;
+
+  const company = data as Partial<RegisteredCompany>;
+  if (
+    typeof company.name !== "string" ||
+    typeof company.adminEmail !== "string"
+  ) {
+    return null;
+  }
+
+  return {
+    name: company.name,
+    industry: typeof company.industry === "string" ? company.industry : "",
+    city: typeof company.city === "string" ? company.city : "",
+    adminName:
+      typeof company.adminName === "string" && company.adminName
+        ? company.adminName
+        : company.name,
+    adminEmail: company.adminEmail.toLowerCase(),
+    status:
+      company.status === "approved" || company.status === "rejected"
+        ? company.status
+        : "pending",
+  };
 }
 
 export function companyInitials(name: string) {

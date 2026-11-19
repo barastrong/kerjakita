@@ -7,8 +7,8 @@ import {
   type ReactNode,
 } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { SESSION_COOKIE } from "@/lib/data/session";
+import { usePathname } from "next/navigation";
+import { logout } from "@/lib/actions/auth";
 import styles from "./dashboard.module.css";
 
 export type DashboardNavItem = {
@@ -45,7 +45,7 @@ type DashboardShellProps = {
     role: string;
   };
   footer?: ReactNode;
-  logoutCookie?: string;
+  logoutSession?: "user" | "company";
 };
 
 function isActive(pathname: string, item: DashboardNavItem) {
@@ -69,10 +69,9 @@ export function DashboardShell({
   navGroups,
   account,
   footer,
-  logoutCookie = SESSION_COOKIE,
+  logoutSession = "user",
 }: DashboardShellProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -92,9 +91,7 @@ export function DashboardShell({
   }, [menuOpen]);
 
   function handleLogout() {
-    document.cookie = `${logoutCookie}=; path=/; max-age=0; samesite=lax`;
-    router.replace("/");
-    router.refresh();
+    void logout(logoutSession);
   }
 
   function renderNav(items: DashboardNavItem[]) {

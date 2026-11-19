@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AuthShell, BenefitList } from "@/components/pages/auth/auth-shell";
 import { requireCompanyApplication } from "@/lib/data/recruiter-session";
-import { logout } from "@/lib/actions/company";
+import { logout } from "@/lib/actions/auth";
 import styles from "@/components/pages/auth/auth-page.module.css";
 
 export const metadata: Metadata = {
@@ -73,7 +73,7 @@ export default async function Page() {
             </>
           )}
         </p>
-        <form action={logout}>
+        <form action={logout.bind(null, "company")}>
           <button type="submit" className={styles.submit}>
             Keluar
           </button>

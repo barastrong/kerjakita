@@ -1,12 +1,10 @@
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import {
   COMPANY_SESSION_COOKIE,
-  REGISTERED_COMPANY_COOKIE,
   companyInitials,
-  parseRegisteredCompany,
   type CompanyStatus,
 } from "./company";
+import { readRegisteredCompany, readSessionEmail } from "./company-cookie";
 import {
   recruiterMemberForSession,
   type RecruiterRole,
@@ -35,11 +33,7 @@ const TOKOLOKA = {
 };
 
 export async function currentRecruiter(): Promise<RecruiterContext | null> {
-  const cookieStore = await cookies();
-  const email = cookieStore
-    .get(COMPANY_SESSION_COOKIE)
-    ?.value?.trim()
-    .toLowerCase();
+  const email = await readSessionEmail(COMPANY_SESSION_COOKIE);
   if (!email) return null;
 
   const member = recruiterMemberForSession(email);
@@ -55,9 +49,7 @@ export async function currentRecruiter(): Promise<RecruiterContext | null> {
     };
   }
 
-  const registered = parseRegisteredCompany(
-    cookieStore.get(REGISTERED_COMPANY_COOKIE)?.value,
-  );
+  const registered = await readRegisteredCompany();
   if (registered && registered.adminEmail === email) {
     return {
       name: registered.adminName,

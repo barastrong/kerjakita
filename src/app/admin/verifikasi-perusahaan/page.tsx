@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AuthShell, BenefitList } from "@/components/pages/auth/auth-shell";
-import { approveCompany, rejectCompany, logout } from "@/lib/actions/company";
+import { approveCompany, rejectCompany } from "@/lib/actions/company";
+import { logout } from "@/lib/actions/auth";
 import {
   COMPANY_SESSION_COOKIE,
   PLATFORM_ADMIN_EMAIL,
-  REGISTERED_COMPANY_COOKIE,
-  parseRegisteredCompany,
 } from "@/lib/data/company";
+import {
+  readRegisteredCompany,
+  readSessionEmail,
+} from "@/lib/data/company-cookie";
 import styles from "@/components/pages/auth/auth-page.module.css";
 
 export const metadata: Metadata = {
@@ -22,18 +24,12 @@ const STATUS_LABEL = {
 };
 
 export default async function Page() {
-  const cookieStore = await cookies();
-  const session = cookieStore
-    .get(COMPANY_SESSION_COOKIE)
-    ?.value?.trim()
-    .toLowerCase();
+  const session = await readSessionEmail(COMPANY_SESSION_COOKIE);
   if (session !== PLATFORM_ADMIN_EMAIL) {
     redirect("/masuk-admin");
   }
 
-  const company = parseRegisteredCompany(
-    cookieStore.get(REGISTERED_COMPANY_COOKIE)?.value,
-  );
+  const company = await readRegisteredCompany();
 
   return (
     <AuthShell
@@ -92,7 +88,7 @@ export default async function Page() {
           Demo: pengajuan tersimpan di browser ini. Daftarkan perusahaan di
           browser yang sama agar muncul di panel ini.
         </p>
-        <form action={logout}>
+        <form action={logout.bind(null, "company")}>
           <button type="submit" className={styles.submit}>
             Keluar
           </button>

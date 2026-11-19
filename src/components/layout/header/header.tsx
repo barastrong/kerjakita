@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { ButtonLink } from "@/components/ui/button/button";
-import { SESSION_COOKIE } from "@/lib/data/session";
+import { logout } from "@/lib/actions/auth";
 import styles from "./header.module.css";
 
 const NAV_ITEMS = [
@@ -29,7 +29,6 @@ function isActive(href: string, pathname: string) {
 
 export function Header({ user }: HeaderProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const accountRef = useRef<HTMLDivElement>(null);
@@ -79,10 +78,9 @@ export function Header({ user }: HeaderProps) {
   }, [drawerOpen]);
 
   function handleLogout() {
-    document.cookie = `${SESSION_COOKIE}=; path=/; max-age=0; samesite=lax`;
     setAccountOpen(false);
     setDrawerOpen(false);
-    router.refresh();
+    void logout("user");
   }
 
   return (

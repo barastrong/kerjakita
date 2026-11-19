@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import type { RecruiterRole } from "@/lib/data/team";
-import { COMPANY_SESSION_COOKIE } from "@/lib/data/company";
 import {
   DashboardShell,
   type DashboardNavGroup,
@@ -63,7 +62,7 @@ export function RecruiterShell({
     <DashboardShell
       brandHref="/perekrut/ringkasan"
       sidebarLabel="Navigasi dashboard perekrut"
-      logoutCookie={COMPANY_SESSION_COOKIE}
+      logoutSession="company"
       topCard={{
         initials: companyInitials,
         name: companyName,
