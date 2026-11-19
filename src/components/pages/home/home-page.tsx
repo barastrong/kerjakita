@@ -2,7 +2,13 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import Script from "next/script";
 
+import { jobs } from "@/lib/data/jobs";
+
 import { RevealSection } from "./reveal-section";
+
+const demoCompanyCount = new Set(jobs.map((job) => job.companySlug)).size;
+const demoCityCount = new Set(jobs.map((job) => job.location)).size;
+const strongMatchCount = jobs.filter((job) => job.match >= 80).length;
 
 const kitCss = [
   "/assets/system.css",
@@ -52,11 +58,6 @@ function WindowPane({ compact = false }: { compact?: boolean }) {
       data-done="Dibalas"
     >
       <div className="ui-win__bar">
-        <span className="ui-dots" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-        </span>
         <span className="ui-win__crumb">
           Kerjakita <i>/</i> <b>Lowongan</b>
         </span>
@@ -116,71 +117,71 @@ function WindowPane({ compact = false }: { compact?: boolean }) {
           </div>
           <ul className="ui-win__rows">
             <li className="ui-win__row" data-row="">
-              <span className="ui-avatar" data-tone="1">TP</span>
-              <span className="ui-win__who">Tokopedia</span>
+              <span className="ui-avatar" data-tone="1">TL</span>
+              <span className="ui-win__who">Tokoloka</span>
               <span className="ui-win__sub">Frontend Engineer · Jakarta</span>
               <span className="ui-win__st" data-st="">Dibuka</span>
               <span className="ui-win__age">2m</span>
             </li>
             <li className="ui-win__row" data-row="">
-              <span className="ui-avatar" data-tone="3">GJ</span>
-              <span className="ui-win__who">Gojek</span>
+              <span className="ui-avatar" data-tone="3">BP</span>
+              <span className="ui-win__who">Bayarpintar</span>
               <span className="ui-win__sub">Data Analyst · Jakarta</span>
               <span className="ui-win__st" data-st="">Dibuka</span>
               <span className="ui-win__age">5m</span>
             </li>
             <li className="ui-win__row" data-row="">
-              <span className="ui-avatar" data-tone="4">TV</span>
-              <span className="ui-win__who">Traveloka</span>
+              <span className="ui-avatar" data-tone="4">DG</span>
+              <span className="ui-win__who">Dagangin</span>
               <span className="ui-win__sub">Product Designer · Jakarta</span>
               <span className="ui-win__st" data-st="">Dibuka</span>
               <span className="ui-win__age">9m</span>
             </li>
             <li className="ui-win__row" data-row="">
-              <span className="ui-avatar" data-tone="2">BJ</span>
-              <span className="ui-win__who">Bank Jago</span>
+              <span className="ui-avatar" data-tone="2">KS</span>
+              <span className="ui-win__who">Kopi Sinar Digital</span>
               <span className="ui-win__sub">Backend Engineer · Jakarta</span>
               <span className="ui-win__st" data-st="">Diproses</span>
               <span className="ui-win__age">14m</span>
             </li>
             <li className="ui-win__row" data-row="">
-              <span className="ui-avatar" data-tone="5">SP</span>
-              <span className="ui-win__who">Shopee</span>
+              <span className="ui-avatar" data-tone="5">LK</span>
+              <span className="ui-win__who">Lokalkarya</span>
               <span className="ui-win__sub">QA Engineer · Jakarta</span>
               <span className="ui-win__st" data-st="">Dibuka</span>
               <span className="ui-win__age">21m</span>
             </li>
             <li className="ui-win__row" data-row="">
-              <span className="ui-avatar" data-tone="3">HD</span>
-              <span className="ui-win__who">Halodoc</span>
+              <span className="ui-avatar" data-tone="3">NW</span>
+              <span className="ui-win__who">Nawasehat</span>
               <span className="ui-win__sub">UI Designer · Jakarta</span>
               <span className="ui-win__st is-done" data-st="">Dibalas</span>
               <span className="ui-win__age">26m</span>
             </li>
             <li className="ui-win__row" data-row="">
-              <span className="ui-avatar" data-tone="4">BL</span>
-              <span className="ui-win__who">Blibli</span>
+              <span className="ui-avatar" data-tone="4">GR</span>
+              <span className="ui-win__who">Garuda Retail Tech</span>
               <span className="ui-win__sub">Marketing Analyst · Jakarta</span>
               <span className="ui-win__st" data-st="">Dibuka</span>
               <span className="ui-win__age">33m</span>
             </li>
             <li className="ui-win__row" data-row="">
-              <span className="ui-avatar" data-tone="1">XN</span>
-              <span className="ui-win__who">Xendit</span>
+              <span className="ui-avatar" data-tone="1">TL</span>
+              <span className="ui-win__who">Tokoloka</span>
               <span className="ui-win__sub">DevOps Engineer · Jakarta</span>
               <span className="ui-win__st" data-st="">Diproses</span>
               <span className="ui-win__age">41m</span>
             </li>
             <li className="ui-win__row" data-row="">
-              <span className="ui-avatar" data-tone="2">RG</span>
-              <span className="ui-win__who">Ruangguru</span>
+              <span className="ui-avatar" data-tone="2">BP</span>
+              <span className="ui-win__who">Bayarpintar</span>
               <span className="ui-win__sub">Content Strategist · Jakarta</span>
               <span className="ui-win__st" data-st="">Dibuka</span>
               <span className="ui-win__age">48m</span>
             </li>
             <li className="ui-win__row" data-row="">
-              <span className="ui-avatar" data-tone="5">GR</span>
-              <span className="ui-win__who">Grab</span>
+              <span className="ui-avatar" data-tone="5">DG</span>
+              <span className="ui-win__who">Dagangin</span>
               <span className="ui-win__sub">Mobile Engineer · Jakarta</span>
               <span className="ui-win__st is-done" data-st="">Dibalas</span>
               <span className="ui-win__age">55m</span>
@@ -242,8 +243,7 @@ function MatchDoc() {
           Kalau ada syarat yang berubah, laporan ini diperbarui dan kamu mendapat notifikasi.
         </div>
         <div className="ui-doc__text">
-          Waktu baca rata-rata tiga menit. Kamu bisa menutup laporan kapan saja dan kembali ke daftar
-          lowongan.
+          Kamu bisa menutup laporan kapan saja dan kembali ke daftar lowongan.
         </div>
       </article>
       <aside className="ui-doc__note ui-panel is-on" aria-live="polite">
@@ -272,7 +272,6 @@ function SearchPane() {
         </svg>
         <span className="ui-search__q">
           <span data-search-q="">jakarta</span>
-          <i className="ui-search__caret" />
         </span>
         <kbd className="ui-search__kbd">Ctrl K</kbd>
       </div>
@@ -339,20 +338,6 @@ function StatPane() {
         </div>
         <div className="ui-stat__line">
           <span className="ui-stat__num" data-stat-num="">92%</span>
-          <span className="ui-chip ui-chip--plain ui-stat__delta">
-            <svg viewBox="0 0 12 12" aria-hidden="true">
-              <path
-                d="M6 9.5v-7M3 5.5l3-3 3 3"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            31 poin
-          </span>
-          <span className="ui-stat__sub">dibanding minggu lalu</span>
         </div>
       </div>
       <div className="ui-stat__chart">
@@ -451,15 +436,9 @@ function TogglesPane() {
               <span className="ui-tg__label">{row.label}</span>
               <span className="ui-tg__sub">{row.sub}</span>
             </span>
-            <button
-              className={row.on ? "ui-switch is-on" : "ui-switch"}
-              type="button"
-              role="switch"
-              aria-checked={row.on}
-              aria-label={row.label}
-            >
+            <span className={row.on ? "ui-switch is-on" : "ui-switch"} aria-hidden="true">
               <i />
-            </button>
+            </span>
           </li>
         ))}
       </ul>
@@ -475,7 +454,7 @@ function NotifyPane() {
           <span className="ui-agent ui-note__av" aria-hidden="true" />
           <span className="ui-note__text">
             <span className="ui-note__title">
-              <span className="ui-note__t">Lamaranmu dibuka Tokopedia</span><time>2m</time>
+              <span className="ui-note__t">Lamaranmu dibuka Tokoloka</span><time>2m</time>
             </span>
             <span className="ui-note__body">Frontend Engineer · Jakarta · skor 92</span>
           </span>
@@ -485,7 +464,7 @@ function NotifyPane() {
           <span className="ui-avatar ui-note__av" data-tone="5">HD</span>
           <span className="ui-note__text">
             <span className="ui-note__title">
-              <span className="ui-note__t">Halodoc membalas</span><time>1j</time>
+              <span className="ui-note__t">Nawasehat membalas</span><time>1j</time>
             </span>
             <span className="ui-note__body">Mereka ingin wawancara minggu depan</span>
           </span>
@@ -547,32 +526,28 @@ export function HomePage() {
     <>
       <KitAssets />
       <main id="top">
-        <section
-          className="hero hero--triptych bg-paper bg-topglow"
-          data-enter="true"
-          aria-labelledby="hero-h"
-        >
+        <section className="hero hero--triptych bg-paper" aria-labelledby="hero-h">
           <div className="wrap">
             <div className="hero-text grid hero__grid">
               <div className="span-3">
                 <h1 id="hero-h">Lowongan yang cocok di Indonesia.</h1>
                 <p className="hero__lead">
-                  Kerjakita membaca profil dan lowongan yang sama, lalu menunjukkan kecocokannya
-                  dalam 3 menit. Mulai dari satu lowongan, bukan seratus tab.
+                  Kerjakita membaca profil dan lowongan yang sama, lalu menunjukkan kecocokannya.
+                  Mulai dari satu lowongan, bukan seratus tab.
                 </p>
               </div>
               <div
                 className="ly-collage span-6 start-4"
                 role="img"
-                aria-label="Lowongan Frontend Engineer di Tokopedia dengan skor kecocokan 92, dan lamaran yang sudah dibalas"
+                aria-label="Lowongan Frontend Engineer di Tokoloka dengan skor kecocokan 92, dan lamaran yang sudah dibalas"
               >
                 <div className="ly-collage__set is-on">
                   <div className="ly-piece pc-card pc-job">
                     <div className="pc-head">
-                      <span className="pc-logo">TP</span>
+                      <span className="pc-logo">TL</span>
                       <div>
                         <b>Frontend Engineer</b>
-                        <span>Tokopedia · Jakarta</span>
+                        <span>Tokoloka · Jakarta</span>
                       </div>
                       <span className="pc-chip">Hibrida</span>
                     </div>
@@ -600,7 +575,7 @@ export function HomePage() {
                     <span className="pc-label">Status lamaran</span>
                     <div className="pc-steps">
                       <div className="is-done"><i />Dikirim 12 Okt</div>
-                      <div className="is-done"><i />Dibuka Tokopedia</div>
+                      <div className="is-done"><i />Dibuka Tokoloka</div>
                       <div className="is-now"><i />Menunggu jadwal wawancara</div>
                       <div><i />Balasan</div>
                     </div>
@@ -609,7 +584,14 @@ export function HomePage() {
                       <div className="pc-row"><span>Wawancara teknis</span><b>16 Okt, 10.00</b></div>
                       <div className="pc-row"><span>Siapkan</span><b>Portofolio</b></div>
                     </div>
-                    <div className="pc-note">Rata-rata balasan tiga hari kerja.</div>
+                    <div className="pc-note">Contoh data.</div>
+                  </div>
+                  <div className="ly-piece pc-card pc-toast">
+                    <span className="ui-avatar" data-tone="5">NW</span>
+                    <div className="pc-toast__text">
+                      <b>Nawasehat membalas</b>
+                      <span>Ingin wawancara minggu depan</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -617,6 +599,7 @@ export function HomePage() {
                 <Link className="btn btn--primary" href="/lowongan">
                   Cari lowongan
                 </Link>
+                <span className="hero__note">Gratis untuk pencari kerja.</span>
               </div>
             </div>
           </div>
@@ -640,7 +623,7 @@ export function HomePage() {
               <div className="app__pane app__pane--list">
                 <WindowPane />
               </div>
-              <div className="app__pane app__pane--open" data-ui-loop="true">
+              <div className="app__pane app__pane--open">
                 <MatchDoc />
               </div>
             </div>
@@ -667,8 +650,7 @@ export function HomePage() {
                     <div className="stage stage--fade-b">
                       <div
                         className="at-rise fit to-edge"
-                        style={{ "--fit-max": "400px", "--ax": "max(24px, 50% - 200px)", "--ay": "56px" } as CSSProperties}
-                        data-ui-loop="true"
+                        style={{ "--fit-max": "520px", "--ax": "max(24px, 50% - 260px)", "--ay": "56px" } as CSSProperties}
                       >
                         <SearchPane />
                       </div>
@@ -685,7 +667,7 @@ export function HomePage() {
                     <div className="stage stage--fade-b">
                       <div
                         className="at-rise fit to-edge"
-                        style={{ "--fit-max": "400px", "--ax": "max(24px, 50% - 200px)", "--ay": "56px" } as CSSProperties}
+                        style={{ "--fit-max": "520px", "--ax": "max(24px, 50% - 260px)", "--ay": "56px" } as CSSProperties}
                       >
                         <StatPane />
                       </div>
@@ -723,7 +705,7 @@ export function HomePage() {
                     <div className="stage stage--fade-b">
                       <div
                         className="at-rise fit"
-                        style={{ "--fit-max": "400px", "--ax": "32px", "--ay": "calc(100% - 180px)", "--ay-sm": "calc(100% - 180px)" } as CSSProperties}
+                        style={{ "--fit-max": "480px", "--ax": "32px", "--ay": "calc(100% - 180px)", "--ay-sm": "calc(100% - 180px)" } as CSSProperties}
                       >
                         <ChecklistPane />
                       </div>
@@ -738,32 +720,32 @@ export function HomePage() {
         <RevealSection className="section ground-surface" id="angka" labelledBy="angka-h">
           <div className="wrap">
             <div className="grid">
-              <h2 id="angka-h" className="span-5">Angka lowongan di Indonesia.</h2>
+              <h2 id="angka-h" className="span-5">Isi katalog contoh Kerjakita.</h2>
               <div className="span-7 start-6">
                 <p className="t-lead muted">
-                  Angka dari lowongan mitra Kerjakita, diperbarui setiap minggu.
+                  Angka di halaman ini dihitung dari data contoh yang sama dengan halaman lowongan.
                 </p>
                 <p>
                   <Link className="link" href="/lowongan">Lihat lowongan terbuka</Link>
                 </p>
               </div>
             </div>
-            <div className="stats" data-moment="counter-rolls">
+            <div className="stats">
               <div className="stat">
-                <p className="t-stat">5.280</p>
-                <p className="t-small muted">lowongan teknologi terbuka</p>
+                <p className="t-stat">{jobs.length}</p>
+                <p className="t-small muted">lowongan contoh di katalog</p>
               </div>
               <div className="stat">
-                <p className="t-stat">1.240</p>
-                <p className="t-small muted">perusahaan yang memasang lowongan</p>
+                <p className="t-stat">{demoCompanyCount}</p>
+                <p className="t-small muted">perusahaan di katalog</p>
               </div>
               <div className="stat">
-                <p className="t-stat">3 menit</p>
-                <p className="t-small muted">membaca satu laporan kecocokan</p>
+                <p className="t-stat">{demoCityCount}</p>
+                <p className="t-small muted">kota asal lowongan</p>
               </div>
               <div className="stat">
-                <p className="t-stat">12</p>
-                <p className="t-small muted">kategori pekerjaan di Kerjakita</p>
+                <p className="t-stat">{strongMatchCount}</p>
+                <p className="t-small muted">lowongan dengan skor 80 ke atas</p>
               </div>
             </div>
           </div>
@@ -831,13 +813,7 @@ export function HomePage() {
           </div>
         </RevealSection>
 
-        <RevealSection
-          className="section ground-inverse"
-          id="kursus"
-          labelledBy="kursus-h"
-          moment="line-carries-colour"
-          momentOpts='{"from":"base"}'
-        >
+        <RevealSection className="section ground-inverse" id="kursus" labelledBy="kursus-h">
           <div className="wrap">
             <div className="grid">
               <div className="span-5">
@@ -886,16 +862,6 @@ export function HomePage() {
             <div className="grid">
               <div className="span-5">
                 <h2 id="faq-h">Pertanyaan soal lowongan dan lamaran.</h2>
-                <p className="muted">
-                  Belum terjawab? Tulis ke Kerjakita dan kami balas dalam satu hari kerja.
-                </p>
-                <p className="faq__contact">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-                    <path d="M21 12a8 8 0 0 1-8 8H4l2.5-3A8 8 0 1 1 21 12Z" />
-                    <path d="M8.5 11.5h7M8.5 14.5h4.5" />
-                  </svg>
-                  <Link className="link" href="#contact">Hubungi Kerjakita</Link>
-                </p>
               </div>
               <div className="span-7 start-6">
                 <div className="faq">
@@ -920,7 +886,8 @@ export function HomePage() {
                   <div className="faq__item">
                     <h3>Berapa lama lowongan membalas lamaran?</h3>
                     <p>
-                      Rata-rata tiga hari kerja. Statusnya bisa kamu lihat di halaman lamaran.
+                      Waktu balasan tergantung perusahaan. Setiap perubahan status muncul di halaman
+                      lamaran.
                     </p>
                   </div>
                   <div className="faq__item">
@@ -944,13 +911,13 @@ export function HomePage() {
         </RevealSection>
       </main>
 
-      <footer className="footer closing footer--dark ground-inverse" id="contact" aria-labelledby="close-h">
+      <footer className="footer closing footer--dark ground-inverse" aria-labelledby="close-h">
         <div className="wrap">
           <div className="closing__cta close--word">
             <div className="section-head--split">
               <div>
                 <h2 id="close-h">Siap cari lowongan?</h2>
-                <p className="t-lead">Satu profil, satu laporan, tiga menit.</p>
+                <p className="t-lead">Satu profil, satu laporan, satu tempat memantau lamaran.</p>
               </div>
               <Link className="btn btn--primary" href="/lowongan">
                 Cari lowongan

@@ -53,9 +53,53 @@ footer[id] {
   height: auto;
 }
 
+.ly-piece.pc-card.pc-toast {
+  left: 4%;
+  top: 73%;
+  width: 46%;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.pc-toast__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.pc-toast__text b {
+  font-size: 12px;
+}
+
+.pc-toast__text span {
+  color: var(--muted);
+}
+
+.hero__note {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .hero--triptych .hero__cta {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .hero__note {
+    display: block;
+    font-size: var(--t-small);
+    color: var(--muted);
+  }
+}
+
 @media (min-width: 640px) and (max-width: 1023px) {
   .ly-piece.pc-job,
-  .ly-piece.pc-match {
+  .ly-piece.pc-match,
+  .ly-piece.pc-toast {
     display: none;
   }
   .pc-apply {
@@ -71,7 +115,8 @@ footer[id] {
     --nav: 72px;
   }
   .ly-piece.pc-job,
-  .ly-piece.pc-match {
+  .ly-piece.pc-match,
+  .ly-piece.pc-toast {
     display: none;
   }
   .pc-apply {
@@ -387,12 +432,14 @@ footer[id] {
 #angka .stat .t-stat {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  font-size: clamp(44px, 3.4vw + 16px, 64px);
+  line-height: 1;
 }
 
 #angka .stat .t-small {
-  justify-self: start;
+  justify-self: end;
   max-width: 34ch;
-  text-align: left;
+  text-align: right;
 }
 
 /* #kursus: three courses as cards on the dark band, an index and the module count on top */
@@ -489,6 +536,11 @@ footer.closing .close__word {
   #angka .stat {
     grid-template-columns: minmax(0, 1fr);
     gap: 4px;
+  }
+
+  #angka .stat .t-small {
+    justify-self: start;
+    text-align: left;
   }
 
   #produk.g2,
