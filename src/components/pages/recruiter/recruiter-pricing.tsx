@@ -39,7 +39,7 @@ const PLANS = [
       "Manajer akun khusus",
     ],
     cta: "Hubungi tim",
-    href: "/masuk",
+    href: "/masuk-perusahaan",
     variant: "outline",
     highlighted: false,
   },

@@ -25,7 +25,7 @@ export function RecruiterPage() {
             </p>
           </div>
           <div className={styles.closingActions}>
-            <ButtonLink href="/masuk" size="lg">
+            <ButtonLink href="/masuk-perusahaan" size="lg">
               Pasang lowongan
             </ButtonLink>
           </div>

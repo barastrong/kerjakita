@@ -12,6 +12,8 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <AuthShell
+      tone="company"
+      eyebrow="Portal perusahaan"
       title="Buka lowongan untuk perusahaanmu."
       description="Daftarkan perusahaan, jadi Admin, lalu undang tim perekrut dengan peran masing-masing."
       extra={

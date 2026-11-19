@@ -12,6 +12,8 @@ type AuthShellProps = {
   description: string;
   extra: ReactNode;
   children: ReactNode;
+  tone?: "default" | "company";
+  eyebrow?: string;
 };
 
 export function AuthShell({
@@ -19,16 +21,23 @@ export function AuthShell({
   description,
   extra,
   children,
+  tone = "default",
+  eyebrow,
 }: AuthShellProps) {
   return (
     <main className={styles.screen}>
-      <section className={styles.brand}>
+      <section
+        className={`${styles.brand} ${
+          tone === "company" ? styles.brandCompany : ""
+        }`}
+      >
         <Link href="/" className={styles.logo} aria-label="Kerjakita — beranda">
           <span className={styles.logoMark} aria-hidden="true" />
           <span className={styles.logoText}>kerjakita</span>
         </Link>
 
         <div className={styles.brandMessage}>
+          {eyebrow ? <p className={styles.eyebrow}>{eyebrow}</p> : null}
           <p className={styles.brandTitle}>{title}</p>
           <p className={styles.brandDescription}>{description}</p>
         </div>

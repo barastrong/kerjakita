@@ -18,6 +18,28 @@
   background: var(--brand-ink);
 }
 
+.brandCompany {
+  background: #101a45;
+}
+
+.brandCompany .brandDescription {
+  color: #c2cbf0;
+}
+
+.eyebrow {
+  align-self: flex-start;
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #e2e6ff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .logo {
   display: inline-flex;
   align-items: center;

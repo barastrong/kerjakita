@@ -60,7 +60,7 @@ export function RecruiterHero() {
             terbaik, lalu jadwalkan wawancara dari satu dashboard.
           </p>
           <div className={styles.heroActions}>
-            <ButtonLink href="/masuk" size="lg">
+            <ButtonLink href="/masuk-perusahaan" size="lg">
               Pasang lowongan
             </ButtonLink>
             <ButtonLink href="#harga" variant="outline" size="lg">

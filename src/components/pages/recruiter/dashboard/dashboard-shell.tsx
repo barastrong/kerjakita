@@ -45,6 +45,7 @@ type DashboardShellProps = {
     role: string;
   };
   footer?: ReactNode;
+  logoutCookie?: string;
 };
 
 function isActive(pathname: string, item: DashboardNavItem) {
@@ -68,6 +69,7 @@ export function DashboardShell({
   navGroups,
   account,
   footer,
+  logoutCookie = SESSION_COOKIE,
 }: DashboardShellProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -90,8 +92,8 @@ export function DashboardShell({
   }, [menuOpen]);
 
   function handleLogout() {
-    document.cookie = `${SESSION_COOKIE}=; path=/; max-age=0; samesite=lax`;
-    router.replace("/masuk");
+    document.cookie = `${logoutCookie}=; path=/; max-age=0; samesite=lax`;
+    router.replace("/");
     router.refresh();
   }
 

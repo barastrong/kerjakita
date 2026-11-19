@@ -12,7 +12,12 @@ import {
   MailIcon,
 } from "@/components/ui/icons/icons";
 import { SESSION_COOKIE } from "@/lib/data/session";
-import { REGISTERED_COMPANY_COOKIE, parseRegisteredCompany } from "@/lib/data/company";
+import {
+  COMPANY_SESSION_COOKIE,
+  PLATFORM_ADMIN_EMAIL,
+  REGISTERED_COMPANY_COOKIE,
+  parseRegisteredCompany,
+} from "@/lib/data/company";
 import { RECRUITER_TEAM, recruiterMemberForSession } from "@/lib/data/team";
 import styles from "./auth-page.module.css";
 
@@ -229,44 +234,106 @@ function Criteria({ password }: { password: string }) {
   );
 }
 
-export function LoginForm() {
+export function LoginForm({
+  variant = "user",
+}: {
+  variant?: "user" | "company" | "admin";
+} = {}) {
   const router = useRouter();
+  const [error, setError] = useState("");
+  const company = variant === "company";
+  const admin = variant === "admin";
 
   return (
     <form
       className={styles.form}
       onSubmit={(event) => {
         event.preventDefault();
+        setError("");
         const email = String(
           new FormData(event.currentTarget).get("login-email") ?? "",
         )
           .trim()
           .toLowerCase();
-        document.cookie = `${SESSION_COOKIE}=${encodeURIComponent(email)}; path=/; max-age=86400; samesite=lax`;
-        const next = new URLSearchParams(window.location.search).get("next");
         const member = recruiterMemberForSession(email);
         const registered = parseRegisteredCompany(
           readCookie(REGISTERED_COMPANY_COOKIE),
         );
         const isRecruiter = Boolean(member) || registered?.adminEmail === email;
-        const fallback = isRecruiter ? "/perekrut/ringkasan" : "/pelamar/ringkasan";
-        const target =
-          next?.startsWith("/") && (isRecruiter || !next.startsWith("/perekrut"))
-            ? next
-            : fallback;
+
+        if (admin && email !== PLATFORM_ADMIN_EMAIL) {
+          setError("Email ini bukan akun admin platform.");
+          return;
+        }
+
+        if (company && !isRecruiter) {
+          setError(
+            "Email ini bukan akun perusahaan. Daftarkan perusahaan dulu, atau masuk sebagai pencari kerja.",
+          );
+          return;
+        }
+
+        if (!admin && !company && isRecruiter) {
+          setError(
+            "Email ini akun perusahaan. Masuk lewat halaman Masuk Perusahaan.",
+          );
+          return;
+        }
+
+        const sessionCookie = admin || company
+          ? COMPANY_SESSION_COOKIE
+          : SESSION_COOKIE;
+        document.cookie = `${sessionCookie}=${encodeURIComponent(email)}; path=/; max-age=86400; samesite=lax`;
+        const next = new URLSearchParams(window.location.search).get("next");
+        const recruiterTarget =
+          registered &&
+          !member &&
+          registered.adminEmail === email &&
+          registered.status !== "approved"
+            ? "/verifikasi-perusahaan"
+            : "/perekrut/ringkasan";
+        const fallback = admin
+          ? "/admin/verifikasi-perusahaan"
+          : company
+            ? recruiterTarget
+            : "/pelamar/ringkasan";
+        const nextAllowed = admin
+          ? Boolean(next?.startsWith("/admin"))
+          : company
+            ? Boolean(next?.startsWith("/perekrut"))
+            : Boolean(next && !next.startsWith("/perekrut"));
+        const target = next?.startsWith("/") && nextAllowed ? next : fallback;
         router.push(target);
         router.refresh();
       }}
     >
       <FormIntro
-        title="Selamat datang kembali"
-        description="Masuk untuk melanjutkan."
+        title={
+          admin
+            ? "Masuk admin platform"
+            : company
+              ? "Masuk ke portal perekrut"
+              : "Selamat datang kembali"
+        }
+        description={
+          admin
+            ? "Tinjau pengajuan perusahaan sebelum portal perekrut dibuka."
+            : company
+              ? "Kelola lowongan, pelamar, dan tim perusahaanmu."
+              : "Masuk untuk melanjutkan."
+        }
       />
       <Field
         id="login-email"
         label="Email"
         type="email"
-        placeholder="nama@email.com"
+        placeholder={
+          admin
+            ? "admin@kerjakita.id"
+            : company
+              ? "nama@perusahaan.id"
+              : "nama@email.com"
+        }
         autoComplete="email"
         required
       />
@@ -285,22 +352,50 @@ export function LoginForm() {
       <Checkbox id="remember" defaultChecked>
         Ingat saya di perangkat ini
       </Checkbox>
+      {error ? <p className={styles.formError}>{error}</p> : null}
       <button type="submit" className={styles.submit}>
-        Masuk
+        {admin ? "Masuk admin" : company ? "Masuk perusahaan" : "Masuk"}
       </button>
       <Divider />
       <GoogleButton />
-      <p className={styles.demoHint}>
-        Demo anggota tim Tokoloka: rina@tokoloka.id (Admin), salma@tokoloka.id
-        (Perekrut), bima@tokoloka.id (Pewawancara). Password boleh dikosongkan.
-      </p>
-      <p className={styles.formFooter}>
-        Belum punya akun? <Link href="/daftar">Daftar</Link>
-      </p>
-      <p className={styles.formFooter}>
-        Ingin mendaftarkan perusahaan?{" "}
-        <Link href="/daftar-perusahaan">Daftar perusahaan</Link>
-      </p>
+      {admin ? (
+        <p className={styles.demoHint}>
+          Demo admin platform: admin@kerjakita.id. Password boleh dikosongkan.
+        </p>
+      ) : company ? (
+        <p className={styles.demoHint}>
+          Demo akun perusahaan: rina@tokoloka.id (Admin), salma@tokoloka.id
+          (Perekrut), bima@tokoloka.id (Pewawancara). Email admin perusahaan yang
+          kamu daftarkan di browser ini juga bisa dipakai. Password boleh
+          dikosongkan.
+        </p>
+      ) : null}
+      {admin ? (
+        <>
+          <p className={styles.formFooter}>
+            Pencari kerja? <Link href="/masuk">Masuk di sini</Link>
+          </p>
+          <p className={styles.formFooter}>
+            Perusahaan? <Link href="/masuk-perusahaan">Masuk perusahaan</Link>
+          </p>
+        </>
+      ) : company ? (
+        <>
+          <p className={styles.formFooter}>
+            Belum punya akun perusahaan?{" "}
+            <Link href="/daftar-perusahaan">Daftar perusahaan</Link>
+          </p>
+          <p className={styles.formFooter}>
+            Pencari kerja? <Link href="/masuk">Masuk di sini</Link>
+          </p>
+        </>
+      ) : (
+        <>
+          <p className={styles.formFooter}>
+            Belum punya akun? <Link href="/daftar">Daftar</Link>
+          </p>
+        </>
+      )}
     </form>
   );
 }
@@ -336,21 +431,22 @@ export function CompanyRegisterForm() {
           city: String(data.get("company-city") ?? "").trim(),
           adminName,
           adminEmail: email,
+          status: "pending" as const,
         };
 
         document.cookie = `${REGISTERED_COMPANY_COOKIE}=${encodeURIComponent(
           JSON.stringify(company),
         )}; path=/; max-age=31536000; samesite=lax`;
-        document.cookie = `${SESSION_COOKIE}=${encodeURIComponent(
+        document.cookie = `${COMPANY_SESSION_COOKIE}=${encodeURIComponent(
           email,
         )}; path=/; max-age=86400; samesite=lax`;
-        router.push("/perekrut/ringkasan");
+        router.push("/verifikasi-perusahaan");
         router.refresh();
       }}
     >
       <FormIntro
         title="Daftarkan perusahaanmu"
-        description="Buat akun Admin perusahaan, lalu undang tim perekrut."
+        description="Buat akun Admin perusahaan. Pengajuan diverifikasi admin platform sebelum portal perekrut dibuka."
       />
       <Field
         id="company-name"
@@ -390,7 +486,8 @@ export function CompanyRegisterForm() {
         Daftar perusahaan
       </button>
       <p className={styles.formFooter}>
-        Sudah punya akun? <Link href="/masuk">Masuk</Link>
+        Sudah punya akun perusahaan?{" "}
+        <Link href="/masuk-perusahaan">Masuk perusahaan</Link>
       </p>
     </form>
   );

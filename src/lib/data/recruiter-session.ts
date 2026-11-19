@@ -1,11 +1,12 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import {
+  COMPANY_SESSION_COOKIE,
   REGISTERED_COMPANY_COOKIE,
   companyInitials,
   parseRegisteredCompany,
+  type CompanyStatus,
 } from "./company";
-import { SESSION_COOKIE } from "./session";
 import {
   recruiterMemberForSession,
   type RecruiterRole,
@@ -16,6 +17,8 @@ export type RecruiterContext = {
   email: string;
   role: RecruiterRole;
   newCompany: boolean;
+  approved: boolean;
+  companyStatus: CompanyStatus;
   company: {
     name: string;
     initials: string;
@@ -33,7 +36,10 @@ const TOKOLOKA = {
 
 export async function currentRecruiter(): Promise<RecruiterContext | null> {
   const cookieStore = await cookies();
-  const email = cookieStore.get(SESSION_COOKIE)?.value?.trim().toLowerCase();
+  const email = cookieStore
+    .get(COMPANY_SESSION_COOKIE)
+    ?.value?.trim()
+    .toLowerCase();
   if (!email) return null;
 
   const member = recruiterMemberForSession(email);
@@ -43,6 +49,8 @@ export async function currentRecruiter(): Promise<RecruiterContext | null> {
       email,
       role: member.role,
       newCompany: false,
+      approved: true,
+      companyStatus: "approved",
       company: TOKOLOKA,
     };
   }
@@ -56,6 +64,8 @@ export async function currentRecruiter(): Promise<RecruiterContext | null> {
       email,
       role: "Admin",
       newCompany: true,
+      approved: registered.status === "approved",
+      companyStatus: registered.status,
       company: {
         name: registered.name,
         initials: companyInitials(registered.name),
@@ -71,7 +81,25 @@ export async function currentRecruiter(): Promise<RecruiterContext | null> {
 export async function requireRecruiter() {
   const member = await currentRecruiter();
   if (!member) {
-    redirect(`/masuk?next=${encodeURIComponent("/perekrut/ringkasan")}`);
+    redirect(
+      `/masuk-perusahaan?next=${encodeURIComponent("/perekrut/ringkasan")}`,
+    );
+  }
+  if (!member.approved) {
+    redirect("/verifikasi-perusahaan");
+  }
+  return member;
+}
+
+export async function requireCompanyApplication() {
+  const member = await currentRecruiter();
+  if (!member) {
+    redirect(
+      `/masuk-perusahaan?next=${encodeURIComponent("/perekrut/ringkasan")}`,
+    );
+  }
+  if (member.approved) {
+    redirect("/perekrut/ringkasan");
   }
   return member;
 }

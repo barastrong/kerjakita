@@ -10,12 +10,19 @@ export function parseCompanyVerification(
 
 export const REGISTERED_COMPANY_COOKIE = "kerjakita-registered-company";
 
+export const COMPANY_SESSION_COOKIE = "kerjakita-company-session";
+
+export const PLATFORM_ADMIN_EMAIL = "admin@kerjakita.id";
+
+export type CompanyStatus = "pending" | "approved" | "rejected";
+
 export type RegisteredCompany = {
   name: string;
   industry: string;
   city: string;
   adminName: string;
   adminEmail: string;
+  status: CompanyStatus;
 };
 
 export function parseRegisteredCompany(
@@ -38,6 +45,10 @@ export function parseRegisteredCompany(
           ? data.adminName
           : data.name,
       adminEmail: data.adminEmail.toLowerCase(),
+      status:
+        data.status === "approved" || data.status === "rejected"
+          ? data.status
+          : "pending",
     };
   } catch {
     return null;
