@@ -142,11 +142,14 @@ export function JobCard({ job }: { job: Job }) {
           </div>
 
           <div className={styles.jobSkills}>
-            {job.skills.map((skill) => (
-              <Badge key={skill} tone="mint">
-                {skill}
-              </Badge>
-            ))}
+            <p className={styles.jobSkillsLabel}>Keahlian</p>
+            <div className={styles.jobSkillList}>
+              {job.skills.map((skill) => (
+                <Badge key={skill} tone="mint">
+                  {skill}
+                </Badge>
+              ))}
+            </div>
           </div>
 
           <div className={styles.jobFooter}>
@@ -166,21 +169,29 @@ export function JobCard({ job }: { job: Job }) {
               )}
             </p>
             <div className={styles.jobActions}>
-              <Link
-                href={`/laporkan/${job.slug}`}
-                className={styles.companyLink}
-              >
-                Laporkan lowongan
-              </Link>
-              <Link
-                href={`/perusahaan/${job.companySlug}`}
-                className={styles.companyLink}
-              >
-                Lihat perusahaan
-              </Link>
-              <ButtonLink href={`/lamar/${job.slug}`} size="sm">
-                Lamar sekarang
-              </ButtonLink>
+              <div className={styles.reportBlock}>
+                <Link
+                  href={`/laporkan/${job.slug}`}
+                  className={styles.reportLink}
+                >
+                  Laporkan lowongan
+                </Link>
+                <p className={styles.reportNote}>
+                  Laporanmu hanya dibaca admin.
+                </p>
+              </div>
+              <div className={styles.jobActionButtons}>
+                <ButtonLink
+                  href={`/perusahaan/${job.companySlug}`}
+                  variant="outline"
+                  size="sm"
+                >
+                  Lihat perusahaan
+                </ButtonLink>
+                <ButtonLink href={`/lamar/${job.slug}`} size="sm">
+                  Lamar sekarang
+                </ButtonLink>
+              </div>
             </div>
           </div>
         </div>

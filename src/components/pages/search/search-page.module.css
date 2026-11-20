@@ -393,7 +393,7 @@
 }
 
 .jobDialog {
-  width: min(560px, calc(100vw - 2 * var(--space-4)));
+  width: min(600px, calc(100vw - 2 * var(--space-4)));
   max-height: min(82vh, 700px);
   margin: auto;
   padding: 0;
@@ -413,7 +413,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-4);
+  padding: var(--space-4) var(--space-6);
   border-bottom: 1px solid var(--color-line);
 }
 
@@ -430,7 +430,7 @@
 
 .jobDialogHeading {
   font-family: var(--font-display);
-  font-size: var(--text-lg);
+  font-size: var(--text-xl);
   font-weight: 700;
   line-height: var(--leading-lg);
   letter-spacing: var(--tracking-heading);
@@ -446,7 +446,7 @@
 .jobDialogBody {
   max-height: calc(82vh - 120px);
   overflow-y: auto;
-  padding: var(--space-4);
+  padding: var(--space-6);
 }
 
 .results {
@@ -654,8 +654,8 @@
 .jobFacts {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-3);
-  padding-block: var(--space-4);
+  gap: var(--space-2);
+  padding-bottom: var(--space-6);
   border-bottom: 1px solid var(--color-line);
 }
 
@@ -664,6 +664,9 @@
   flex-direction: column;
   gap: 2px;
   min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
 }
 
 .jobFact span {
@@ -680,17 +683,29 @@
 
 .jobSkills {
   display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-block: var(--space-4) 0;
+}
+
+.jobSkillsLabel {
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  color: var(--color-text-muted);
+}
+
+.jobSkillList {
+  display: flex;
   flex-wrap: wrap;
   gap: var(--space-1);
-  padding-block: var(--space-3);
 }
 
 .jobFooter {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-3);
-  padding-top: var(--space-3);
+  gap: var(--space-4);
+  padding-top: var(--space-4);
   border-top: 1px solid var(--color-line);
 }
 
@@ -711,18 +726,39 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
-.companyLink {
-  font-size: var(--text-sm);
-  font-weight: 600;
+.jobActionButtons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.reportBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.reportLink {
+  font-size: var(--text-xs);
   line-height: var(--leading-sm);
-  color: var(--color-accent);
+  color: var(--color-danger);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
-.companyLink:hover {
-  text-decoration: underline;
+.reportLink:hover {
+  text-decoration-thickness: 2px;
+}
+
+.reportNote {
+  font-size: var(--text-xs);
+  line-height: var(--leading-sm);
+  color: var(--color-text-muted);
 }
 
 .empty {
@@ -771,7 +807,7 @@
 .checkbox:focus-visible,
 .radio:focus-visible,
 .jobSummary:focus-visible,
-.companyLink:focus-visible,
+.reportLink:focus-visible,
 .selectWrap select:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
@@ -868,7 +904,20 @@
     gap: var(--space-2);
   }
 
-  .jobActions a {
+  .jobActionButtons {
+    margin-left: 0;
+  }
+
+  .jobActionButtons a {
+    flex: 1;
+    text-align: center;
+  }
+
+  .reportBlock {
+    align-items: center;
+  }
+
+  .reportNote {
     text-align: center;
   }
 
