@@ -11,7 +11,7 @@ import {
   EyeOffIcon,
   MailIcon,
 } from "@/components/ui/icons/icons";
-import { login, registerCompany, verifyOtp } from "@/lib/actions/auth";
+import { login, verifyOtp } from "@/lib/actions/auth";
 import styles from "./auth-page.module.css";
 
 function FormIntro({
@@ -327,68 +327,6 @@ export function LoginForm({
           </p>
         </>
       )}
-    </form>
-  );
-}
-
-export function CompanyRegisterForm() {
-  const [error, setError] = useState("");
-
-  return (
-    <form
-      className={styles.form}
-      onSubmit={async (event) => {
-        event.preventDefault();
-        setError("");
-        const message = await registerCompany(new FormData(event.currentTarget));
-        if (message) setError(message);
-      }}
-    >
-      <FormIntro
-        title="Daftarkan perusahaanmu"
-        description="Buat akun Admin perusahaan. Pengajuan diverifikasi admin platform sebelum portal perekrut dibuka."
-      />
-      <Field
-        id="company-name"
-        label="Nama perusahaan"
-        placeholder="Contoh: Nawasari"
-        required
-      />
-      <Field
-        id="company-industry"
-        label="Industri"
-        placeholder="Contoh: E-commerce"
-      />
-      <Field id="company-city" label="Kota" placeholder="Contoh: Bandung" />
-      <Field
-        id="company-admin"
-        label="Nama kamu"
-        placeholder="Nama lengkap"
-        required
-      />
-      <Field
-        id="company-email"
-        label="Email admin"
-        type="email"
-        placeholder="nama@perusahaan.id"
-        autoComplete="email"
-        required
-      />
-      <Field
-        id="company-password"
-        label="Password"
-        type="password"
-        placeholder="Boleh dikosongkan (demo)"
-        autoComplete="new-password"
-      />
-      {error ? <p className={styles.formError}>{error}</p> : null}
-      <button type="submit" className={styles.submit}>
-        Daftar perusahaan
-      </button>
-      <p className={styles.formFooter}>
-        Sudah punya akun perusahaan?{" "}
-        <Link href="/masuk-perusahaan">Masuk perusahaan</Link>
-      </p>
     </form>
   );
 }

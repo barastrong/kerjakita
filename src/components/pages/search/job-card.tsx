@@ -167,6 +167,12 @@ export function JobCard({ job }: { job: Job }) {
             </p>
             <div className={styles.jobActions}>
               <Link
+                href={`/laporkan/${job.slug}`}
+                className={styles.companyLink}
+              >
+                Laporkan lowongan
+              </Link>
+              <Link
                 href={`/perusahaan/${job.companySlug}`}
                 className={styles.companyLink}
               >

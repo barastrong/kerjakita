@@ -314,6 +314,7 @@
 }
 
 .field input,
+.field select,
 .field textarea {
   width: 100%;
   padding: 12px 14px;
@@ -327,7 +328,8 @@
   transition: border-color 0.15s ease;
 }
 
-.field input {
+.field input,
+.field select {
   height: 44px;
 }
 
@@ -337,6 +339,7 @@
 }
 
 .field input:focus,
+.field select:focus,
 .field textarea:focus {
   border-color: var(--brand-accent);
 }

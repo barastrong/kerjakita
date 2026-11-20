@@ -3,12 +3,17 @@
 import {
   COMPANY_SESSION_COOKIE,
   PLATFORM_ADMIN_EMAIL,
+  type CompanyDraft,
   type RegisteredCompany,
 } from "@/lib/data/company";
 import {
+  clearCompanyDraft,
+  clearRegisteredCompany,
   clearSessionCookie,
+  readCompanyDraft,
   readRegisteredCompany,
   setSessionCookie,
+  writeCompanyDraft,
   writeRegisteredCompany,
 } from "@/lib/data/company-cookie";
 import { SESSION_COOKIE } from "@/lib/data/session";
@@ -59,7 +64,7 @@ export async function login(formData: FormData) {
   const target =
     safeNext(field(formData, "next"), admin ? "admin" : company ? "company" : "user") ??
     (admin
-      ? "/admin/verifikasi-perusahaan"
+      ? "/admin"
       : company
         ? registered &&
           !member &&
@@ -72,30 +77,85 @@ export async function login(formData: FormData) {
   redirect(target);
 }
 
-export async function registerCompany(formData: FormData) {
-  const name = field(formData, "company-name");
-  const adminName = field(formData, "company-admin");
-  const email = field(formData, "company-email").toLowerCase();
+export async function saveCompanyData(formData: FormData) {
+  const draft: CompanyDraft = {
+    name: field(formData, "company-name"),
+    brand: field(formData, "company-brand"),
+    industry: field(formData, "company-industry"),
+    size: field(formData, "company-size"),
+    website: field(formData, "company-website"),
+    city: field(formData, "company-city"),
+    address: field(formData, "company-address"),
+    about: field(formData, "company-about"),
+    logoName: field(formData, "company-logo"),
+  };
 
-  if (!name || !adminName || !email) {
-    return "Nama perusahaan, nama kamu, dan email admin wajib diisi.";
+  if (!draft.name) {
+    return "Nama resmi perusahaan wajib diisi.";
+  }
+
+  await writeCompanyDraft(draft);
+  redirect("/daftar-perusahaan/dokumen");
+}
+
+export async function submitCompanyApplication(formData: FormData) {
+  const draft = await readCompanyDraft();
+  if (!draft) {
+    redirect("/daftar-perusahaan");
+  }
+
+  const adminName = field(formData, "pic-name");
+  const email = field(formData, "pic-email").toLowerCase();
+  const nib = field(formData, "doc-nib");
+  const npwp = field(formData, "doc-npwp");
+  const akta = field(formData, "doc-akta");
+
+  if (!adminName || !email) {
+    return "Nama penanggung jawab dan email perusahaan wajib diisi.";
+  }
+  if (!nib || !npwp || !akta) {
+    return "Dokumen NIB, NPWP, dan akta pendirian wajib diunggah.";
+  }
+  if (
+    formData.get("statement-data") !== "on" ||
+    formData.get("statement-terms") !== "on"
+  ) {
+    return "Centang kedua pernyataan sebelum mengirim pengajuan.";
   }
   if (RECRUITER_TEAM.some((member) => member.email === email)) {
     return "Email ini sudah terdaftar sebagai anggota Tokoloka. Masuk lewat halaman masuk.";
   }
 
   const company: RegisteredCompany = {
-    name,
-    industry: field(formData, "company-industry"),
-    city: field(formData, "company-city"),
+    ...draft,
+    nib,
+    npwp,
+    akta,
+    suratKuasa: field(formData, "doc-surat-kuasa"),
     adminName,
     adminEmail: email,
+    picRole: field(formData, "pic-role"),
+    picPhone: field(formData, "pic-phone"),
+    picRelation:
+      formData.get("pic-relation") === "kuasa" ? "kuasa" : "direksi",
     status: "pending",
+    id: `KRJ-${new Date().getFullYear()}-${1000 + Math.floor(Math.random() * 9000)}`,
+    submittedAt: new Date().toISOString(),
+    reviewedAt: "",
+    reviewNote: "",
   };
 
   await writeRegisteredCompany(company);
+  await clearCompanyDraft();
   await setSessionCookie(COMPANY_SESSION_COOKIE, email, DAY);
   redirect("/verifikasi-perusahaan");
+}
+
+export async function withdrawCompanyApplication() {
+  await clearRegisteredCompany();
+  await clearCompanyDraft();
+  await clearSessionCookie(COMPANY_SESSION_COOKIE);
+  redirect("/daftar-perusahaan");
 }
 
 export async function verifyOtp() {

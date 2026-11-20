@@ -90,7 +90,7 @@ export async function requireCompanyApplication() {
       `/masuk-perusahaan?next=${encodeURIComponent("/perekrut/ringkasan")}`,
     );
   }
-  if (member.approved) {
+  if (member.approved && !member.newCompany) {
     redirect("/perekrut/ringkasan");
   }
   return member;

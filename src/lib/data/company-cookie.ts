@@ -1,7 +1,10 @@
 import { cookies } from "next/headers";
 import {
+  COMPANY_DRAFT_COOKIE,
   REGISTERED_COMPANY_COOKIE,
+  sanitizeCompanyDraft,
   sanitizeRegisteredCompany,
+  type CompanyDraft,
   type RegisteredCompany,
 } from "./company";
 import { openSession, sealSession } from "./session-token";
@@ -26,6 +29,31 @@ export async function writeRegisteredCompany(company: RegisteredCompany) {
     ...COOKIE_OPTIONS,
     maxAge: 60 * 60 * 24 * 365,
   });
+}
+
+export async function clearRegisteredCompany() {
+  const cookieStore = await cookies();
+  cookieStore.set(REGISTERED_COMPANY_COOKIE, "", { path: "/", maxAge: 0 });
+}
+
+export async function readCompanyDraft(): Promise<CompanyDraft | null> {
+  const cookieStore = await cookies();
+  return sanitizeCompanyDraft(
+    openSession(cookieStore.get(COMPANY_DRAFT_COOKIE)?.value),
+  );
+}
+
+export async function writeCompanyDraft(draft: CompanyDraft) {
+  const cookieStore = await cookies();
+  cookieStore.set(COMPANY_DRAFT_COOKIE, sealSession(draft), {
+    ...COOKIE_OPTIONS,
+    maxAge: 60 * 60 * 24 * 7,
+  });
+}
+
+export async function clearCompanyDraft() {
+  const cookieStore = await cookies();
+  cookieStore.set(COMPANY_DRAFT_COOKIE, "", { path: "/", maxAge: 0 });
 }
 
 export async function readSessionEmail(cookieName: string): Promise<string> {

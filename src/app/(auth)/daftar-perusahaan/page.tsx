@@ -1,32 +1,59 @@
 import type { Metadata } from "next";
 import {
-  AuthShell,
-  BenefitList,
-} from "@/components/pages/auth/auth-shell";
-import { CompanyRegisterForm } from "@/components/pages/auth/auth-forms";
+  readCompanyDraft,
+  readRegisteredCompany,
+} from "@/lib/data/company-cookie";
+import { CompanyDataForm } from "@/components/pages/auth/company-flow-forms";
+import {
+  CheckList,
+  CompanyFlowShell,
+  FlowHeading,
+  SideCard,
+} from "@/components/pages/auth/company-flow-shell";
 
 export const metadata: Metadata = {
   title: "Daftar Perusahaan — Kerjakita",
+  description:
+    "Ajukan akun perusahaan Kerjakita untuk memasang lowongan dan mengelola pelamar.",
 };
 
-export default function Page() {
+export default async function DaftarPerusahaanPage() {
+  const draft =
+    (await readCompanyDraft()) ?? (await readRegisteredCompany());
+
   return (
-    <AuthShell
-      tone="company"
-      eyebrow="Portal perusahaan"
-      title="Buka lowongan untuk perusahaanmu."
-      description="Daftarkan perusahaan, jadi Admin, lalu undang tim perekrut dengan peran masing-masing."
-      extra={
-        <BenefitList
-          items={[
-            "Kelola lowongan dan pelamar",
-            "Atur peran Admin, Perekrut, dan Pewawancara",
-            "Profil perusahaan tampil untuk kandidat",
-          ]}
-        />
+    <CompanyFlowShell
+      step={1}
+      aside={
+        <>
+          <SideCard title="Kenapa perlu diverifikasi?">
+            <CheckList
+              items={[
+                "Melindungi pelamar dari lowongan palsu.",
+                "Perusahaanmu mendapat lencana Terverifikasi.",
+                "Lowongan terbit lebih cepat dan lebih dipercaya.",
+              ]}
+            />
+          </SideCard>
+          <SideCard title="Siapkan dokumen ini">
+            <CheckList
+              icon="file"
+              items={[
+                "NIB (Nomor Induk Berusaha)",
+                "NPWP perusahaan",
+                "Akta pendirian perusahaan",
+                "Surat kuasa, jika kamu bukan direksi atau pendiri",
+              ]}
+            />
+          </SideCard>
+        </>
       }
     >
-      <CompanyRegisterForm />
-    </AuthShell>
+      <FlowHeading
+        title="Daftarkan perusahaanmu"
+        description="Ajukan akun perusahaan untuk memasang lowongan dan mengelola pelamar. Tim Kerjakita memverifikasi dalam 1 – 3 hari kerja."
+      />
+      <CompanyDataForm draft={draft} />
+    </CompanyFlowShell>
   );
 }

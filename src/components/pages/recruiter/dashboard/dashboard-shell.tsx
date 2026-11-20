@@ -30,6 +30,7 @@ type DashboardShellProps = {
   children: ReactNode;
   brandHref: string;
   sidebarLabel: string;
+  iconDir?: string;
   theme?: "dark" | "light";
   topCard: {
     initials: string;
@@ -49,7 +50,12 @@ type DashboardShellProps = {
 };
 
 function isActive(pathname: string, item: DashboardNavItem) {
-  if (pathname === item.href || pathname.startsWith(`${item.href}/`)) {
+  if (pathname === item.href) {
+    return true;
+  }
+
+  const isRoot = item.href.split("/").filter(Boolean).length <= 1;
+  if (!isRoot && pathname.startsWith(`${item.href}/`)) {
     return true;
   }
 
@@ -64,6 +70,7 @@ export function DashboardShell({
   children,
   brandHref,
   sidebarLabel,
+  iconDir = "/icons/recruiter",
   theme = "dark",
   topCard,
   navGroups,
@@ -110,7 +117,7 @@ export function DashboardShell({
               className={styles.navIcon}
               style={
                 {
-                  "--nav-icon": `url(/icons/recruiter/${item.icon})`,
+                  "--nav-icon": `url(${iconDir}/${item.icon})`,
                 } as CSSProperties
               }
               aria-hidden="true"
