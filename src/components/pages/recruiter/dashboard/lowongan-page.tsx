@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { ButtonLink } from "@/components/ui/button";
 import { SearchIcon } from "@/components/ui/icons/icons";
 import { can, type RecruiterRole } from "@/lib/data/team";
 import { PageHeading } from "./dashboard-parts";
@@ -119,7 +120,17 @@ export function LowonganPage({ role }: { role: RecruiterRole }) {
 
   return (
     <div className={styles.mainInner}>
-      <PageHeading title="Lowongan" subtitle="6 aktif, 2 draf, 3 ditutup." />
+      <PageHeading
+        title="Lowongan"
+        subtitle="6 aktif, 2 draf, 3 ditutup."
+        action={
+          canManage ? (
+            <ButtonLink href="/perekrut/pasang-lowongan">
+              Pasang lowongan
+            </ButtonLink>
+          ) : undefined
+        }
+      />
 
       <div className={styles.toolbar}>
         <div className={styles.tabs} role="group" aria-label="Filter status lowongan">

@@ -287,8 +287,12 @@ export function LoginForm({
       <button type="submit" className={styles.submit}>
         {admin ? "Masuk admin" : company ? "Masuk perusahaan" : "Masuk"}
       </button>
-      <Divider />
-      <GoogleButton />
+      {company ? null : (
+        <>
+          <Divider />
+          <GoogleButton />
+        </>
+      )}
       {admin ? (
         <p className={styles.demoHint}>
           Demo admin platform: admin@kerjakita.id. Password boleh dikosongkan.

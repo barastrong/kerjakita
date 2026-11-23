@@ -736,13 +736,6 @@
   margin-left: auto;
 }
 
-.reportBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
 .reportLink {
   font-size: var(--text-xs);
   line-height: var(--leading-sm);
@@ -753,12 +746,6 @@
 
 .reportLink:hover {
   text-decoration-thickness: 2px;
-}
-
-.reportNote {
-  font-size: var(--text-xs);
-  line-height: var(--leading-sm);
-  color: var(--color-text-muted);
 }
 
 .empty {
@@ -913,11 +900,7 @@
     text-align: center;
   }
 
-  .reportBlock {
-    align-items: center;
-  }
-
-  .reportNote {
+  .reportLink {
     text-align: center;
   }
 

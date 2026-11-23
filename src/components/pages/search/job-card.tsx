@@ -169,17 +169,12 @@ export function JobCard({ job }: { job: Job }) {
               )}
             </p>
             <div className={styles.jobActions}>
-              <div className={styles.reportBlock}>
-                <Link
-                  href={`/laporkan/${job.slug}`}
-                  className={styles.reportLink}
-                >
-                  Laporkan lowongan
-                </Link>
-                <p className={styles.reportNote}>
-                  Laporanmu hanya dibaca admin.
-                </p>
-              </div>
+              <Link
+                href={`/laporkan/${job.slug}`}
+                className={styles.reportLink}
+              >
+                Laporkan lowongan
+              </Link>
               <div className={styles.jobActionButtons}>
                 <ButtonLink
                   href={`/perusahaan/${job.companySlug}`}
