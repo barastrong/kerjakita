@@ -1,5 +1,5 @@
-import { DashboardSkeleton } from "@/components/ui/skeleton";
+import { RecruiterOverviewSkeleton } from "@/components/ui/skeleton/recruiter-skeletons";
 
 export default function Loading() {
-  return <DashboardSkeleton />;
+  return <RecruiterOverviewSkeleton />;
 }

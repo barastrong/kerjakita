@@ -318,16 +318,4 @@ export function DashboardSkeleton() {
   );
 }
 
-export function AuthSkeleton() {
-  return (
-    <div role="status" aria-live="polite" className={styles.auth}>
-      <span className={styles.srOnly}>Memuat halaman…</span>
-      <div className={styles.authPanel} aria-hidden="true">
-        <Block className={styles.authTitle} />
-        <Block className={styles.authField} />
-        <Block className={styles.authField} />
-        <Block className={styles.authButton} />
-      </div>
-    </div>
-  );
-}
+

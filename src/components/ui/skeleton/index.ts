@@ -1,5 +1,4 @@
 export {
-  AuthSkeleton,
   CompaniesSkeleton,
   CoursesSkeleton,
   DashboardSkeleton,

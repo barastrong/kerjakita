@@ -1,5 +1,5 @@
-import { DashboardSkeleton } from "@/components/ui/skeleton";
+import { ApplyDataSkeleton } from "@/components/ui/skeleton/apply-skeleton";
 
 export default function Loading() {
-  return <DashboardSkeleton />;
+  return <ApplyDataSkeleton />;
 }

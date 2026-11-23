@@ -1,5 +1,5 @@
-import { AuthSkeleton } from "@/components/ui/skeleton";
+import { AuthSkeleton } from "@/components/ui/skeleton/auth-skeleton";
 
 export default function Loading() {
-  return <AuthSkeleton />;
+  return <AuthSkeleton extra="benefits" footer social />;
 }
